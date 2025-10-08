@@ -1,3 +1,4 @@
+import { useApolloClient } from "@apollo/client";
 import { LogLevels, OutputData } from "@editorjs/editorjs";
 import { FormControl, FormHelperText } from "@material-ui/core";
 import { useId } from "@reach/auto-id";
@@ -10,6 +11,7 @@ import { tools } from "./consts";
 import { useHasRendered, useUpdateOnRerender } from "./hooks";
 import { ReactEditorJS } from "./ReactEditorJS";
 import useStyles from "./styles";
+import { createFileUploader,createImageUploader } from "./uploaders";
 
 export type EditorJsProps = Omit<ReactEditorJSProps, "factory">;
 
@@ -45,6 +47,32 @@ const RichTextEditor = ({
   const [isFocused, setIsFocused] = React.useState(false);
   const [hasValue, setHasValue] = React.useState(false);
   const isTyped = Boolean(hasValue || isFocused);
+  const client = useApolloClient();
+
+  // Create tools with GraphQL uploaders instead of direct HTTP endpoints
+  const toolsWithUploaders = React.useMemo(() => {
+    const imageUploader = createImageUploader(client);
+    const fileUploader = createFileUploader(client);
+
+    return {
+      ...tools,
+      image: {
+        ...tools.image,
+        config: {
+          ...(tools.image as any).config,
+          uploader: imageUploader,
+        },
+      },
+      attaches: {
+        ...tools.attaches,
+        config: {
+          ...(tools.attaches as any).config,
+          uploader: fileUploader,
+        },
+      },
+    };
+  }, [client]);
+
   const handleInitialize = React.useCallback((editor: EditorCore) => {
     if (onInitialize) {
       onInitialize(editor);
@@ -96,7 +124,7 @@ const RichTextEditor = ({
         <ReactEditorJS
           // match with the id of holder div
           holder={id}
-          tools={tools}
+          tools={toolsWithUploaders}
           // Log level is undefined at runtime
           logLevel={"ERROR" as LogLevels.ERROR}
           onInitialize={handleInitialize}
