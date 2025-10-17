@@ -3,7 +3,7 @@ import { FilterElement } from "../../FilterElement";
 import { QueryVarsDateUtils } from "../dateUtils";
 import { BaseMappableQueryVarsBuilder } from "./BaseMappableQueryVarsBuilder";
 
-export type OrderInvoiceDateQueryVars = {
+type OrderInvoiceDateQueryVars = {
   invoices?: Array<{ createdAt?: { gte?: string; lte?: string } }>;
 };
 
@@ -25,7 +25,9 @@ export class OrderInvoiceDateQueryVarsBuilder extends BaseMappableQueryVarsBuild
     return "invoices";
   }
 
-  protected getConditionValue(element: FilterElement): OrderInvoiceDateQueryVars[keyof OrderInvoiceDateQueryVars] | undefined {
+  protected getConditionValue(
+    element: FilterElement,
+  ): OrderInvoiceDateQueryVars[keyof OrderInvoiceDateQueryVars] | undefined {
     const { value: selectedValue, conditionValue } = element.condition.selected;
 
     if (!conditionValue) {

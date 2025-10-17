@@ -10,7 +10,8 @@ import { getFieldError } from "@dashboard/utils/errors";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Box, Checkbox, RadioGroup, Text } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
-import React, { useState } from "react";
+import { useState } from "react";
+import * as React from "react";
 import { useIntl } from "react-intl";
 
 import { DashboardCard } from "../Card";
@@ -71,12 +72,12 @@ interface Message {
   setAvailabilityDateLabel?: string;
 }
 
-export interface DateFields {
+interface DateFields {
   publishedAt: string;
   availableForPurchaseAt?: string;
 }
 
-export interface VisibilityCardProps {
+interface VisibilityCardProps {
   children?: React.ReactNode;
   data: DateFields & {
     availableForPurchaseAt?: string;
@@ -90,7 +91,7 @@ export interface VisibilityCardProps {
   onChange: (event: ChangeEvent) => void;
 }
 
-export const VisibilityCard = (props: VisibilityCardProps) => {
+const VisibilityCard = (props: VisibilityCardProps) => {
   const {
     children,
     data: {
@@ -334,5 +335,6 @@ export const VisibilityCard = (props: VisibilityCardProps) => {
     </DashboardCard>
   );
 };
+
 VisibilityCard.displayName = "VisibilityCard";
 export default VisibilityCard;

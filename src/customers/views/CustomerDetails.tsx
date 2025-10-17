@@ -13,7 +13,6 @@ import useNotifier from "@dashboard/hooks/useNotifier";
 import { commonMessages } from "@dashboard/intl";
 import { extractMutationErrors, getStringOrPlaceholder } from "@dashboard/misc";
 import createMetadataUpdateHandler from "@dashboard/utils/handlers/metadataUpdateHandler";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import CustomerDetailsPage, {
@@ -147,9 +146,10 @@ const CustomerDetailsViewInner = ({ id, params }: CustomerDetailsViewProps) => {
   );
 };
 
-export const CustomerDetailsView = ({ id, params }: CustomerDetailsViewProps) => (
+const CustomerDetailsView = ({ id, params }: CustomerDetailsViewProps) => (
   <CustomerDetailsProvider id={id}>
     <CustomerDetailsViewInner id={id} params={params} />
   </CustomerDetailsProvider>
 );
+
 export default CustomerDetailsView;

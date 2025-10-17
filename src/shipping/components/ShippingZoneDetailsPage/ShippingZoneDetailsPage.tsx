@@ -26,7 +26,6 @@ import { languageEntityUrl, TranslatableEntities } from "@dashboard/translations
 import { useCachedLocales } from "@dashboard/translations/useCachedLocales";
 import useMetadataChangeTrigger from "@dashboard/utils/metadata/useMetadataChangeTrigger";
 import { Option } from "@saleor/macaw-ui-next";
-import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { getStringOrPlaceholder } from "../../../misc";
@@ -54,7 +53,7 @@ const messages = defineMessages({
   },
 });
 
-export interface ShippingZoneDetailsPageProps extends FetchMoreProps, SearchProps, ChannelProps {
+interface ShippingZoneDetailsPageProps extends FetchMoreProps, SearchProps, ChannelProps {
   disabled: boolean;
   errors: ShippingErrorFragment[];
   saveButtonBarState: ConfirmButtonTransitionState;

@@ -1,12 +1,12 @@
 // @ts-strict-ignore
 import { FetchResult } from "@apollo/client";
-import { AppWidgets } from "@dashboard/apps/components/AppWidgets/AppWidgets";
 import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import CardSpacer from "@dashboard/components/CardSpacer";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
 import { DateTime } from "@dashboard/components/Date";
 import { DetailPageLayout } from "@dashboard/components/Layouts";
 import { Savebar } from "@dashboard/components/Savebar";
+import { AppWidgets } from "@dashboard/extensions/components/AppWidgets/AppWidgets";
 import { extensionMountPoints } from "@dashboard/extensions/extensionMountPoints";
 import { getExtensionsItemsForDraftOrderDetails } from "@dashboard/extensions/getExtensionsItems";
 import { useExtensions } from "@dashboard/extensions/hooks/useExtensions";
@@ -25,7 +25,6 @@ import OrderChannelSectionCard from "@dashboard/orders/components/OrderChannelSe
 import { orderDraftListUrl } from "@dashboard/orders/urls";
 import { FetchMoreProps, RelayToFlat } from "@dashboard/types";
 import { Box, Divider, Skeleton, Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import OrderCustomer, { CustomerEditData } from "../OrderCustomer";
@@ -33,7 +32,7 @@ import OrderDraftDetails from "../OrderDraftDetails/OrderDraftDetails";
 import OrderHistory, { FormData as HistoryFormData } from "../OrderHistory";
 import OrderDraftAlert from "./OrderDraftAlert";
 
-export interface OrderDraftPageProps extends FetchMoreProps {
+interface OrderDraftPageProps extends FetchMoreProps {
   disabled: boolean;
   order?: OrderDetailsFragment;
   channelUsabilityData?: ChannelUsabilityDataQuery;

@@ -11,7 +11,6 @@ import { CategoryWithTotalProductsFragment } from "@dashboard/graphql";
 import { TableBody, TableCell, TableFooter } from "@material-ui/core";
 import { DeleteIcon, IconButton } from "@saleor/macaw-ui";
 import { Button, Skeleton } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { renderCollection } from "../../../misc";
@@ -19,7 +18,7 @@ import { ListActions, ListProps } from "../../../types";
 import { messages } from "./messages";
 import { useStyles } from "./styles";
 
-export interface DiscountCategoriesProps extends ListProps, ListActions {
+interface DiscountCategoriesProps extends ListProps, ListActions {
   categories: CategoryWithTotalProductsFragment[];
   onCategoryAssign: () => void;
   onCategoryUnassign: (id: string) => void;

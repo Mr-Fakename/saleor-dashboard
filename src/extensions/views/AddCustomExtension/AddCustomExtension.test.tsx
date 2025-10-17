@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
+import * as React from "react";
 
 import { AddCustomExtension } from "./AddCustomExtension";
 import { useHandleCreateAppSubmit } from "./hooks/useHandleCreateAppSubmit";
@@ -34,14 +34,6 @@ jest.mock("react-router-dom", () => ({
 }));
 
 jest.mock("@dashboard/components/Savebar");
-
-jest.mock("react-intl", () => ({
-  useIntl: () => ({
-    formatMessage: (message: { id: string; defaultMessage: string }) => message.defaultMessage,
-  }),
-  FormattedMessage: ({ defaultMessage }: { id: string; defaultMessage: string }) => defaultMessage,
-  defineMessages: (messages: Record<string, any>) => messages,
-}));
 
 jest.mock("./hooks/usePermissions");
 jest.mock("./hooks/useHandleCreateAppSubmit");

@@ -2,7 +2,7 @@ import { ThemeProvider as LegacyThemeProvider } from "@saleor/macaw-ui";
 import { ThemeProvider } from "@saleor/macaw-ui-next";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 import { singleRefundableTransaction } from "./fixtures";
 import { TransactionSubmitCard } from "./TransactionSubmitCard";
@@ -16,13 +16,6 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  defineMessages: jest.fn(x => x),
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: string }) => <>{defaultMessage}</>,
-}));
 jest.mock("@dashboard/auth/hooks/useUserPermissions", () => ({
   useUserPermissions: jest.fn(() => [
     {

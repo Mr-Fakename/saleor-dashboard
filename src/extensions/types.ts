@@ -44,7 +44,7 @@ interface PluginExtensionData extends CommonExtensionData {
 
 export type ExtensionData = AppExtensionData | PluginExtensionData;
 
-export type ExtensionGroup = "payments" | "taxes" | "cms" | "automation";
+type ExtensionGroup = "payments" | "taxes" | "cms" | "automation";
 
 export type ExtensionsGroups = Record<ExtensionGroup, { title: string; items: ExtensionData[] }>;
 
@@ -83,4 +83,8 @@ export interface Extension {
 
 export interface ExtensionWithParams extends Omit<Extension, "open"> {
   open: (params: AppDetailsUrlMountQueryParams) => void;
+}
+
+export interface AppLogo {
+  source?: string;
 }

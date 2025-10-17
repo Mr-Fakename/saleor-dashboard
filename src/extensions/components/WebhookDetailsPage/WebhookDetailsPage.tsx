@@ -7,8 +7,7 @@ import { Savebar } from "@dashboard/components/Savebar";
 import {
   createAsyncEventsSelectHandler,
   createSyncEventsSelectHandler,
-} from "@dashboard/custom-apps/handlers";
-import { IntrospectionNode } from "@dashboard/custom-apps/utils";
+} from "@dashboard/extensions/handlers";
 import { ExtensionsUrls } from "@dashboard/extensions/urls";
 import {
   WebhookDetailsFragment,
@@ -21,14 +20,16 @@ import { SubmitPromise } from "@dashboard/hooks/useForm";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { Box } from "@saleor/macaw-ui-next";
 import { parse, print } from "graphql";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import * as React from "react";
 import { useIntl } from "react-intl";
 
-import PermissionAlert from "./components/PermissionAlert";
-import WebhookEvents from "./components/WebhookEvents/";
-import WebhookHeaders from "./components/WebhookHeaders";
-import WebhookInfo from "./components/WebhookInfo";
-import WebhookSubscriptionQuery from "./components/WebhookSubscriptionQuery";
+import { IntrospectionNode } from "../../utils";
+import { PermissionAlert } from "./components/PermissionAlert/PermissionAlert";
+import { WebhookEvents } from "./components/WebhookEvents/WebhookEvents";
+import { WebhookHeaders } from "./components/WebhookHeaders/WebhookHeaders";
+import { WebhookInfo } from "./components/WebhookInfo/WebhookInfo";
+import { WebhookSubscriptionQuery } from "./components/WebhookSubscriptionQuery/WebhookSubscriptionQuery";
 import { getHeaderTitle, messages } from "./messages";
 import { getWebhookFormInitialFormValues } from "./webhookForm";
 
@@ -43,7 +44,7 @@ export interface WebhookFormData {
   customHeaders: string;
 }
 
-export interface WebhookDetailsPageProps {
+interface WebhookDetailsPageProps {
   appId: string;
   appName: string;
   disabled: boolean;
@@ -54,7 +55,7 @@ export interface WebhookDetailsPageProps {
   availableEvents: IntrospectionNode[];
 }
 
-const WebhookDetailsPage = ({
+export const WebhookDetailsPage = ({
   appId,
   disabled,
   errors,
@@ -170,4 +171,3 @@ const WebhookDetailsPage = ({
 };
 
 WebhookDetailsPage.displayName = "WebhookDetailsPage";
-export default WebhookDetailsPage;

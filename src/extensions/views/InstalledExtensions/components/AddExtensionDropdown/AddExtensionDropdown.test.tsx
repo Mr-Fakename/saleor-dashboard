@@ -2,7 +2,6 @@ import { useHasManagedAppsPermission } from "@dashboard/hooks/useHasManagedAppsP
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 
 import { AddExtensionDropdown } from "./AddExtensionDropdown";
 
@@ -11,13 +10,6 @@ jest.mock("@dashboard/hooks/useHasManagedAppsPermission", () => ({
 }));
 
 jest.mock("@dashboard/hooks/useNavigator", () => jest.fn());
-
-jest.mock("react-intl", () => ({
-  useIntl: () => ({
-    formatMessage: ({ defaultMessage }: { defaultMessage: string }) => defaultMessage,
-  }),
-  defineMessages: (message: unknown) => message,
-}));
 
 jest.mock("@dashboard/extensions/urls", () => ({
   ExtensionsUrls: {

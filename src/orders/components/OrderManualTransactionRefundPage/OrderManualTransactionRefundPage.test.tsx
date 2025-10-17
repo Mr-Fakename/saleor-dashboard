@@ -1,6 +1,7 @@
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { mockResizeObserver } from "@dashboard/components/Datagrid/testUtils";
 import {
+  ModelsOfTypeDocument,
   OrderTransactionRequestActionDocument,
   TransactionActionEnum,
   TransactionItemFragment,
@@ -10,20 +11,14 @@ import { ThemeProvider as LegacyThemeProvider } from "@saleor/macaw-ui";
 import { ThemeProvider } from "@saleor/macaw-ui-next";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 import { OrderManualTransactionRefundPage } from "./OrderManualTransactionRefundPage";
 
 jest.mock("@dashboard/hooks/useNavigator", () => () => jest.fn);
 jest.mock("@dashboard/components/Savebar");
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  defineMessages: jest.fn(x => x),
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: string }) => <>{defaultMessage}</>,
-}));
+
 jest.mock("@dashboard/hooks/useNotifier", () => ({
   __esModule: true,
   default: jest.fn(() => () => undefined),
@@ -63,11 +58,23 @@ describe("OrderManualTransactionRefundPage", () => {
             action: "REFUND",
             transactionId: "2",
             amount: 5,
+            reason: "",
+            reasonReferenceId: undefined,
           },
         },
         result: { data: { transactionRequestAction: { errors: [] } } },
       },
+      {
+        request: {
+          query: ModelsOfTypeDocument,
+          variables: {
+            pageTypeId: "",
+          },
+        },
+        result: { data: { pages: { edges: [] } } },
+      },
     ];
+
     const transactions = [
       {
         id: "1",
@@ -94,6 +101,7 @@ describe("OrderManualTransactionRefundPage", () => {
         currency="USD"
         loading={false}
         orderId="1"
+        modelForRefundReasonRefId={null}
         transactions={transactions}
       />,
       { wrapper: getWrapper(mocks) },
@@ -125,6 +133,7 @@ describe("OrderManualTransactionRefundPage", () => {
     render(
       <OrderManualTransactionRefundPage
         currency="USD"
+        modelForRefundReasonRefId={null}
         loading={false}
         orderId="1"
         transactions={transactions}
@@ -148,6 +157,7 @@ describe("OrderManualTransactionRefundPage", () => {
       <OrderManualTransactionRefundPage
         currency="USD"
         loading={true}
+        modelForRefundReasonRefId={null}
         orderId="1"
         transactions={[]}
       />,

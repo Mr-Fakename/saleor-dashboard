@@ -34,7 +34,6 @@ import useCustomerSearch from "@dashboard/searches/useCustomerSearch";
 import { useOrderVariantSearch } from "@dashboard/searches/useOrderVariantSearch";
 import { PartialMutationProviderOutput } from "@dashboard/types";
 import { mapEdgesToItems } from "@dashboard/utils/maps";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { customerUrl } from "../../../../customers/urls";
@@ -321,5 +320,3 @@ export const OrderDraftDetails = ({
     </>
   );
 };
-
-export default OrderDraftDetails;

@@ -1,14 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import React from "react";
+import * as React from "react";
 
 import { AppActions } from "./AppActions";
-
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  defineMessages: jest.fn(x => x),
-}));
 
 jest.mock("@dashboard/components/Link", () => {
   // eslint-disable-next-line react/display-name
@@ -17,7 +10,7 @@ jest.mock("@dashboard/components/Link", () => {
   );
 });
 
-jest.mock("../AppInstallButton", () => ({
+jest.mock("../AppInstallButton/AppInstallButton", () => ({
   AppInstallButton: () => <div>Install</div>,
 }));
 

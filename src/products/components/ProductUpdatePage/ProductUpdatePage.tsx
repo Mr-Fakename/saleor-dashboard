@@ -1,8 +1,7 @@
 // @ts-strict-ignore
-import { AppWidgets } from "@dashboard/apps/components/AppWidgets/AppWidgets";
 import {
   getReferenceAttributeEntityTypeFromAttribute,
-  mergeAttributeValues,
+  handleMetadataReferenceAssignment,
 } from "@dashboard/attributes/utils/data";
 import { useUser } from "@dashboard/auth";
 import { hasPermission } from "@dashboard/auth/misc";
@@ -18,6 +17,7 @@ import { DetailPageLayout } from "@dashboard/components/Layouts";
 import { Metadata } from "@dashboard/components/Metadata/Metadata";
 import { Savebar } from "@dashboard/components/Savebar";
 import { SeoForm } from "@dashboard/components/SeoForm";
+import { AppWidgets } from "@dashboard/extensions/components/AppWidgets/AppWidgets";
 import { extensionMountPoints } from "@dashboard/extensions/extensionMountPoints";
 import { getExtensionsItemsForProductDetails } from "@dashboard/extensions/getExtensionsItems";
 import { useExtensions } from "@dashboard/extensions/hooks/useExtensions";
@@ -56,7 +56,7 @@ import { productUrl as createTranslateProductUrl } from "@dashboard/translations
 import { useCachedLocales } from "@dashboard/translations/useCachedLocales";
 import { FetchMoreProps, RelayToFlat } from "@dashboard/types";
 import { Box, Divider, Option } from "@saleor/macaw-ui-next";
-import React from "react";
+import { useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 
 import { AttributeValuesMetadata, getChoices } from "../../utils/data";
@@ -69,7 +69,7 @@ import { messages } from "./messages";
 import ProductChannelsListingsDialog from "./ProductChannelsListingsDialog";
 import { ProductUpdateData, ProductUpdateHandlers, ProductUpdateSubmitData } from "./types";
 
-export interface ProductUpdatePageProps {
+interface ProductUpdatePageProps {
   channels: ChannelFragment[];
   productId: string;
   channelsErrors: ProductChannelListingErrorFragment[];
@@ -123,7 +123,7 @@ export interface ProductUpdatePageProps {
   onSeoClick?: () => any;
 }
 
-export const ProductUpdatePage = ({
+const ProductUpdatePage = ({
   productId,
   disabled,
   categories: categoryChoiceList,
@@ -181,7 +181,7 @@ export const ProductUpdatePage = ({
   const canTranslate = user && hasPermission(PermissionEnum.MANAGE_TRANSLATIONS, user);
   const { lastUsedLocaleOrFallback } = useCachedLocales();
   const navigate = useNavigator();
-  const [channelPickerOpen, setChannelPickerOpen] = React.useState(false);
+  const [channelPickerOpen, setChannelPickerOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useStateFromProps(product?.category?.name || "");
   const [mediaUrlModalStatus, setMediaUrlModalStatus] = useStateFromProps(
     isMediaUrlModalVisible || false,
@@ -207,28 +207,25 @@ export const ProductUpdatePage = ({
     data: ProductUpdateData,
     handlers: ProductUpdateHandlers,
   ) => {
-    handlers.selectAttributeReference(
+    handleMetadataReferenceAssignment(
       assignReferencesAttributeId,
-      mergeAttributeValues(
-        assignReferencesAttributeId,
-        attributeValues.map(({ value }) => value),
-        data.attributes,
-      ),
+      attributeValues,
+      data.attributes,
+      handlers,
     );
-    handlers.selectAttributeReferenceMetadata(assignReferencesAttributeId, attributeValues);
     onCloseDialog();
   };
   const { PRODUCT_DETAILS_MORE_ACTIONS, PRODUCT_DETAILS_WIDGETS } = useExtensions(
     extensionMountPoints.PRODUCT_DETAILS,
   );
-  const productErrors = React.useMemo(
+  const productErrors = useMemo(
     () =>
       errors.filter(
         error => error.__typename === "ProductError",
       ) as ProductErrorWithAttributesFragment[],
     [errors],
   );
-  const productOrganizationErrors = React.useMemo(
+  const productOrganizationErrors = useMemo(
     () =>
       [...errors, ...channelsErrors].filter(err =>
         ["ProductChannelListingError", "ProductError"].includes(err.__typename),
@@ -501,5 +498,6 @@ export const ProductUpdatePage = ({
     </ProductUpdateForm>
   );
 };
+
 ProductUpdatePage.displayName = "ProductUpdatePage";
 export default ProductUpdatePage;

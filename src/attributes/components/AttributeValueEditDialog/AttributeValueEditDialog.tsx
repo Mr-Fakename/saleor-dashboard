@@ -8,14 +8,13 @@ import useModalDialogErrors from "@dashboard/hooks/useModalDialogErrors";
 import { buttonMessages } from "@dashboard/intl";
 import { getFormErrors } from "@dashboard/utils/errors";
 import { TextField } from "@material-ui/core";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { AttributeValueEditDialogFormData } from "../../utils/data";
 import AttributeSwatchField from "../AttributeSwatchField";
 import { getAttributeValueFields } from "./utils";
 
-export interface AttributeValueEditDialogProps {
+interface AttributeValueEditDialogProps {
   attributeValue: AttributeValueEditDialogFormData | null;
   confirmButtonState: ConfirmButtonTransitionState;
   disabled: boolean;

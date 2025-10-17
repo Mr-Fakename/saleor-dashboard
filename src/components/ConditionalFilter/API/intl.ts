@@ -28,7 +28,6 @@ import {
   voucherStatusMessages,
 } from "./messages";
 
-
 const getOrderStatusLabel = (status: OrderStatusFilter, intl: IntlShape) => {
   const { localized } = transformOrderStatus(status, intl);
 
@@ -98,7 +97,7 @@ const getPublishedLabel = (status: CollectionPublished, intl: IntlShape) => {
   }
 };
 
-export const getProductTypeLabel = (type: ProductTypeEnum, intl: IntlShape) => {
+const getProductTypeLabel = (type: ProductTypeEnum, intl: IntlShape) => {
   switch (type) {
     case ProductTypeEnum.DIGITAL:
       return intl.formatMessage(productTypeMessages.digital);

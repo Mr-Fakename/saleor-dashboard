@@ -3,7 +3,7 @@ import { useFlag } from "@dashboard/featureFlags";
 import { ApolloMockedProvider } from "@test/ApolloMockedProvider";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
+import * as React from "react";
 
 import { onboardingCompletedMock, onboardingInitState } from "./mocks";
 import { OnboardingProvider } from "./onboardingContext";
@@ -21,13 +21,7 @@ jest.mock("@dashboard/featureFlags", () => ({
     enabled: false,
   }),
 }));
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  defineMessages: jest.fn(x => x),
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: any }) => <>{defaultMessage}</>,
-}));
+
 jest.mock("./onboardingContext/useOnboardingStorage");
 jest.useFakeTimers();
 jest.mock("@dashboard/components/DevModePanel/hooks", () => ({
@@ -50,7 +44,7 @@ const allMarkAsDoneStepsIds = [
   "create-product",
   "explore-orders",
   "graphql-playground",
-  "view-webhooks",
+  "view-extensions",
   "invite-staff",
 ];
 

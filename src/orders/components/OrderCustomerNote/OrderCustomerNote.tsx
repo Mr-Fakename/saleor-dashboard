@@ -1,13 +1,12 @@
 import { DashboardCard } from "@dashboard/components/Card";
 import { Skeleton, Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 interface OrderCustomerNoteProps {
   note: string;
 }
 
-export const OrderCustomerNote = ({ note }: OrderCustomerNoteProps) => {
+const OrderCustomerNote = ({ note }: OrderCustomerNoteProps) => {
   const intl = useIntl();
 
   return (
@@ -35,4 +34,5 @@ export const OrderCustomerNote = ({ note }: OrderCustomerNoteProps) => {
     </DashboardCard>
   );
 };
+
 export default OrderCustomerNote;

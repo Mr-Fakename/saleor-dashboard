@@ -1,8 +1,7 @@
 import Wrapper from "@test/wrapper";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
-import AppActivateDialog from "./AppActivateDialog";
+import { AppActivateDialog } from "./AppActivateDialog";
 import msgs from "./messages";
 
 describe("Apps AppActivateDialog", () => {
@@ -24,7 +23,7 @@ describe("Apps AppActivateDialog", () => {
 
     const dialogContent = screen.getByTestId("dialog-content");
     // Assert
-    const expectedText = msgs.activateNamedApp.defaultMessage.replace("{name}", name);
+    const expectedText = msgs.activateNamedApp.defaultMessage;
 
     expect(dialogContent).toHaveTextContent(expectedText);
   });

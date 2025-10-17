@@ -1,7 +1,7 @@
 import { DashboardCard } from "@dashboard/components/Card";
 import ResponsiveTable from "@dashboard/components/ResponsiveTable";
 import { SortableTableBody, SortableTableRow } from "@dashboard/components/SortableTable";
-import TablePagination from "@dashboard/components/TablePagination";
+import { TablePagination } from "@dashboard/components/TablePagination";
 import TableRowLink from "@dashboard/components/TableRowLink";
 import {
   AttributeInputTypeEnum,
@@ -13,10 +13,9 @@ import { ListProps, PaginateListProps, RelayToFlat, ReorderAction } from "@dashb
 import { TableCell, TableFooter, TableHead } from "@material-ui/core";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Box, Button, Skeleton, TrashBinIcon } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-export interface AttributeValuesProps
+interface AttributeValuesProps
   extends Pick<ListProps, Exclude<keyof ListProps, "getRowHref">>,
     PaginateListProps {
   disabled: boolean;

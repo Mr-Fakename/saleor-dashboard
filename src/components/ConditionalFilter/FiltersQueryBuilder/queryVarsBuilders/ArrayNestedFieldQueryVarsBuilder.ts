@@ -1,10 +1,9 @@
-
 import { Handler, NoopValuesHandler } from "../../API/Handler";
 import { FilterElement } from "../../FilterElement";
 import { QueryVarsBuilderUtils } from "../utils";
 import { WhereOnlyQueryVarsBuilder } from "./types";
 
-export type ArrayNestedFilterQueryPart = {
+type ArrayNestedFilterQueryPart = {
   transactions?: Array<{
     paymentMethodDetails?: {
       type?: { eq?: string; oneOf?: string[] };
@@ -21,23 +20,21 @@ export type ArrayNestedFilterQueryPart = {
  * `transactions: [{ paymentMethodDetails: {type: {eq: "CARD"}} }, {paymentMethodDetails: {card: {eq: "SaleorCard"}}}]`
  * is created from two separate inputs for Payment method = "CARD" and Payment method card = "SaleorCard" l*/
 export class ArrayNestedFieldQueryVarsBuilder
-  implements WhereOnlyQueryVarsBuilder<ArrayNestedFilterQueryPart> {
-
+  implements WhereOnlyQueryVarsBuilder<ArrayNestedFilterQueryPart>
+{
   canHandle(element: FilterElement): boolean {
     const type = element.value.type;
 
-    return type === "transactionsPaymentType" ||
-      type === "transactionsCardBrand";
+    return type === "transactionsPaymentType" || type === "transactionsCardBrand";
   }
 
-  createOptionFetcher(
-  ): Handler {
+  createOptionFetcher(): Handler {
     return new NoopValuesHandler([]);
   }
 
   updateWhereQueryVariables(
     query: Readonly<ArrayNestedFilterQueryPart>,
-    element: FilterElement
+    element: FilterElement,
   ): ArrayNestedFilterQueryPart {
     const type = element.value.type;
     const conditionValue = QueryVarsBuilderUtils.extractConditionValueFromFilterElement(element);

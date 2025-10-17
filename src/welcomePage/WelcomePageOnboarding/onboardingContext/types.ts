@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 export type OnboardingStepsIDs =
   | "get-started"
@@ -6,7 +6,6 @@ export type OnboardingStepsIDs =
   | "explore-orders"
   | "graphql-playground"
   | "view-extensions"
-  | "view-webhooks"
   | "invite-staff";
 
 export type OnboardingStep = {

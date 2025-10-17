@@ -1,6 +1,5 @@
 // @ts-strict-ignore
 import { FetchResult } from "@apollo/client";
-import { AppWidgets } from "@dashboard/apps/components/AppWidgets/AppWidgets";
 import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import { CardSpacer } from "@dashboard/components/CardSpacer";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
@@ -9,6 +8,7 @@ import Form from "@dashboard/components/Form";
 import { DetailPageLayout } from "@dashboard/components/Layouts";
 import { Metadata, MetadataIdSchema } from "@dashboard/components/Metadata";
 import { Savebar } from "@dashboard/components/Savebar";
+import { AppWidgets } from "@dashboard/extensions/components/AppWidgets/AppWidgets";
 import { extensionMountPoints } from "@dashboard/extensions/extensionMountPoints";
 import { getExtensionsItemsForOrderDetails } from "@dashboard/extensions/getExtensionsItems";
 import { useExtensions } from "@dashboard/extensions/hooks/useExtensions";
@@ -26,7 +26,6 @@ import useNavigator from "@dashboard/hooks/useNavigator";
 import { defaultGraphiQLQuery } from "@dashboard/orders/queries";
 import { orderListUrl } from "@dashboard/orders/urls";
 import { Divider } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { getMutationErrors, maybe } from "../../../misc";
@@ -49,7 +48,7 @@ import {
   hasAnyItemsReplaceable,
 } from "./utils";
 
-export interface OrderDetailsPageProps {
+interface OrderDetailsPageProps {
   order: OrderDetailsFragment | OrderDetailsFragment;
   shop: OrderDetailsQuery["shop"];
   shippingMethods?: Array<{

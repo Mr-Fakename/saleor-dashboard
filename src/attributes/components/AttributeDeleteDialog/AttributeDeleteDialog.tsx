@@ -1,9 +1,8 @@
 import ActionDialog from "@dashboard/components/ActionDialog";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-export interface AttributeDeleteDialogProps {
+interface AttributeDeleteDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   open: boolean;
   onConfirm: () => void;

@@ -7,14 +7,14 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { DeleteIcon, IconButton, makeStyles } from "@saleor/macaw-ui";
 import { Button, Text } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
-import React from "react";
+import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { getStringOrPlaceholder } from "../../misc";
 import { DashboardCard } from "../Card";
 import { groupCountriesByStartingLetter } from "./utils";
 
-export interface CountryListProps {
+interface CountryListProps {
   countries: CountryFragment[];
   disabled: boolean;
   emptyText: React.ReactNode;

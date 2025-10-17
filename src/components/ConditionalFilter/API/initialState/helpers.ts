@@ -76,9 +76,7 @@ const isProductTypeQuery = (
 
 const isAttributeQuery = (
   query: InitialProductAPIResponse,
-): query is ApolloQueryResult<_SearchAttributeOperandsQuery> =>
-  "attributes" in query.data &&
-  Boolean(query.data.attributes?.edges.some((edge: any) => Boolean(edge.node.choices)));
+): query is ApolloQueryResult<_SearchAttributeOperandsQuery> => "attributes" in query.data;
 
 const isPageTypesQuery = (
   query: InitialPageAPIResponse,
@@ -96,7 +94,9 @@ const isCurrencyQuery = (
   query: InitialGiftCardsAPIResponse,
 ): query is ApolloQueryResult<ChannelCurrenciesQuery> => "shop" in query.data;
 
-const isWarehouseQuery = (query: InitialOrderAPIResponse): query is ApolloQueryResult<_SearchWarehouseOperandsQuery> => "warehouses" in query.data
+const isWarehouseQuery = (
+  query: InitialOrderAPIResponse,
+): query is ApolloQueryResult<_SearchWarehouseOperandsQuery> => "warehouses" in query.data;
 
 export const createInitialProductStateFromData = (
   data: InitialProductAPIResponse[],
@@ -145,8 +145,8 @@ export const createInitialProductStateFromData = (
                 node.inputType === "BOOLEAN"
                   ? convertItemOptionsToAttributeChoices(createBooleanOptions())
                   : convertItemOptionsToAttributeChoices(
-                    createOptionsFromAPI(node.choices?.edges ?? []),
-                  );
+                      createOptionsFromAPI(node.choices?.edges ?? []),
+                    );
 
               return {
                 ...accAttr,

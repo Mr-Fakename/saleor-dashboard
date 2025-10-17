@@ -18,13 +18,14 @@ const config = {
     "^.+\\.(jsx?|tsx?)$": "@swc/jest",
     "^.+\\.(png|svg|jpe?g)$": "jest-file",
   },
+  // Define where tests are located - defaults to src/ directory
+  roots: ["<rootDir>/src/"],
   testRegex: ".*\\.test\\.tsx?$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  transformIgnorePatterns: [
-    "/node_modules/(?!chroma-js/.*)"
-  ],
+  transformIgnorePatterns: ["/node_modules/(?!chroma-js/.*)"],
   moduleNameMapper: {
     "\\.(css)$": "identity-obj-proxy",
+    "^react-intl$": "<rootDir>/__mocks__/react-intl.ts",
     "@assets(.*)$": "<rootDir>/assets/$1",
     "@locale(.*)$": "<rootDir>/locale/$1",
     "@dashboard(.*)$": "<rootDir>/src/$1",
@@ -34,8 +35,9 @@ const config = {
     "^@material-ui/styles$": "<rootDir>/node_modules/@material-ui/styles",
     "^react$": "<rootDir>/node_modules/react",
     "^react-dom$": "<rootDir>/node_modules/react-dom",
-    collectCoverageFrom: ["<rootDir>/src/**/*.{ts,tsx}"],
   },
+  collectCoverageFrom: ["<rootDir>/src/**/*.{ts,tsx}"],
 };
 
+// eslint-disable-next-line no-undef
 module.exports = config;

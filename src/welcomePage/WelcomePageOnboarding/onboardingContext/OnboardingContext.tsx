@@ -1,10 +1,9 @@
 import { useAnalytics } from "@dashboard/components/ProductAnalytics/useAnalytics";
-import { useFlag } from "@dashboard/featureFlags";
 import {
   handleStateChangeAfterStepCompleted,
   handleStateChangeAfterToggle,
 } from "@dashboard/welcomePage/WelcomePageOnboarding/onboardingContext/utils";
-import React, { useMemo, useRef } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 import { useNewUserCheck } from "../hooks/useNewUserCheck";
 import {
@@ -21,12 +20,11 @@ import {
 import { useExpandedOnboardingId } from "./useExpandedOnboardingId";
 import { useOnboardingStorage } from "./useOnboardingStorage";
 
-const OnboardingContext = React.createContext<OnboardingContextType | null>(null);
+const OnboardingContext = createContext<OnboardingContextType | null>(null);
 
 export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
   const analytics = useAnalytics();
-  const { enabled: isExtensionsFlagEnabled } = useFlag("extensions");
-  const [onboardingState, setOnboardingState] = React.useState<OnboardingState>({
+  const [onboardingState, setOnboardingState] = useState<OnboardingState>({
     onboardingExpanded: true,
     stepsCompleted: [],
     stepsExpanded: {} as OnboardingState["stepsExpanded"],
@@ -36,21 +34,7 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
 
   const storageService = useOnboardingStorage();
 
-  const visibleSteps = useMemo(() => {
-    return initialOnboardingSteps.filter(step => {
-      if (step.id === "view-extensions") {
-        return isExtensionsFlagEnabled;
-      }
-
-      if (step.id === "view-webhooks") {
-        return !isExtensionsFlagEnabled;
-      }
-
-      return true;
-    });
-  }, [isExtensionsFlagEnabled]);
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (loaded.current || isUserLoading) return;
 
     const onboardingStateFromUserMetadata = storageService.getOnboardingState();
@@ -65,31 +49,25 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
     loaded.current = true;
   }, [isNewUser, isUserLoading, loaded, storageService]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (loaded.current) {
       storageService.saveOnboardingState(onboardingState);
     }
   }, [onboardingState]);
 
   // Calculate the valid completed steps based on feature flag
-  const validCompletedSteps = onboardingState.stepsCompleted.filter(step => {
-    if (step === "view-extensions") {
-      return isExtensionsFlagEnabled;
-    }
-
-    if (step === "view-webhooks") {
-      return !isExtensionsFlagEnabled;
-    }
-
-    return true;
-  });
+  const validCompletedSteps = onboardingState.stepsCompleted;
 
   const validCompletedStepsCount = validCompletedSteps.length;
 
   // For old users, onboarding is always completed, for new one we need to calculate it
   const isOnboardingCompleted = isNewUser ? validCompletedStepsCount >= TOTAL_STEPS_COUNT : true;
 
-  const extendedStepId = useExpandedOnboardingId(onboardingState, loaded.current, visibleSteps);
+  const extendedStepId = useExpandedOnboardingId(
+    onboardingState,
+    loaded.current,
+    initialOnboardingSteps,
+  );
 
   const markOnboardingStepAsCompleted = (id: OnboardingStepsIDs) => {
     if (onboardingState.stepsCompleted.includes(id)) return;
@@ -103,7 +81,7 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
     analytics.trackEvent("home_onboarding_mark_all_steps_completed");
     setOnboardingState(prevOnboardingState => ({
       ...prevOnboardingState,
-      stepsCompleted: visibleSteps.map(step => step.id),
+      stepsCompleted: initialOnboardingSteps.map(step => step.id),
       stepsExpanded: {} as OnboardingState["stepsExpanded"],
     }));
   };
@@ -143,7 +121,7 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
         toggleExpandedOnboardingStep,
         toggleOnboarding,
         validCompletedStepsCount,
-        visibleSteps,
+        visibleSteps: initialOnboardingSteps,
       }}
     >
       {children}
@@ -152,7 +130,7 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
 };
 
 export const useOnboarding = () => {
-  const context = React.useContext(OnboardingContext);
+  const context = useContext(OnboardingContext);
 
   if (context === null) {
     throw new Error("useOnboarding must be used within a OnboardingProvider");

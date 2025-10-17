@@ -10,7 +10,7 @@ import { CountryFragment, ShippingErrorFragment } from "@dashboard/graphql";
 import { SubmitPromise } from "@dashboard/hooks/useForm";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { shippingZonesListUrl } from "@dashboard/shipping/urls";
-import React from "react";
+import { useState } from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import ShippingZoneCountriesAssignDialog from "../ShippingZoneCountriesAssignDialog";
@@ -39,7 +39,7 @@ const messages = defineMessages({
   },
 });
 
-export interface ShippingZoneCreatePageProps {
+interface ShippingZoneCreatePageProps {
   countries: CountryFragment[];
   restWorldCountries: string[];
   disabled: boolean;
@@ -58,7 +58,7 @@ const ShippingZoneCreatePage = ({
 }: ShippingZoneCreatePageProps) => {
   const intl = useIntl();
   const navigate = useNavigator();
-  const [isModalOpened, setModalStatus] = React.useState(false);
+  const [isModalOpened, setModalStatus] = useState(false);
   const toggleModal = () => setModalStatus(!isModalOpened);
   const initialForm: ShippingZoneCreateFormData = {
     countries: [],

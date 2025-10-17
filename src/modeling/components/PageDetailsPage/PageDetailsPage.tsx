@@ -1,13 +1,12 @@
 // @ts-strict-ignore
 import {
   getReferenceAttributeEntityTypeFromAttribute,
-  mergeAttributeValues,
+  handleContainerReferenceAssignment,
 } from "@dashboard/attributes/utils/data";
 import { useUser } from "@dashboard/auth";
 import { hasPermission } from "@dashboard/auth/misc";
 import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import AssignAttributeValueDialog from "@dashboard/components/AssignAttributeValueDialog";
-import { Container } from "@dashboard/components/AssignContainerDialog";
 import { AttributeInput, Attributes } from "@dashboard/components/Attributes";
 import CardSpacer from "@dashboard/components/CardSpacer";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
@@ -38,10 +37,9 @@ import { modelingSection } from "@dashboard/modeling/urls";
 import { TranslationsButton } from "@dashboard/translations/components/TranslationsButton/TranslationsButton";
 import { languageEntityUrl, TranslatableEntities } from "@dashboard/translations/urls";
 import { useCachedLocales } from "@dashboard/translations/useCachedLocales";
-import { FetchMoreProps, RelayToFlat } from "@dashboard/types";
+import { Container, FetchMoreProps, RelayToFlat } from "@dashboard/types";
 import { mapNodeToChoice } from "@dashboard/utils/maps";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import PageInfo from "../PageInfo";
@@ -49,7 +47,7 @@ import PageOrganizeContent from "../PageOrganizeContent";
 import PageForm, { PageData, PageUpdateHandlers } from "./form";
 import { messages } from "./messages";
 
-export interface PageDetailsPageProps {
+interface PageDetailsPageProps {
   loading: boolean;
   errors: PageErrorWithAttributesFragment[];
   page: PageDetailsFragment;
@@ -129,17 +127,11 @@ const PageDetailsPage = ({
     data: PageData,
     handlers: PageUpdateHandlers,
   ) => {
-    handlers.selectAttributeReference(
+    handleContainerReferenceAssignment(
       assignReferencesAttributeId,
-      mergeAttributeValues(
-        assignReferencesAttributeId,
-        attributeValues.map(({ id }) => id),
-        data.attributes,
-      ),
-    );
-    handlers.selectAttributeReferenceMetadata(
-      assignReferencesAttributeId,
-      attributeValues.map(({ id, name }) => ({ value: id, label: name })),
+      attributeValues,
+      data.attributes,
+      handlers,
     );
     onCloseDialog();
   };

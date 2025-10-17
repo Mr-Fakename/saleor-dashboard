@@ -1,10 +1,8 @@
 // @ts-strict-ignore
-import { AppUrls } from "@dashboard/apps/urls";
 import CardSpacer from "@dashboard/components/CardSpacer";
 import Link from "@dashboard/components/Link";
 import { customerUrl } from "@dashboard/customers/urls";
 import { ExtensionsUrls } from "@dashboard/extensions/urls";
-import { useFlag } from "@dashboard/featureFlags";
 import { GiftCardEventsEnum } from "@dashboard/graphql";
 import useDateLocalize from "@dashboard/hooks/useDateLocalize";
 import { getFullName, getStringOrPlaceholder } from "@dashboard/misc";
@@ -14,7 +12,6 @@ import { getByType } from "@dashboard/orders/components/OrderReturnPage/utils";
 import { productUrl } from "@dashboard/products/urls";
 import { staffMemberDetailsUrl } from "@dashboard/staff/urls";
 import { Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { MessageDescriptor, useIntl } from "react-intl";
 
 import useGiftCardDetails from "../providers/GiftCardDetailsProvider/hooks/useGiftCardDetails";
@@ -28,7 +25,6 @@ const GiftCardUpdateInfoCardContent = () => {
   const { created, createdByEmail, createdBy, usedByEmail, usedBy, product } = giftCard;
   const cardIssuedEvent = giftCard?.events?.find(getByType(GiftCardEventsEnum.ISSUED));
   const cardBoughtEvent = giftCard?.events?.find(getByType(GiftCardEventsEnum.BOUGHT));
-  const { enabled: areExtensionsEnabled } = useFlag("extensions");
 
   const getBuyerFieldData = (): {
     label: MessageDescriptor;
@@ -44,9 +40,7 @@ const GiftCardUpdateInfoCardContent = () => {
         return {
           label: messages.issuedByAppLabel,
           name: app?.name,
-          url: areExtensionsEnabled
-            ? ExtensionsUrls.resolveViewManifestExtensionUrl(app?.id)
-            : AppUrls.resolveAppUrl(app?.id),
+          url: ExtensionsUrls.resolveViewManifestExtensionUrl(app?.id),
         };
       }
 

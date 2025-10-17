@@ -3,7 +3,7 @@ import { FilterElement } from "../../FilterElement";
 import { QueryVarsDateUtils } from "../dateUtils";
 import { BaseMappableQueryVarsBuilder } from "./BaseMappableQueryVarsBuilder";
 
-export type DateTimeRangeQueryVars = {
+type DateTimeRangeQueryVars = {
   createdAt?: { gte?: string; lte?: string };
   updatedAt?: { gte?: string; lte?: string };
   dateJoined?: { gte?: string; lte?: string };
@@ -12,15 +12,11 @@ export type DateTimeRangeQueryVars = {
 /**
  * Query builder for fields using DateTimeRangeQuery pattern
  * Generates {gte: value, lte: value} for ranges
- * 
+ *
  * For fields using DateTimeFilterInput pattern, use DefaultQueryVarsBuilder
  */
 export class DateTimeRangeQueryVarsBuilder extends BaseMappableQueryVarsBuilder<DateTimeRangeQueryVars> {
-  private static readonly DATE_FIELD_NAMES = [
-    "createdAt",
-    "updatedAt",
-    "dateJoined",
-  ];
+  private static readonly DATE_FIELD_NAMES = ["createdAt", "updatedAt", "dateJoined"];
 
   canHandle(element: FilterElement): boolean {
     const fieldName = element.value.value || element.value.label || "";
@@ -36,7 +32,9 @@ export class DateTimeRangeQueryVarsBuilder extends BaseMappableQueryVarsBuilder<
     return element.value.value || element.value.label || "unknown";
   }
 
-  protected getConditionValue(element: FilterElement): DateTimeRangeQueryVars[keyof DateTimeRangeQueryVars] | undefined {
+  protected getConditionValue(
+    element: FilterElement,
+  ): DateTimeRangeQueryVars[keyof DateTimeRangeQueryVars] | undefined {
     const { value: selectedValue, conditionValue } = element.condition.selected;
 
     if (!conditionValue) {

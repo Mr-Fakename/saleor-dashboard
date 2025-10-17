@@ -2,27 +2,26 @@ import "@saleor/macaw-ui-next/style";
 import "./index.css";
 
 import { ApolloProvider } from "@apollo/client";
-import DemoBanner from "@dashboard/components/DemoBanner";
 import { history, Route, Router } from "@dashboard/components/Router";
-import { extensionsSection } from "@dashboard/extensions/urls";
+import { AppExtensionPopupProvider } from "@dashboard/extensions/components/AppExtensionContext/AppExtensionContextProvider";
+import { ExtensionsPaths, extensionsSection } from "@dashboard/extensions/urls";
 import { PermissionEnum } from "@dashboard/graphql";
 import useAppState from "@dashboard/hooks/useAppState";
 import { pageListPath } from "@dashboard/modeling/urls";
 import { modelTypesPath } from "@dashboard/modelTypes/urls";
+import { RefundsSettingsRoute } from "@dashboard/refundsSettings/route";
+import { refundsSettingsPath } from "@dashboard/refundsSettings/urls";
 import { structuresListPath } from "@dashboard/structures/urls";
 import { ThemeProvider } from "@dashboard/theme";
 import { OnboardingProvider } from "@dashboard/welcomePage/WelcomePageOnboarding/onboardingContext";
 import { ThemeProvider as LegacyThemeProvider } from "@saleor/macaw-ui";
 import { SaleorProvider } from "@saleor/sdk";
-import React from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import TagManager from "react-gtm-module";
 import { useIntl } from "react-intl";
-import { Switch } from "react-router-dom";
+import { Redirect, Switch } from "react-router-dom";
 
-import { AppsSectionRoot } from "./apps";
-import { AppSections } from "./apps/urls";
 import AttributeSection from "./attributes";
 import { attributeSection } from "./attributes/urls";
 import Auth from "./auth";
@@ -48,17 +47,14 @@ import { ProductAnalytics } from "./components/ProductAnalytics";
 import { SavebarRefProvider } from "./components/Savebar/SavebarRefContext";
 import { ShopProvider } from "./components/Shop";
 import { WindowTitle } from "./components/WindowTitle";
-import { DEMO_MODE, GTM_ID } from "./config";
+import { GTM_ID } from "./config";
 import ConfigurationSection from "./configuration";
 import { getConfigMenuItemsPermissions } from "./configuration/utils";
 import AppStateProvider from "./containers/AppState";
 import BackgroundTasksProvider from "./containers/BackgroundTasks";
-import CustomAppsSection from "./custom-apps";
-import { CustomAppSections } from "./custom-apps/urls";
 import { CustomerSection } from "./customers";
 import DiscountSection from "./discounts";
 import { ExtensionsSection } from "./extensions";
-import { ExternalAppProvider } from "./extensions/components/ExternalAppContext";
 import { FeatureFlagsProviderWithUser } from "./featureFlags/FeatureFlagsProvider";
 import GiftCardSection from "./giftCards";
 import { giftCardsSectionUrlName } from "./giftCards/urls";
@@ -70,7 +66,6 @@ import PageTypesSection from "./modelTypes";
 import { NotFound } from "./NotFound";
 import OrdersSection from "./orders";
 import PermissionGroupSection from "./permissionGroups";
-import PluginsSection from "./plugins";
 import ProductSection from "./products";
 import ProductTypesSection from "./productTypes";
 import SearchSection from "./search";
@@ -168,9 +163,8 @@ const Routes = () => {
   return (
     <>
       <WindowTitle title={intl.formatMessage(commonMessages.dashboard)} />
-      {DEMO_MODE && <DemoBanner />}
       {homePageLoaded ? (
-        <ExternalAppProvider>
+        <AppExtensionPopupProvider>
           <AppLayout fullSize={isAppPath}>
             <ErrorBoundary
               onError={e => {
@@ -242,11 +236,6 @@ const Routes = () => {
                   matchPermission="any"
                 />
                 <SectionRoute
-                  permissions={[PermissionEnum.MANAGE_PLUGINS]}
-                  path="/plugins"
-                  component={PluginsSection}
-                />
-                <SectionRoute
                   permissions={[PermissionEnum.MANAGE_ORDERS]}
                   path="/orders"
                   component={OrdersSection}
@@ -271,6 +260,11 @@ const Routes = () => {
                   permissions={[PermissionEnum.MANAGE_SETTINGS]}
                   path="/site-settings"
                   component={SiteSettingsSection}
+                />
+                <SectionRoute
+                  permissions={[PermissionEnum.MANAGE_SETTINGS]}
+                  path={refundsSettingsPath}
+                  component={RefundsSettingsRoute}
                 />
                 <SectionRoute path="/taxes" component={TaxesSection} />
                 <SectionRoute
@@ -299,11 +293,6 @@ const Routes = () => {
                 />
                 <SectionRoute
                   permissions={[]}
-                  path={AppSections.appsSection}
-                  component={AppsSectionRoot}
-                />
-                <SectionRoute
-                  permissions={[]}
                   path={extensionsSection}
                   component={ExtensionsSection}
                 />
@@ -324,12 +313,14 @@ const Routes = () => {
                   path="/configuration"
                   component={ConfigurationSection}
                 />
-                <SectionRoute path={CustomAppSections.appsSection} component={CustomAppsSection} />
+                <Redirect to={ExtensionsPaths.installedExtensions} path={"/apps"} />
+                <Redirect to={ExtensionsPaths.installedExtensions} path="/custom-apps/" />
+                <Redirect to={ExtensionsPaths.installedExtensions} path="/plugins" />
                 <Route component={NotFound} />
               </Switch>
             </ErrorBoundary>
           </AppLayout>
-        </ExternalAppProvider>
+        </AppExtensionPopupProvider>
       ) : homePageLoading ? (
         <LoginLoading />
       ) : (

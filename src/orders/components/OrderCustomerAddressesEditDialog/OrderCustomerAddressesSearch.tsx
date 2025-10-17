@@ -8,14 +8,14 @@ import { buttonMessages } from "@dashboard/intl";
 import { getById } from "@dashboard/misc";
 import { Checkbox, FormControlLabel, InputAdornment, TextField } from "@material-ui/core";
 import { Button, SearchIcon } from "@saleor/macaw-ui";
-import React from "react";
+import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { dialogMessages as messages } from "./messages";
 import { useStyles } from "./styles";
 import { parseQuery, stringifyAddress } from "./utils";
 
-export interface OrderCustomerAddressesSearchProps {
+interface OrderCustomerAddressesSearchProps {
   type: AddressTypeEnum;
   cloneAddress: boolean;
   formChange: FormChange;

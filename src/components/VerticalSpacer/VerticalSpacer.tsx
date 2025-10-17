@@ -1,7 +1,6 @@
 import { makeStyles } from "@saleor/macaw-ui";
-import React from "react";
 
-export interface VerticalSpacerProps {
+interface VerticalSpacerProps {
   spacing?: number;
 }
 

@@ -9,13 +9,15 @@ import {
 import useNotifier from "@dashboard/hooks/useNotifier";
 import { commonMessages } from "@dashboard/intl";
 import { extractMutationErrors, getStringOrPlaceholder } from "@dashboard/misc";
-import React from "react";
 import { useIntl } from "react-intl";
 
-import WebhookDetailsPage, { WebhookFormData } from "../../components/WebhookDetailsPage";
+import {
+  WebhookDetailsPage,
+  WebhookFormData,
+} from "../../components/WebhookDetailsPage/WebhookDetailsPage";
 import { useAvailableEvents } from "../../hooks/useAvailableEvents";
 
-export interface EditCustomExtensionWebhookProps {
+interface EditCustomExtensionWebhookProps {
   id: string;
 }
 

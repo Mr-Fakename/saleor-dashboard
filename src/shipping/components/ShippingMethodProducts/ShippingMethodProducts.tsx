@@ -13,7 +13,6 @@ import { ListActions, ListProps, RelayToFlat } from "@dashboard/types";
 import { TableBody, TableCell, TableFooter } from "@material-ui/core";
 import { DeleteIcon, IconButton, makeStyles } from "@saleor/macaw-ui";
 import { Skeleton, Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles(
@@ -38,7 +37,7 @@ const useStyles = makeStyles(
   { name: "ShippingMethodProducts" },
 );
 
-export interface ShippingMethodProductsProps
+interface ShippingMethodProductsProps
   extends Pick<ListProps, Exclude<keyof ListProps, "getRowHref">>,
     ListActions {
   products: RelayToFlat<

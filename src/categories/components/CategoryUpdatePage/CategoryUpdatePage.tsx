@@ -21,7 +21,6 @@ import { TranslationsButton } from "@dashboard/translations/components/Translati
 import { languageEntityUrl, TranslatableEntities } from "@dashboard/translations/urls";
 import { useCachedLocales } from "@dashboard/translations/useCachedLocales";
 import { Box, sprinkles } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { ListProps, ListViews, RelayToFlat } from "../../../types";
@@ -36,7 +35,7 @@ export enum CategoryPageTab {
   products = "products",
 }
 
-export interface CategoryUpdatePageProps
+interface CategoryUpdatePageProps
   extends Pick<ListProps<ListViews.CATEGORY_LIST>, "onUpdateListSettings" | "settings"> {
   categoryId: string;
   changeTab: (index: CategoryPageTab) => void;
@@ -237,4 +236,3 @@ export const CategoryUpdatePage = ({
   );
 };
 CategoryUpdatePage.displayName = "CategoryUpdatePage";
-export default CategoryUpdatePage;

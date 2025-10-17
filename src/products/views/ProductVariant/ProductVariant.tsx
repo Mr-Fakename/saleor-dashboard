@@ -42,20 +42,22 @@ import {
 import { handleAssignMedia } from "@dashboard/products/utils/handlers";
 import useCategorySearch from "@dashboard/searches/useCategorySearch";
 import useCollectionSearch from "@dashboard/searches/useCollectionSearch";
-import usePageSearch from "@dashboard/searches/usePageSearch";
-import useProductSearch from "@dashboard/searches/useProductSearch";
+import {
+  useReferencePageSearch,
+  useReferenceProductSearch,
+} from "@dashboard/searches/useReferenceSearch";
 import useWarehouseSearch from "@dashboard/searches/useWarehouseSearch";
 import useAttributeValueSearchHandler from "@dashboard/utils/handlers/attributeValueSearchHandler";
 import createDialogActionHandlers from "@dashboard/utils/handlers/dialogActionHandlers";
 import createMetadataUpdateHandler from "@dashboard/utils/handlers/metadataUpdateHandler";
 import { mapEdgesToItems } from "@dashboard/utils/maps";
 import { warehouseAddPath } from "@dashboard/warehouses/urls";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 
 import ProductVariantDeleteDialog from "../../components/ProductVariantDeleteDialog";
-import { ProductVariantPage } from "../../components/ProductVariantPage";
 import { ProductVariantUpdateSubmitData } from "../../components/ProductVariantPage/form";
+import { ProductVariantPage } from "../../components/ProductVariantPage/ProductVariantPage";
 import {
   productUrl,
   productVariantEditUrl,
@@ -70,7 +72,7 @@ interface ProductUpdateProps {
   params: ProductVariantEditUrlQueryParams;
 }
 
-export const ProductVariant = ({ variantId, params }: ProductUpdateProps) => {
+const ProductVariant = ({ variantId, params }: ProductUpdateProps) => {
   const shop = useShop();
   const navigate = useNavigator();
   const notify = useNotifier();
@@ -234,20 +236,21 @@ export const ProductVariant = ({ variantId, params }: ProductUpdateProps) => {
         id: attribute.id,
       }),
     );
-  const {
-    loadMore: loadMorePages,
-    search: searchPages,
-    result: searchPagesOpts,
-  } = usePageSearch({
-    variables: DEFAULT_INITIAL_SEARCH_DATA,
-  });
+  const refAttr =
+    params.action === "assign-attribute-value" && params.id
+      ? variant?.nonSelectionAttributes?.find(a => a.attribute.id === params.id)?.attribute
+      : undefined;
   const {
     loadMore: loadMoreProducts,
     search: searchProducts,
     result: searchProductsOpts,
-  } = useProductSearch({
-    variables: DEFAULT_INITIAL_SEARCH_DATA,
-  });
+  } = useReferenceProductSearch(refAttr);
+
+  const {
+    loadMore: loadMorePages,
+    search: searchPages,
+    result: searchPagesOpts,
+  } = useReferencePageSearch(refAttr);
   const {
     loadMore: loadMoreCategories,
     search: searchCategories,
@@ -360,4 +363,5 @@ export const ProductVariant = ({ variantId, params }: ProductUpdateProps) => {
     </>
   );
 };
+
 export default ProductVariant;

@@ -1,10 +1,9 @@
-
 import { Handler, NoopValuesHandler } from "../../API/Handler";
 import { FilterElement } from "../../FilterElement";
 import { QueryVarsBuilderUtils } from "../utils";
 import { WhereOnlyQueryVarsBuilder } from "./types";
 
-export type FulfillmentStatusFilterQueryPart = {
+type FulfillmentStatusFilterQueryPart = {
   fulfillments?: Array<{
     status?: { eq?: string; oneOf?: string[] };
   }>;
@@ -14,20 +13,19 @@ export type FulfillmentStatusFilterQueryPart = {
  *
  * E.g. {fulfilments: [{status: {eq: "abc"}}]} */
 export class FulfillmentStatusQueryVarsBuilder
-  implements WhereOnlyQueryVarsBuilder<FulfillmentStatusFilterQueryPart> {
-
+  implements WhereOnlyQueryVarsBuilder<FulfillmentStatusFilterQueryPart>
+{
   canHandle(element: FilterElement): boolean {
     return element.value.type === "fulfillmentStatus";
   }
 
-  createOptionFetcher(
-  ): Handler {
+  createOptionFetcher(): Handler {
     return new NoopValuesHandler([]);
   }
 
   updateWhereQueryVariables(
     query: Readonly<FulfillmentStatusFilterQueryPart>,
-    element: FilterElement
+    element: FilterElement,
   ): FulfillmentStatusFilterQueryPart {
     const conditionValue = QueryVarsBuilderUtils.extractConditionValueFromFilterElement(element);
 

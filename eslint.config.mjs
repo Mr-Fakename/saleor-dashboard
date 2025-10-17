@@ -1,17 +1,21 @@
 // @ts-check
 
-import { globalIgnores } from "eslint/config";
 import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
 import prettierConfig from "eslint-config-prettier";
+import formatjs from "eslint-plugin-formatjs";
+import importPlugin from "eslint-plugin-import";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
-import importPlugin from "eslint-plugin-import";
-import formatjs from "eslint-plugin-formatjs";
+import { globalIgnores } from "eslint/config";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 import localRules from "./lint/rules/index.mjs";
+import unusedImports from "eslint-plugin-unused-imports";
+import eslintPluginUnicorn from "eslint-plugin-unicorn";
+import eslintGraphql from "@graphql-eslint/eslint-plugin";
+import reactYouMightNotNeedAnEffect from "eslint-plugin-react-you-might-not-need-an-effect";
 
 export default tseslint.config(
   globalIgnores([
@@ -24,6 +28,8 @@ export default tseslint.config(
     "type-policies.ts",
     "playwright/auth.js",
     "**/*.generated.ts",
+    ".github/**/*.js",
+    ".featureFlags/",
   ]),
 
   eslint.configs.recommended,
@@ -32,6 +38,7 @@ export default tseslint.config(
   react.configs.flat["jsx-runtime"],
   reactHooks.configs["recommended-latest"],
   reactRefresh.configs.vite,
+  reactYouMightNotNeedAnEffect.configs.recommended,
 
   {
     settings: {
@@ -64,7 +71,16 @@ export default tseslint.config(
       "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
       "@typescript-eslint/ban-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          vars: "local",
+          args: "after-used",
+          caughtErrors: "none",
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
       // Disabled after migration to ESLint 9, we need to migrate code to enable these rules:
       "@typescript-eslint/no-empty-object-type": "off",
       "no-constant-binary-expression": "off",
@@ -73,11 +89,22 @@ export default tseslint.config(
     },
   },
 
+  // Properly resolve Node.js globals in .cjs files
+  {
+    files: ["**/*.cjs"],
+    languageOptions: {
+      globals: {
+        ...globals.node, // Use all Node.js globals
+      },
+    },
+  },
+
   // Configure custom plugins and rules for React files
   {
     files: ["src/**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       globals: {
+        ...globals.builtin,
         ...globals.browser,
         ...globals.es2015,
       },
@@ -88,8 +115,12 @@ export default tseslint.config(
       import: importPlugin,
       formatjs: formatjs,
       "local-rules": { rules: localRules },
+      "unused-imports": unusedImports,
+      unicorn: eslintPluginUnicorn,
     },
     rules: {
+      "unused-imports/no-unused-imports": "error",
+      "unicorn/no-empty-file": "error",
       "import/no-default-export": "warn",
       "import/no-duplicates": "error",
       "simple-import-sort/imports": "error",
@@ -157,12 +188,6 @@ export default tseslint.config(
       "local-rules/named-styles": "error",
       "local-rules/no-deprecated-icons": "warn",
       "no-console": ["error", { allow: ["warn", "error"] }],
-      "no-restricted-imports": [
-        "error",
-        {
-          paths: ["lodash", "classnames"],
-        },
-      ],
     },
   },
 
@@ -199,7 +224,6 @@ export default tseslint.config(
     },
   },
 
-  // Additional rules (needs to be here, because other imports have "error", not "warn")
   {
     rules: {
       "no-restricted-imports": [
@@ -228,14 +252,52 @@ export default tseslint.config(
               name: "moment-timezone",
               message: "Use react-intl formatDate instead of moment-timezone.",
             },
+
+            // Note: these should be errors but we cannot use "warn" and "error" rules in ESLint together
             {
               name: "react",
-              importNames: ["default", "React"],
-              message: "Import directly the needed functions, e.g. 'import {useState} from \"react\"'",
-            }
+              importNames: ["default", "React", "*"],
+              message:
+                "Import directly the needed functions, e.g. 'import {useState} from \"react\"'",
+            },
+            {
+              name: "lodash",
+              message:
+                "Do not import lodash directly, import only needed functions, e.g. 'import debounce from \"lodash/debounce\"'",
+            },
+            {
+              name: "classnames",
+              message: "Do not import classnames, use clsx instead",
+            },
           ],
         },
       ],
+    },
+  },
+
+  // Graphql plugin
+  {
+    /**
+     * Plugin first converts all ts(x) files to
+     * temp .graphql files which are checked in the next step
+     */
+    files: ["**/*.ts", "**/*.tsx"],
+    processor: eslintGraphql.processor,
+  },
+  {
+    files: ["**/*.graphql"],
+    languageOptions: {
+      parser: eslintGraphql.parser,
+    },
+    plugins: {
+      "@graphql-eslint": eslintGraphql,
+    },
+    rules: {
+      // TODO Enable recommended ruleset incrementally
+      // ...eslintGraphql.configs["flat/operations-recommended"].rules,
+      "@graphql-eslint/no-anonymous-operations": "error",
+      "@graphql-eslint/no-duplicate-fields": "error",
+      "@graphql-eslint/no-deprecated": "warn",
     },
   },
 

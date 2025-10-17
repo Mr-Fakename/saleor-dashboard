@@ -4,12 +4,12 @@ import { commonMessages } from "@dashboard/intl";
 import { getFormErrors } from "@dashboard/utils/errors";
 import getMenuErrorMessage from "@dashboard/utils/errors/menu";
 import { TextField } from "@material-ui/core";
-import React from "react";
+import * as React from "react";
 import { useIntl } from "react-intl";
 
 import { MenuDetailsFormData } from "../MenuDetailsPage";
 
-export interface MenuPropertiesProps {
+interface MenuPropertiesProps {
   data: MenuDetailsFormData;
   disabled: boolean;
   errors: MenuErrorFragment[];

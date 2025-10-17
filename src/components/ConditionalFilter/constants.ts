@@ -242,27 +242,17 @@ export const STATIC_CONDITIONS = {
     { type: "number", label: "greater", value: "input-4" },
     { type: "number.range", label: "between", value: "input-5" },
   ],
-  userEmail: [
-    { type: "text", label: "is", value: "input-1" },
-  ],
-  voucherCode: [
-    { type: "text", label: "is", value: "input-1" },
-  ],
+  userEmail: [{ type: "text", label: "is", value: "input-1" }],
+  voucherCode: [{ type: "text", label: "is", value: "input-1" }],
   linesCount: [
     { type: "number", label: "is", value: "input-1" },
     { type: "number", label: "lower", value: "input-3" },
     { type: "number", label: "greater", value: "input-4" },
     { type: "number.range", label: "between", value: "input-5" },
   ],
-  checkoutId: [
-    { type: "text", label: "is", value: "input-1" },
-  ],
-  linesMetadata: [
-    { type: "text.double", label: "is", value: "input-1" },
-  ],
-  transactionsMetadata: [
-    { type: "text.double", label: "is", value: "input-1" },
-  ],
+  checkoutId: [{ type: "text", label: "is", value: "input-1" }],
+  linesMetadata: [{ type: "text.double", label: "is", value: "input-1" }],
+  transactionsMetadata: [{ type: "text.double", label: "is", value: "input-1" }],
   transactionsPaymentType: [
     { type: "combobox", label: "is", value: "input-1" },
     { type: "multiselect", label: "in", value: "input-2" },
@@ -271,19 +261,13 @@ export const STATIC_CONDITIONS = {
     { type: "text", label: "is", value: "input-1" },
     { type: "text", label: "contains", value: "input-2" },
   ],
-  fulfillmentsMetadata: [
-    { type: "text.double", label: "is", value: "input-1" },
-  ],
-  billingPhoneNumber: [
-    { type: "text", label: "is", value: "input-1" },
-  ],
+  fulfillmentsMetadata: [{ type: "text.double", label: "is", value: "input-1" }],
+  billingPhoneNumber: [{ type: "text", label: "is", value: "input-1" }],
   billingCountry: [
     { type: "combobox", label: "is", value: "input-1" },
     { type: "multiselect", label: "in", value: "input-2" },
   ],
-  shippingPhoneNumber: [
-    { type: "text", label: "is", value: "input-1" },
-  ],
+  shippingPhoneNumber: [{ type: "text", label: "is", value: "input-1" }],
   shippingCountry: [
     { type: "combobox", label: "is", value: "input-1" },
     { type: "multiselect", label: "in", value: "input-2" },
@@ -477,7 +461,7 @@ export const STATIC_ORDER_OPTIONS: LeftOperand[] = [
   },
   {
     value: "customer",
-    label: "Customer",
+    label: "Customer ID",
     type: "customer",
     slug: "customer",
   },
@@ -645,7 +629,7 @@ export const STATIC_PAGE_OPTIONS: LeftOperand[] = [
 export const STATIC_DRAFT_ORDER_OPTIONS: LeftOperand[] = [
   {
     value: "customer",
-    label: "Customer",
+    label: "Customer ID",
     type: "customer",
     slug: "customer",
   },
@@ -805,6 +789,7 @@ export const ATTRIBUTE_INPUT_TYPE_CONDITIONS = {
   DROPDOWN: [{ type: "multiselect", label: "in", value: "input-2" }],
   MULTISELECT: [{ type: "multiselect", label: "in", value: "input-2" }],
   REFERENCE: [{ type: "multiselect", label: "in", value: "input-2" }],
+  SINGLE_REFERENCE: [{ type: "multiselect", label: "in", value: "input-2" }],
   BOOLEAN: [{ type: "select", label: "is", value: "input-5" }],
   NUMERIC: [
     { type: "number", label: "is", value: "input-1" },
@@ -835,14 +820,14 @@ export const getAttributeInputType = (item: ConditionItem | null) => {
 
 export type RowType = keyof typeof STATIC_CONDITIONS | "attribute";
 
-export const booleanOptionTrue = (type?: string) => ({
+const booleanOptionTrue = (type?: string) => ({
   label: "Yes",
   value: "true",
   slug: "true",
   ...{ type },
 });
 
-export const booleanOptionFalse = (type?: string) => ({
+const booleanOptionFalse = (type?: string) => ({
   label: "No",
   value: "false",
   slug: "false",

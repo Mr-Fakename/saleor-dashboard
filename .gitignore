@@ -23,6 +23,7 @@
 !.husky
 !.changeset
 !.knip.json
+!.swcrc
 *.log
 *.pyc
 *.mo
@@ -59,3 +60,5 @@ introspection.json
 
 !.storybook
 storybook-static/
+
+!.claude

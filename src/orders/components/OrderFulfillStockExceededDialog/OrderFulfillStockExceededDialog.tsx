@@ -13,14 +13,13 @@ import {
 } from "@dashboard/orders/utils/data";
 import { TableBody, TableCell, TableHead } from "@material-ui/core";
 import { Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import OrderFulfillStockExceededDialogLine from "../OrderFulfillStockExceededDialogLine";
 import { stockExceededDialogMessages as messages } from "./messages";
 import { useStyles } from "./styles";
 
-export interface OrderFulfillStockExceededDialogProps {
+interface OrderFulfillStockExceededDialogProps {
   lines: Array<FulfillmentFragment["lines"][0] | OrderFulfillLineFragment>;
   open: boolean;
   formsetData: OrderFulfillStockFormsetData;

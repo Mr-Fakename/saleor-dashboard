@@ -1,19 +1,9 @@
 import { fireEvent, logRoles, render, screen } from "@testing-library/react";
-import React from "react";
 import { useForm } from "react-hook-form";
 
 import { ExtensionInstallFormData } from "../../types";
 import { ManifestUrlForm } from "./ManifestUrlForm";
 
-jest.mock("react-intl", () => ({
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: string }) => (
-    <span>{defaultMessage}</span>
-  ),
-  useIntl: () => ({
-    formatMessage: () => "Required field",
-  }),
-  defineMessages: (msg: unknown) => msg,
-}));
 describe("ManifestUrlForm", () => {
   const mockOnSubmit = jest.fn();
   const mockOnPaste = jest.fn();

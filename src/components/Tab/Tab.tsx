@@ -2,7 +2,7 @@ import { alpha } from "@material-ui/core/styles";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Text } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
-import React from "react";
+import * as React from "react";
 
 const useStyles = makeStyles(
   theme => ({
@@ -63,5 +63,3 @@ export function Tab<T>(value: T) {
 
   return Component;
 }
-
-export default Tab;

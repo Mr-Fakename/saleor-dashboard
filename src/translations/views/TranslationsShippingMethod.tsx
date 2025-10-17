@@ -10,7 +10,6 @@ import useShop from "@dashboard/hooks/useShop";
 import { commonMessages } from "@dashboard/intl";
 import { extractMutationErrors } from "@dashboard/misc";
 import { stringifyQs } from "@dashboard/utils/urls";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import TranslationsShippingMethodPage from "../components/TranslationsShippingMethodPage";
@@ -20,7 +19,7 @@ import { getParsedTranslationInputData } from "../utils";
 export interface TranslationsShippingMethodQueryParams {
   activeField: string;
 }
-export interface TranslationsShippingMethodProps {
+interface TranslationsShippingMethodProps {
   id: string;
   languageCode: LanguageCodeEnum;
   params: TranslationsShippingMethodQueryParams;

@@ -33,7 +33,8 @@ export interface InitialProductState {
 }
 
 const isDateField = (name: string) =>
-  ["created", "updatedAt", "startDate", "endDate"].includes(name);
+  ["created", "updatedAt", "startDate", "endDate", "dateJoined", "started"].includes(name);
+const isNumericField = (name: string) => ["numberOfOrders", "timesUsed"].includes(name);
 
 export class InitialProductStateResponse implements InitialProductState {
   constructor(
@@ -60,7 +61,8 @@ export class InitialProductStateResponse implements InitialProductState {
   public filterByUrlToken(token: UrlToken) {
     if (token.isAttribute() && token.hasDynamicValues()) {
       const attribute = this.attribute[token.name];
-      const isReference = attribute?.inputType === "REFERENCE";
+      const isReference =
+        attribute?.inputType === "REFERENCE" || attribute?.inputType === "SINGLE_REFERENCE";
 
       if (isReference) {
         return attribute.choices.filter(({ slug }) => {
@@ -76,7 +78,7 @@ export class InitialProductStateResponse implements InitialProductState {
       });
     }
 
-    if (isDateField(token.name)) {
+    if (isDateField(token.name) || isNumericField(token.name)) {
       return token.value;
     }
 
@@ -90,7 +92,12 @@ export class InitialProductStateResponse implements InitialProductState {
 
     // Special handling for metadata fields - preserve tuple structure
     // Metadata fields use text.double and should return the raw tuple value
-    const isMetadataField = ["metadata", "linesMetadata", "transactionsMetadata", "fulfillmentsMetadata"].includes(token.name);
+    const isMetadataField = [
+      "metadata",
+      "linesMetadata",
+      "transactionsMetadata",
+      "fulfillmentsMetadata",
+    ].includes(token.name);
 
     if (isMetadataField) {
       return token.value;

@@ -1,6 +1,5 @@
 import { ChangeEvent, FormChange } from "@dashboard/hooks/useForm";
 import { Box, Input, Option, Select, Spinner } from "@saleor/macaw-ui-next";
-import React from "react";
 
 interface CommonFieldProps {
   name: string;
@@ -8,7 +7,7 @@ interface CommonFieldProps {
   label?: string;
 }
 
-export interface TextWithSelectFieldProps {
+interface TextWithSelectFieldProps {
   change: FormChange;
   choices: Option[];
   helperText?: string;

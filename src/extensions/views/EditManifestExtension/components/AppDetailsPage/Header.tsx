@@ -1,8 +1,7 @@
-import AppHeaderOptions from "@dashboard/extensions/components/AppHeaderOptions";
+import { AppHeaderOptions } from "@dashboard/extensions/components/AppHeaderOptions";
 import { ExtensionsUrls } from "@dashboard/extensions/urls";
 import { AppPageNav } from "@dashboard/extensions/views/ViewManifestExtension/components/AppPage/AppPageNav";
 import { AppQuery } from "@dashboard/graphql";
-import React from "react";
 
 interface HeaderProps {
   data: AppQuery["app"];
@@ -11,7 +10,12 @@ interface HeaderProps {
   onAppDeleteOpen: () => void;
 }
 
-const Header = ({ data, onAppActivateOpen, onAppDeactivateOpen, onAppDeleteOpen }: HeaderProps) => {
+export const Header = ({
+  data,
+  onAppActivateOpen,
+  onAppDeactivateOpen,
+  onAppDeleteOpen,
+}: HeaderProps) => {
   const getBackButtonUrl = () => {
     /**
      * App is null with first render
@@ -57,5 +61,3 @@ const Header = ({ data, onAppActivateOpen, onAppDeactivateOpen, onAppDeleteOpen 
     </>
   );
 };
-
-export default Header;

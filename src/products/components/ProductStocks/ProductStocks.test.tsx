@@ -1,18 +1,13 @@
 import { render } from "@testing-library/react";
-import React from "react";
 
 import { messages } from "./messages";
 import { WarehouseInformationMessage } from "./WarehouseInformationMessage";
-
-jest.mock("react-intl", () => ({
-  defineMessages: jest.fn(x => x),
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: string }) => <>{defaultMessage}</>,
-}));
 
 describe("WarehouseInformationMessage", () => {
   const defaultProps = {
     hasVariants: false,
     hasWarehouses: false,
+    hasStocks: false,
     onWarehouseConfigure: jest.fn(),
   };
 
@@ -30,9 +25,9 @@ describe("WarehouseInformationMessage", () => {
     expect(getByText(messages.warehouseMessageVariantOnCreate.defaultMessage)).toBeInTheDocument();
   });
 
-  it("should not render message if warehouses exist", () => {
+  it("should not render message if stocks exist", () => {
     const { queryByText } = render(
-      <WarehouseInformationMessage {...defaultProps} hasWarehouses isCreate={false} />,
+      <WarehouseInformationMessage {...defaultProps} hasStocks isCreate={false} />,
     );
 
     expect(queryByText(messages.configureWarehouseForProduct.defaultMessage)).toBeNull();

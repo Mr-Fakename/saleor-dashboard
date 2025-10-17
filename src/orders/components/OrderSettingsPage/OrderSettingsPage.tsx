@@ -7,7 +7,6 @@ import { SubmitPromise } from "@dashboard/hooks/useForm";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { orderListUrl } from "@dashboard/orders/urls";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import OrderFulfillmentSettings from "../OrderFulfillmentSettings";
@@ -15,7 +14,7 @@ import OrderSettings from "../OrderSettings/OrderSettings";
 import OrderSettingsForm from "./form";
 import { OrderSettingsFormData } from "./types";
 
-export interface OrderSettingsPageProps {
+interface OrderSettingsPageProps {
   orderSettings: OrderSettingsFragment;
   shop: ShopOrderSettingsFragment;
   disabled: boolean;

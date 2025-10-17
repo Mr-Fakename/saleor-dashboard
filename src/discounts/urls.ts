@@ -13,9 +13,10 @@ import {
   TabActionDialog,
 } from "../types";
 
-export const discountSection = "/discounts/";
+const discountSection = "/discounts/";
 
-export const saleSection = urlJoin(discountSection, "sales");
+const saleSection = urlJoin(discountSection, "sales");
+
 export const saleListPath = saleSection;
 export enum SaleListUrlFiltersEnum {
   type = "type",
@@ -29,16 +30,16 @@ export enum SaleListUrlFiltersWithMultipleValues {
 }
 export type SaleListUrlFilters = Filters<SaleListUrlFiltersEnum> &
   FiltersWithMultipleValues<SaleListUrlFiltersWithMultipleValues>;
-export type SaleListUrlDialog = "remove" | TabActionDialog;
-export enum SaleListUrlSortField {
+type SaleListUrlDialog = "remove" | TabActionDialog;
+enum SaleListUrlSortField {
   name = "name",
   endDate = "endDate",
   startDate = "startDate",
   type = "type",
   value = "value",
 }
-export type SaleListUrlSort = Sort<SaleListUrlSortField>;
-export type SaleListUrlQueryParams = ActiveTab &
+type SaleListUrlSort = Sort<SaleListUrlSortField>;
+type SaleListUrlQueryParams = ActiveTab &
   BulkAction &
   Dialog<SaleListUrlDialog> &
   Pagination &
@@ -47,26 +48,13 @@ export type SaleListUrlQueryParams = ActiveTab &
 export const saleListUrl = (params?: SaleListUrlQueryParams) =>
   saleListPath + "?" + stringifyQs(params);
 export const salePath = (id: string) => urlJoin(saleSection, id);
-export type SaleUrlDialog =
-  | "assign-category"
-  | "assign-collection"
-  | "assign-product"
-  | "assign-variant"
-  | "unassign-category"
-  | "unassign-collection"
-  | "unassign-product"
-  | "unassign-variant"
-  | "remove"
-  | ChannelsAction;
-export type SaleUrlQueryParams = BulkAction & Dialog<SaleUrlDialog>;
-export type SaleCreateUrlQueryParams = Dialog<ChannelsAction>;
-export const saleUrl = (id: string, params?: SaleUrlQueryParams) =>
-  salePath(encodeURIComponent(id)) + "?" + stringifyQs(params);
+type SaleCreateUrlQueryParams = Dialog<ChannelsAction>;
 export const saleAddPath = urlJoin(saleSection, "add");
 export const saleAddUrl = (params?: SaleCreateUrlQueryParams) =>
   saleAddPath + "?" + stringifyQs(params);
 
-export const voucherSection = urlJoin(discountSection, "vouchers");
+const voucherSection = urlJoin(discountSection, "vouchers");
+
 export const voucherListPath = voucherSection;
 export enum VoucherListUrlFiltersEnum {
   startedFrom = "startedFrom",
@@ -92,7 +80,7 @@ export enum VoucherListUrlSortField {
   type = "type",
   value = "value",
 }
-export type VoucherListUrlSort = Sort<VoucherListUrlSortField>;
+type VoucherListUrlSort = Sort<VoucherListUrlSortField>;
 export type VoucherListUrlQueryParams = ActiveTab &
   BulkAction &
   Dialog<VoucherListUrlDialog> &

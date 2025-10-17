@@ -5,7 +5,6 @@ import { useHasManagedAppsPermission } from "@dashboard/hooks/useHasManagedAppsP
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 
 import { ExploreExtensionsActions } from "./ExploreExtensionsActions";
 
@@ -18,15 +17,6 @@ jest.mock("@dashboard/hooks/useHasManagedAppsPermission", () => ({
 }));
 
 jest.mock("@dashboard/hooks/useNavigator", () => jest.fn());
-
-jest.mock("react-intl", () => ({
-  FormattedMessage: ({ id, defaultMessage }: { defaultMessage: string; id: string }) =>
-    defaultMessage || id,
-  useIntl: () => ({
-    formatMessage: ({ defaultMessage }: { defaultMessage: string }) => defaultMessage,
-  }),
-  defineMessages: (messages: unknown) => messages,
-}));
 
 jest.mock("@dashboard/extensions/components/RequestExtensionsButton", () => ({
   RequestExtensionsButton: () => (

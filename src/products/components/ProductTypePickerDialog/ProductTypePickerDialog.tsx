@@ -6,12 +6,11 @@ import useModalDialogOpen from "@dashboard/hooks/useModalDialogOpen";
 import useStateFromProps from "@dashboard/hooks/useStateFromProps";
 import { FetchMoreProps } from "@dashboard/types";
 import { Option } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { messages } from "./messages";
 
-export interface ProductTypePickerDialogProps {
+interface ProductTypePickerDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   open: boolean;
   productTypes?: Option[];

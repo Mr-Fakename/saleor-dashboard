@@ -22,7 +22,6 @@ import { ListActions, SortPage } from "@dashboard/types";
 import { getFormErrors } from "@dashboard/utils/errors";
 import getPermissionGroupErrorMessage from "@dashboard/utils/errors/permissionGroups";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import {
@@ -50,9 +49,7 @@ export interface PermissionData extends Omit<UserPermissionFragment, "__typename
   disabled?: boolean;
 }
 
-export interface PermissonGroupDetailsPageProps
-  extends ListActions,
-    SortPage<MembersListUrlSortField> {
+interface PermissonGroupDetailsPageProps extends ListActions, SortPage<MembersListUrlSortField> {
   channels: ChannelFragment[];
   disabled: boolean;
   isUserAbleToEditChannels: boolean;

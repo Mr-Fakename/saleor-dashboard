@@ -1,9 +1,8 @@
 import ActionDialog from "@dashboard/components/ActionDialog";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-export interface TokenDeleteDialogProps {
+interface TokenDeleteDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   open: boolean;
   onConfirm: () => void;
@@ -11,7 +10,7 @@ export interface TokenDeleteDialogProps {
   name: string;
 }
 
-const TokenDeleteDialog = ({
+export const TokenDeleteDialog = ({
   name,
   confirmButtonState,
   onClose,
@@ -46,4 +45,3 @@ const TokenDeleteDialog = ({
 };
 
 TokenDeleteDialog.displayName = "TokenDeleteDialog";
-export default TokenDeleteDialog;

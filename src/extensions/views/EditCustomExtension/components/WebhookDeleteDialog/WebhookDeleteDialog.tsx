@@ -1,9 +1,8 @@
 import ActionDialog from "@dashboard/components/ActionDialog";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-export interface WebhookDeleteDialogProps {
+interface WebhookDeleteDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   open: boolean;
   name?: string;
@@ -11,7 +10,7 @@ export interface WebhookDeleteDialogProps {
   onConfirm: () => void;
 }
 
-const WebhookDeleteDialog = ({
+export const WebhookDeleteDialog = ({
   confirmButtonState,
   open,
   name,
@@ -54,4 +53,3 @@ const WebhookDeleteDialog = ({
 };
 
 WebhookDeleteDialog.displayName = "WebhookDeleteDialog";
-export default WebhookDeleteDialog;

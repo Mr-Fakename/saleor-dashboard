@@ -2,7 +2,6 @@ import { Savebar } from "@dashboard/components/Savebar";
 import { headerTitles, messages } from "@dashboard/extensions/messages";
 import { useAutoSubmit } from "@dashboard/utils/hook-form/auto-submit";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 import {
   Control,
   UseFormGetValues,
@@ -16,7 +15,7 @@ import { previousPagePath } from "../../consts";
 import { useFetchManifest } from "../../hooks/useFetchManifest";
 import { useInstallApp } from "../../hooks/useInstallApp";
 import { ExtensionInstallFormData } from "../../types";
-import { InstallSectionData } from "../InstallSectionData";
+import { InstallSectionData } from "../InstallSectionData/InstallSectionData";
 import { InstallTopNav } from "../InstallTopNav";
 import { ManifestUrlForm } from "../ManifestUrlForm/ManifestUrlForm";
 

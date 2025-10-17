@@ -11,7 +11,6 @@ import useShop from "@dashboard/hooks/useShop";
 import { commonMessages } from "@dashboard/intl";
 import { OutputData } from "@editorjs/editorjs";
 import { stringify as stringifyQs } from "qs";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { extractMutationErrors, maybe } from "../../misc";
@@ -24,7 +23,7 @@ type HandleSubmitAttributeValue = OutputData | string;
 export interface TranslationsProductVariantsQueryParams {
   activeField: string;
 }
-export interface TranslationsProductVariantsProps {
+interface TranslationsProductVariantsProps {
   id: string;
   productId: string;
   languageCode: LanguageCodeEnum;

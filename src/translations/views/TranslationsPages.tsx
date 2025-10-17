@@ -12,7 +12,6 @@ import { commonMessages } from "@dashboard/intl";
 import { extractMutationErrors } from "@dashboard/misc";
 import { stringifyQs } from "@dashboard/utils/urls";
 import { OutputData } from "@editorjs/editorjs";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import TranslationsPagesPage from "../components/TranslationsPagesPage";
@@ -22,7 +21,7 @@ import { getAttributeValueTranslationsInputData, getParsedTranslationInputData }
 export interface TranslationsPagesQueryParams {
   activeField: string;
 }
-export interface TranslationsPagesProps {
+interface TranslationsPagesProps {
   id: string;
   languageCode: LanguageCodeEnum;
   params: TranslationsPagesQueryParams;

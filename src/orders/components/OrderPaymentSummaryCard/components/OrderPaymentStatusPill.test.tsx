@@ -1,6 +1,5 @@
 import { OrderChargeStatusEnum, PaymentChargeStatusEnum } from "@dashboard/graphql";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
 import { OrderPaymentStatusPill, OrderPaymentStatusPillProps } from "./OrderPaymentStatusPill";
 
@@ -11,14 +10,6 @@ jest.mock("@dashboard/misc", () => ({
     status: "success",
     localized: "Paid",
   }),
-}));
-
-jest.mock("react-intl", () => ({
-  FormattedMessage: jest.fn(({ defaultMessage }) => defaultMessage),
-  defineMessages: jest.fn(),
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
 }));
 
 // It's tricky to render Pill component

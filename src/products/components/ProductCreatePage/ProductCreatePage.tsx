@@ -2,13 +2,12 @@
 import { QueryResult } from "@apollo/client";
 import {
   getReferenceAttributeEntityTypeFromAttribute,
-  mergeAttributeValues,
+  handleContainerReferenceAssignment,
 } from "@dashboard/attributes/utils/data";
 import CannotDefineChannelsAvailabilityCard from "@dashboard/channels/components/CannotDefineChannelsAvailabilityCard/CannotDefineChannelsAvailabilityCard";
 import { ChannelData } from "@dashboard/channels/utils";
 import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import AssignAttributeValueDialog from "@dashboard/components/AssignAttributeValueDialog";
-import { Container } from "@dashboard/components/AssignContainerDialog";
 import { AttributeInput, Attributes } from "@dashboard/components/Attributes";
 import ChannelsAvailabilityCard from "@dashboard/components/ChannelsAvailabilityCard";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
@@ -37,9 +36,9 @@ import { ProductVariantPrice } from "@dashboard/products/components/ProductVaria
 import { ProductCreateUrlQueryParams, productListUrl } from "@dashboard/products/urls";
 import { getChoices } from "@dashboard/products/utils/data";
 import { getChoicesWithAncestors } from "@dashboard/products/utils/utils";
+import { Container } from "@dashboard/types";
 import { mapEdgesToItems } from "@dashboard/utils/maps";
 import { Box, Option } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { FetchMoreProps, RelayToFlat } from "../../../types";
@@ -104,7 +103,7 @@ interface ProductCreatePageProps {
   searchWarehouses: (query: string) => void;
 }
 
-export const ProductCreatePage = ({
+const ProductCreatePage = ({
   allChannelsCount,
   channelsErrors,
   currentChannels,
@@ -177,17 +176,11 @@ export const ProductCreatePage = ({
     data: ProductCreateData,
     handlers: ProductCreateHandlers,
   ) => {
-    handlers.selectAttributeReference(
+    handleContainerReferenceAssignment(
       assignReferencesAttributeId,
-      mergeAttributeValues(
-        assignReferencesAttributeId,
-        attributeValues.map(({ id }) => id),
-        data.attributes,
-      ),
-    );
-    handlers.selectAttributeReferenceMetadata(
-      assignReferencesAttributeId,
-      attributeValues.map(({ id, name }) => ({ value: id, label: name })),
+      attributeValues,
+      data.attributes,
+      handlers,
     );
     closeDialog();
   };
@@ -416,5 +409,6 @@ export const ProductCreatePage = ({
     </ProductCreateForm>
   );
 };
+
 ProductCreatePage.displayName = "ProductCreatePage";
 export default ProductCreatePage;

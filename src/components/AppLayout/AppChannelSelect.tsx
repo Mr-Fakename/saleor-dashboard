@@ -3,9 +3,8 @@ import { ChannelFragment } from "@dashboard/graphql";
 import { ChannelProps } from "@dashboard/types";
 import { mapNodeToChoice } from "@dashboard/utils/maps";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 
-export interface AppChannelSelectProps extends ChannelProps {
+interface AppChannelSelectProps extends ChannelProps {
   channels: ChannelFragment[];
   onChannelSelect: (id: string) => void;
 }

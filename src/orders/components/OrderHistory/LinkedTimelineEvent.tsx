@@ -3,12 +3,11 @@ import { TimelineEvent } from "@dashboard/components/Timeline";
 import { TitleElement } from "@dashboard/components/Timeline/TimelineEventHeader";
 import { OrderEventFragment, OrderEventsEnum } from "@dashboard/graphql";
 import { orderUrl } from "@dashboard/orders/urls";
-import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import { getEmployeeNameLink } from "./utils";
 
-export const replacementCreatedMessages = defineMessages({
+const replacementCreatedMessages = defineMessages({
   description: {
     id: "kvSYZh",
     defaultMessage: "was created for replaced products",
@@ -21,7 +20,7 @@ export const replacementCreatedMessages = defineMessages({
   },
 });
 
-export const discountRemovedMessages = defineMessages({
+const discountRemovedMessages = defineMessages({
   orderDiscountRemoved: {
     id: "KXkdMH",
     defaultMessage: "Order discount was removed by ",

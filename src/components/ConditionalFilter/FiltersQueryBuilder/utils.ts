@@ -8,7 +8,7 @@ import {
 } from "../FilterElement/ConditionValue";
 import { StaticQueryPart } from "./types";
 
-export type ProcessedConditionValue =
+type ProcessedConditionValue =
   | string
   | boolean
   | string[]
@@ -36,7 +36,7 @@ function extractBooleanValue(value: ConditionValue): boolean {
  * Uses originalSlug if available, falls back to value.
  */
 function extractValueFromOption(value: unknown): string {
-  return isItemOption(value) ? (value.originalSlug || value.value) : (value as string);
+  return isItemOption(value) ? value.originalSlug || value.value : (value as string);
 }
 
 /**
@@ -58,7 +58,7 @@ function extractValuesFromOptionArray(value: ConditionValue): string[] {
  * Extracts a boolean value from various input formats.
  * Handles ItemOption with string values, direct boolean, or stringified values.
  */
-export function getBooleanValueFromElement(element: FilterElement): boolean {
+function getBooleanValueFromElement(element: FilterElement): boolean {
   const { value: selectedValue } = element.condition.selected;
 
   return extractBooleanValue(selectedValue);
@@ -67,15 +67,16 @@ export function getBooleanValueFromElement(element: FilterElement): boolean {
 function getIntegerValueFromElement(element: FilterElement): number | number[] | null {
   const { value: selectedValue } = element.condition.selected;
 
-
   if (Array.isArray(selectedValue) && selectedValue.length > 0) {
-    const parsed = selectedValue.map((x: string | ItemOption) => {
-      if (isItemOption(x)) {
-        return parseInt(x.value, 10);
-      }
+    const parsed = selectedValue
+      .map((x: string | ItemOption) => {
+        if (isItemOption(x)) {
+          return parseInt(x.value, 10);
+        }
 
-      return parseInt(x, 10);
-    }).filter(x => !Number.isNaN(x));
+        return parseInt(x, 10);
+      })
+      .filter(x => !Number.isNaN(x));
 
     return parsed.length > 0 ? parsed : null;
   }
@@ -94,13 +95,15 @@ function getFloatValueFromElement(element: FilterElement): number | number[] | n
   const { value: selectedValue } = element.condition.selected;
 
   if (Array.isArray(selectedValue) && selectedValue.length > 0) {
-    const parsed = selectedValue.map((x: string | ItemOption) => {
-      if (isItemOption(x)) {
-        return parseFloat(x.value);
-      }
+    const parsed = selectedValue
+      .map((x: string | ItemOption) => {
+        if (isItemOption(x)) {
+          return parseFloat(x.value);
+        }
 
-      return parseFloat(x);
-    }).filter(x => !Number.isNaN(x));
+        return parseFloat(x);
+      })
+      .filter(x => !Number.isNaN(x));
 
     return parsed.length > 0 ? parsed : null;
   }
@@ -118,7 +121,6 @@ function getFloatValueFromElement(element: FilterElement): number | number[] | n
 function isAnyTuple(value: unknown): value is [unknown, unknown] {
   return Array.isArray(value) && value.length === 2;
 }
-
 
 /**
  * Handle range conditions for input types
@@ -160,7 +162,7 @@ function handleRangeCondition(
   label: string,
 ): ProcessedConditionValue | null {
   if (selectedValue === null || selectedValue === undefined || selectedValue === "") {
-    return null
+    return null;
   }
 
   if (label === "is") {
@@ -245,7 +247,7 @@ function handleArrayCondition(selectedValue: ConditionValue): ProcessedCondition
 /**
  * Processes condition values for different condition types.
  */
-export const extractConditionValueFromFilterElement = (
+const extractConditionValueFromFilterElement = (
   element: FilterElement,
 ): ProcessedConditionValue => {
   const { value: selectedValue, conditionValue } = element.condition.selected;
@@ -312,4 +314,3 @@ export const QueryVarsBuilderUtils = {
   handleStringCondition,
   handleArrayCondition,
 };
-

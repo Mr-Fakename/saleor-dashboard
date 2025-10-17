@@ -1,7 +1,6 @@
 import { makeStyles } from "@saleor/macaw-ui";
 import { Text } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
-import React from "react";
 
 export interface Step<T> {
   label: string;
@@ -38,7 +37,7 @@ const useStyles = makeStyles(
   },
 );
 
-export interface CreatorStepsProps<T> {
+interface CreatorStepsProps<T> {
   currentStep: T;
   steps: Array<Step<T>>;
   onStepClick: (step: T) => void;

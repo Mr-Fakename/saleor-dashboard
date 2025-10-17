@@ -8,19 +8,18 @@ import { ChangeEvent } from "@dashboard/hooks/useForm";
 import { getFormErrors } from "@dashboard/utils/errors";
 import getExportErrorMessage from "@dashboard/utils/errors/export";
 import { Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { ExportSettingsInput } from "./types";
 
 export type ExportItemsQuantity = Record<"all" | "filter", number>;
 
-export interface ExportScopeLabels {
+interface ExportScopeLabels {
   allItems: string;
   selectedItems: string;
 }
 
-export interface ExportDialogSettingsProps {
+interface ExportDialogSettingsProps {
   data: ExportSettingsInput;
   errors: ExportErrorFragment[];
   itemsQuantity: ExportItemsQuantity;

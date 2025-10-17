@@ -5,12 +5,11 @@ import { ExtensionsUrls } from "@dashboard/extensions/urls";
 import { AppQuery } from "@dashboard/graphql";
 import useShop from "@dashboard/hooks/useShop";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 
-import { AppFrame } from "../AppFrame";
+import { AppFrame } from "../AppFrame/AppFrame";
 import { AppPageNav } from "./AppPageNav";
 
-export interface AppPageProps {
+interface AppPageProps {
   data: AppQuery["app"];
   url: string;
   onError: () => void;
@@ -65,4 +64,3 @@ export const AppPage = ({ data, url, onError, refetch }: AppPageProps) => {
 };
 
 AppPage.displayName = "AppPage";
-export default AppPage;

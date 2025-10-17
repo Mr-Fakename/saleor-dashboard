@@ -3,18 +3,11 @@ import { WebhookEventTypeSyncEnum } from "@dashboard/graphql";
 import { ThemeProvider } from "@saleor/macaw-ui";
 import productsMocks from "@test/mocks/products";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
 import DryRun from "./DryRun";
 
 const mocks: MockedResponse[] = [...productsMocks];
 
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  defineMessages: jest.fn(x => x),
-}));
 describe("DryRun", () => {
   it("Dialog is available on the webhook page", async () => {
     // Arrange

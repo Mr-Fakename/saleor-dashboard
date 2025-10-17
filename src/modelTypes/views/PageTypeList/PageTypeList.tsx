@@ -22,7 +22,7 @@ import createSortHandler from "@dashboard/utils/handlers/sortHandler";
 import { mapEdgesToItems } from "@dashboard/utils/maps";
 import { getSortParams } from "@dashboard/utils/sort";
 import { DeleteIcon, IconButton } from "@saleor/macaw-ui";
-import React from "react";
+import { useMemo } from "react";
 import { useIntl } from "react-intl";
 
 import PageTypeListPage from "../../components/PageTypeListPage";
@@ -34,7 +34,7 @@ interface PageTypeListProps {
   params: PageTypeListUrlQueryParams;
 }
 
-export const PageTypeList = ({ params }: PageTypeListProps) => {
+const PageTypeList = ({ params }: PageTypeListProps) => {
   const navigate = useNavigator();
   const notify = useNotifier();
   const {
@@ -50,7 +50,7 @@ export const PageTypeList = ({ params }: PageTypeListProps) => {
   usePaginationReset(pageTypeListUrl, params, settings.rowNumber);
 
   const paginationState = createPaginationState(settings.rowNumber, params);
-  const queryVariables = React.useMemo(
+  const queryVariables = useMemo(
     () => ({
       ...paginationState,
       filter: getFilterVariables(params),
@@ -200,5 +200,6 @@ export const PageTypeList = ({ params }: PageTypeListProps) => {
     </PaginatorContext.Provider>
   );
 };
+
 PageTypeList.displayName = "PageTypeList";
 export default PageTypeList;

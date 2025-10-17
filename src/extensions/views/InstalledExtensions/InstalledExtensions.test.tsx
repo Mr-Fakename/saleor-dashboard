@@ -1,6 +1,5 @@
 import { useHasManagedAppsPermission } from "@dashboard/hooks/useHasManagedAppsPermission";
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import React from "react";
 
 import { useInstalledExtensionsFilter } from "./hooks/useInstalledExtensionsFilter";
 import { usePendingInstallation } from "./hooks/usePendingInstallation";
@@ -26,14 +25,6 @@ jest.mock("@dashboard/welcomePage/WelcomePageOnboarding/onboardingContext", () =
     markOnboardingStepAsCompleted: mockMarkOnboardingStepAsCompleted,
     onboardingState: { stepsCompleted: [] },
   }),
-}));
-
-jest.mock("react-intl", () => ({
-  useIntl: () => ({
-    formatMessage: (message: { defaultMessage: string }) => message.defaultMessage || "",
-  }),
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: string }) => <>{defaultMessage}</>,
-  defineMessages: (messages: Record<string, any>) => messages,
 }));
 
 jest.mock("@dashboard/utils/handlers/dialogActionHandlers", () => ({

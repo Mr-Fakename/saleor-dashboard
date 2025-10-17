@@ -3,8 +3,8 @@ import ResponsiveTable from "@dashboard/components/ResponsiveTable";
 import TableButtonWrapper from "@dashboard/components/TableButtonWrapper";
 import TableCellHeader from "@dashboard/components/TableCellHeader";
 import TableRowLink from "@dashboard/components/TableRowLink";
-import { isUnnamed } from "@dashboard/custom-apps/utils";
 import { ExtensionsUrls } from "@dashboard/extensions/urls";
+import { isUnnamed } from "@dashboard/extensions/utils";
 import { WebhookFragment } from "@dashboard/graphql";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { commonMessages, commonStatusMessages, sectionNames } from "@dashboard/intl";
@@ -12,13 +12,12 @@ import { renderCollection, stopPropagation } from "@dashboard/misc";
 import { TableBody, TableCell, TableHead } from "@material-ui/core";
 import { Box, Button, Chip, Skeleton, Text, TrashBinIcon } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { messages } from "./messages";
 import { useStyles } from "./styles";
 
-export interface WebhooksListProps {
+interface WebhooksListProps {
   webhooks: WebhookFragment[];
   onRemove: (id: string) => void;
   createHref?: string;

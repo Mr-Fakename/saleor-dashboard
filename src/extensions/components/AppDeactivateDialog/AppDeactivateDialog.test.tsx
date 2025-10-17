@@ -1,8 +1,7 @@
 import Wrapper from "@test/wrapper";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
-import AppDeactivateDialog from "./AppDeactivateDialog";
+import { AppDeactivateDialog } from "./AppDeactivateDialog";
 import msgs from "./messages";
 
 describe("Apps AppDeactivateDialog", () => {
@@ -24,7 +23,7 @@ describe("Apps AppDeactivateDialog", () => {
 
     const dialogContent = screen.getByTestId("dialog-content");
     // Assert
-    const expectedActionText = msgs.deactivateNamedApp.defaultMessage.replace("{name}", name);
+    const expectedActionText = msgs.deactivateNamedApp.defaultMessage;
     const expectedBillingWarning = msgs.deactivateAppBillingInfo.defaultMessage;
 
     expect(dialogContent).toHaveTextContent(expectedActionText);

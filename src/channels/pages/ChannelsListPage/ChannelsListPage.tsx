@@ -18,12 +18,11 @@ import { hasLimits, isLimitReached } from "@dashboard/utils/limits";
 import { TableBody, TableCell, TableHead } from "@material-ui/core";
 import { DeleteIcon } from "@saleor/macaw-ui";
 import { Button, Skeleton } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { useStyles } from "./styles";
 
-export interface ChannelsListPageProps {
+interface ChannelsListPageProps {
   channelsList: ChannelDetailsFragment[] | undefined;
   limits: RefreshLimitsQuery["shop"]["limits"];
   onRemove: (id: string) => void;
@@ -31,7 +30,7 @@ export interface ChannelsListPageProps {
 
 const numberOfColumns = 2;
 
-export const ChannelsListPage = ({ channelsList, limits, onRemove }: ChannelsListPageProps) => {
+const ChannelsListPage = ({ channelsList, limits, onRemove }: ChannelsListPageProps) => {
   const intl = useIntl();
   const classes = useStyles({});
   const limitReached = isLimitReached(limits, "channels");

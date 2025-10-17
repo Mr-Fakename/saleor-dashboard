@@ -2,7 +2,6 @@ import HorizontalSpacer from "@dashboard/components/HorizontalSpacer";
 import { DiscountValueTypeEnum, MoneyFragment } from "@dashboard/graphql";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { defineMessages, useIntl } from "react-intl";
 
 import Label from "../Label";
@@ -22,7 +21,7 @@ const useStyles = makeStyles(
   { name: "MoneySection" },
 );
 
-export const messages = defineMessages({
+const messages = defineMessages({
   discount: {
     id: "yJynYK",
     defaultMessage: "discount",

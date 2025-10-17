@@ -11,7 +11,6 @@ import {
 import useForm from "@dashboard/hooks/useForm";
 import { Divider, TextField } from "@material-ui/core";
 import { Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import GiftCardCreateExpirySelect from "../GiftCardCreateDialog/GiftCardCreateExpirySelect";
@@ -25,7 +24,7 @@ import {
   GiftCardBulkCreateFormErrors,
 } from "./types";
 
-export const initialData: GiftCardBulkCreateFormData = {
+const initialData: GiftCardBulkCreateFormData = {
   tags: [],
   balanceAmount: 1,
   balanceCurrency: null,

@@ -10,8 +10,8 @@ import {
   createAttributeChangeHandler,
   createAttributeFileChangeHandler,
   createAttributeMultiChangeHandler,
+  createAttributeReferenceAdditionalDataHandler,
   createAttributeReferenceChangeHandler,
-  createAttributeReferenceMetadataHandler,
   createAttributeValueReorderHandler,
   createFetchMoreReferencesHandler,
   createFetchReferencesHandler,
@@ -34,9 +34,9 @@ import useForm, {
   SubmitPromise,
 } from "@dashboard/hooks/useForm";
 import useFormset, {
+  FormsetAdditionalDataChange,
   FormsetChange,
   FormsetData,
-  FormsetMetadataChange,
 } from "@dashboard/hooks/useFormset";
 import useHandleFormSubmit from "@dashboard/hooks/useHandleFormSubmit";
 import {
@@ -55,7 +55,8 @@ import { RichTextContext } from "@dashboard/utils/richText/context";
 import { useMultipleRichText } from "@dashboard/utils/richText/useMultipleRichText";
 import useRichText from "@dashboard/utils/richText/useRichText";
 import { OutputData } from "@editorjs/editorjs";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import * as React from "react";
 
 export interface PageFormData extends MetadataFormData {
   isPublished: boolean;
@@ -83,23 +84,23 @@ export interface PageUpdateHandlers {
   selectAttribute: FormsetChange<string>;
   selectAttributeMulti: FormsetChange<string>;
   selectAttributeReference: FormsetChange<string[]>;
-  selectAttributeReferenceMetadata: FormsetMetadataChange<AttributeValuesMetadata[]>;
+  selectAttributeReferenceAdditionalData: FormsetAdditionalDataChange<AttributeValuesMetadata[]>;
   selectAttributeFile: FormsetChange<File>;
   reorderAttributeValue: FormsetChange<ReorderEvent>;
   fetchReferences: (value: string) => void;
   fetchMoreReferences: FetchMoreProps;
 }
 
-export interface UsePageUpdateFormOutput
+interface UsePageUpdateFormOutput
   extends CommonUseFormResultWithHandlers<PageData, PageUpdateHandlers>,
     RichTextProps {
   valid: boolean;
   validationErrors: PageErrorWithAttributesFragment[];
 }
 
-export type UsePageUpdateFormRenderProps = Omit<UsePageUpdateFormOutput, "richText">;
+type UsePageUpdateFormRenderProps = Omit<UsePageUpdateFormOutput, "richText">;
 
-export interface UsePageFormOpts {
+interface UsePageFormOpts {
   pageTypes?: RelayToFlat<SearchPageTypesQuery["search"]>;
   referencePages: RelayToFlat<SearchPagesQuery["search"]>;
   referenceProducts: RelayToFlat<SearchProductsQuery["search"]>;
@@ -118,7 +119,7 @@ export interface UsePageFormOpts {
   onSelectPageType: (pageTypeId: string) => void;
 }
 
-export interface PageFormProps extends UsePageFormOpts {
+interface PageFormProps extends UsePageFormOpts {
   children: (props: UsePageUpdateFormRenderProps) => React.ReactNode;
   page: PageDetailsFragment;
   onSubmit: (data: PageData) => SubmitPromise;
@@ -188,11 +189,11 @@ function usePageForm(
     triggerChange,
   );
   const handleAttributeReferenceChange = createAttributeReferenceChangeHandler(
-    attributes.change,
+    attributes,
     triggerChange,
   );
-  const handleAttributeMetadataChange = createAttributeReferenceMetadataHandler(
-    attributes.setMetadata,
+  const handleAttributeMetadataChange = createAttributeReferenceAdditionalDataHandler(
+    attributes,
     triggerChange,
   );
   const handleFetchReferences = createFetchReferencesHandler(
@@ -225,14 +226,12 @@ function usePageForm(
   );
   const data: PageData = {
     ...formData,
-    attributes: getAttributesDisplayData(
-      attributes.data,
-      attributesWithNewFileValue.data,
-      opts.referencePages,
-      opts.referenceProducts,
-      opts.referenceCollections,
-      opts.referenceCategories,
-    ),
+    attributes: getAttributesDisplayData(attributes.data, attributesWithNewFileValue.data, {
+      pages: opts.referencePages,
+      products: opts.referenceProducts,
+      collections: opts.referenceCollections,
+      categories: opts.referenceCategories,
+    }),
     content: null,
     pageType: pageExists ? page?.pageType : opts.selectedPageType,
   };
@@ -306,7 +305,7 @@ function usePageForm(
       selectAttributeFile: handleAttributeFileChange,
       selectAttributeMulti: handleAttributeMultiChange,
       selectAttributeReference: handleAttributeReferenceChange,
-      selectAttributeReferenceMetadata: handleAttributeMetadataChange,
+      selectAttributeReferenceAdditionalData: handleAttributeMetadataChange,
       selectPageType: handlePageTypeSelect,
     },
     submit,

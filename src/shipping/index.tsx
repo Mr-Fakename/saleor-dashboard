@@ -1,7 +1,6 @@
 import { Route } from "@dashboard/components/Router";
 import { sectionNames } from "@dashboard/intl";
 import { parse as parseQs } from "qs";
-import React from "react";
 import { useIntl } from "react-intl";
 import { RouteComponentProps, Switch } from "react-router-dom";
 
@@ -67,7 +66,7 @@ const RateUpdate = ({
   );
 };
 
-export const ShippingRouter = () => {
+const ShippingRouter = () => {
   const intl = useIntl();
 
   return (
@@ -83,4 +82,5 @@ export const ShippingRouter = () => {
     </>
   );
 };
+
 export default ShippingRouter;

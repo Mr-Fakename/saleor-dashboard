@@ -4,7 +4,8 @@ import { OrderRefundDataQuery } from "@dashboard/graphql";
 import useForm, { CommonUseFormResultWithHandlers, SubmitPromise } from "@dashboard/hooks/useForm";
 import useFormset, { FormsetChange, FormsetData } from "@dashboard/hooks/useFormset";
 import useHandleFormSubmit from "@dashboard/hooks/useHandleFormSubmit";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import * as React from "react";
 
 import { refundFulfilledStatuses } from "./OrderRefundPage";
 
@@ -18,14 +19,14 @@ export enum OrderRefundAmountCalculationMode {
   NONE = "none",
 }
 
-export interface OrderRefundData {
+interface OrderRefundData {
   amount: string;
   type: OrderRefundType;
   refundShipmentCosts: boolean;
   amountCalculationMode: OrderRefundAmountCalculationMode;
 }
 
-export interface OrderRefundHandlers {
+interface OrderRefundHandlers {
   changeRefundedProductQuantity: FormsetChange<string>;
   setMaximalRefundedProductQuantities: () => void;
   changeRefundedFulfilledProductQuantity: FormsetChange<string>;
@@ -39,7 +40,7 @@ export interface OrderRefundFormData extends OrderRefundData {
 
 export type OrderRefundSubmitData = OrderRefundFormData;
 
-export interface UseOrderRefundFormResult
+interface UseOrderRefundFormResult
   extends CommonUseFormResultWithHandlers<OrderRefundFormData, OrderRefundHandlers> {
   disabled: boolean;
 }

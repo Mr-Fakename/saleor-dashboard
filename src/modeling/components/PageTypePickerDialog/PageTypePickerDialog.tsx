@@ -6,12 +6,11 @@ import useStateFromProps from "@dashboard/hooks/useStateFromProps";
 import { buttonMessages } from "@dashboard/intl";
 import { FetchMoreProps } from "@dashboard/types";
 import { Button, Option } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { messages } from "./messages";
 
-export interface PageTypePickerDialogProps {
+interface PageTypePickerDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   open: boolean;
   pageTypes: Option[];

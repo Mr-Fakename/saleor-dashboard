@@ -11,7 +11,7 @@ import { PageListUrlSortField } from "@dashboard/modeling/urls";
 import { ListProps, SortPage } from "@dashboard/types";
 import { Item } from "@glideapps/glide-data-grid";
 import { Box, useTheme } from "@saleor/macaw-ui-next";
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useIntl } from "react-intl";
 
 import { createGetCellContent, pageListStaticColumnsAdapter } from "./datagrid";
@@ -52,11 +52,12 @@ export const PageListDatagrid = ({
     },
     [onUpdateListSettings],
   );
+  const defaultColumns = ["title", "slug", "visible", "contentType"];
   const { handlers, visibleColumns, staticColumns, selectedColumns, recentlyAddedColumn } =
     useColumns({
       gridName: "page_list",
       staticColumns: pageListStaticColumns,
-      selectedColumns: settings?.columns ?? [],
+      selectedColumns: settings?.columns ?? defaultColumns,
       onSave: onColumnChange,
     });
   const { theme: currentTheme } = useTheme();

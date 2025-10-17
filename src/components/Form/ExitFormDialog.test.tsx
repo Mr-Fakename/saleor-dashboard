@@ -1,15 +1,8 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 
 import ExitFormDialog from "./ExitFormDialog";
 
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  defineMessages: jest.fn(x => x),
-}));
 jest.mock("@saleor/macaw-ui", () => ({
   useStyles: jest.fn(() => () => ({})),
   makeStyles: jest.fn(() => () => ({})),

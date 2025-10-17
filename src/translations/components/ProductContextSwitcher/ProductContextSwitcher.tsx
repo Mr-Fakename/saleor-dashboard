@@ -1,6 +1,5 @@
 import { useProductVariantListQuery } from "@dashboard/graphql";
 import { Select, SelectProps } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 type ProductOrVariantId = string;
@@ -8,7 +7,7 @@ type ProductOrVariantId = string;
 type BaseSelectProps = SelectProps<ProductOrVariantId, ProductOrVariantId>;
 type CutProps = Omit<BaseSelectProps, "onChange" | "options" | "value">;
 
-export interface ProductContextSwitcherProps extends CutProps {
+interface ProductContextSwitcherProps extends CutProps {
   productId: string;
   selectedId: string;
   onItemChange(id: string, type: "variant" | "main"): void;

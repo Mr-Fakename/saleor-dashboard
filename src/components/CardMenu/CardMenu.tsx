@@ -11,7 +11,8 @@ import {
 import { IconButtonProps, makeStyles, SettingsIcon } from "@saleor/macaw-ui";
 import { Text } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import * as React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { IconButton } from "../IconButton";
@@ -30,7 +31,7 @@ export interface CardMenuItem {
   Icon?: React.ReactElement;
 }
 
-export interface CardMenuProps {
+interface CardMenuProps {
   className?: string;
   disabled?: boolean;
   menuItems: CardMenuItem[];

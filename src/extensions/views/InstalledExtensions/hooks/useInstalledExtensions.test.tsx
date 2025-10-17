@@ -1,19 +1,11 @@
-import { LatestWebhookDeliveryWithMoment } from "@dashboard/apps/components/AppAlerts/utils";
+import { LatestWebhookDeliveryWithMoment } from "@dashboard/extensions/components/AppAlerts/utils";
 import { EventDeliveryStatusEnum } from "@dashboard/graphql";
 import { render, screen } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import moment from "moment-timezone";
-import React from "react";
+import * as React from "react";
 
 import { getExtensionInfo, useInstalledExtensions } from "./useInstalledExtensions";
-
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  FormattedMessage: ({ defaultMessage }: { defaultMessage: string }) => <>{defaultMessage}</>,
-  defineMessages: jest.fn(x => x),
-}));
 
 jest.mock("@dashboard/components/Link", () => {
   // eslint-disable-next-line react/display-name

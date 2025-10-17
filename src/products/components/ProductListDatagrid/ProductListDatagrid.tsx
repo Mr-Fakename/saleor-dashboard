@@ -11,6 +11,7 @@ import { TablePaginationWithContext } from "@dashboard/components/TablePaginatio
 import { commonTooltipMessages } from "@dashboard/components/TooltipTableCellHeader/messages";
 import { ProductListColumns } from "@dashboard/config";
 import {
+  AttributeTypeEnum,
   Exact,
   GridAttributesQuery,
   ProductListQuery,
@@ -24,7 +25,7 @@ import { ChannelProps, ListProps, PageListProps, RelayToFlat, SortPage } from "@
 import { mapEdgesToItems } from "@dashboard/utils/maps";
 import { Item } from "@glideapps/glide-data-grid";
 import { Box, useTheme } from "@saleor/macaw-ui-next";
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useIntl } from "react-intl";
 import { useLocation } from "react-router";
 
@@ -129,7 +130,7 @@ export const ProductListDatagrid = ({
       sort,
       onSearch: (query: string) =>
         queryAvailableColumnsAttributes({
-          variables: { search: query, first: 10 },
+          variables: { search: query, first: 10, type: AttributeTypeEnum.PRODUCT_TYPE },
         }),
       initialSearch: availableColumnsAttributesData.variables?.search ?? "",
       ...getAttributesFetchMoreProps({
@@ -146,7 +147,7 @@ export const ProductListDatagrid = ({
   // Logic for updating sort icon in dynamic columns
   // This is workaround before sorting is abstracted into useColumns
   // Tracked in https://github.com/saleor/saleor-dashboard/issues/3685
-  React.useEffect(() => {
+  useEffect(() => {
     handlers.onCustomUpdateVisible(prevColumns =>
       prevColumns?.map(column => {
         if (isAttributeColumnValue(column.id)) {

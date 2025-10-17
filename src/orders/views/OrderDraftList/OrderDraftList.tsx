@@ -8,7 +8,6 @@ import { createDraftOrderQueryVariables } from "@dashboard/components/Conditiona
 import DeleteFilterTabDialog from "@dashboard/components/DeleteFilterTabDialog";
 import SaveFilterTabDialog from "@dashboard/components/SaveFilterTabDialog";
 import { useShopLimitsQuery } from "@dashboard/components/Shop/queries";
-import { useFlag } from "@dashboard/featureFlags";
 import { useOrderDraftCreateMutation, useOrderDraftListQuery } from "@dashboard/graphql";
 import { useFilterPresets } from "@dashboard/hooks/useFilterPresets";
 import useListSettings from "@dashboard/hooks/useListSettings";
@@ -28,7 +27,7 @@ import createSortHandler from "@dashboard/utils/handlers/sortHandler";
 import { mapEdgesToItems, mapNodeToChoice } from "@dashboard/utils/maps";
 import { getSortParams } from "@dashboard/utils/sort";
 import isEqual from "lodash/isEqual";
-import React, { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import OrderDraftListPage from "../../components/OrderDraftListPage";
@@ -38,7 +37,7 @@ import {
   OrderDraftListUrlQueryParams,
   orderUrl,
 } from "../../urls";
-import { getFilterOpts, getFilterQueryParam, getFilterVariables, storageUtils } from "./filters";
+import { getFilterOpts, getFilterQueryParam, storageUtils } from "./filters";
 import { getSortQueryVariables } from "./sort";
 import { useBulkDeletion } from "./useBulkDeletion";
 
@@ -46,12 +45,11 @@ interface OrderDraftListProps {
   params: OrderDraftListUrlQueryParams;
 }
 
-export const OrderDraftList = ({ params }: OrderDraftListProps) => {
+const OrderDraftList = ({ params }: OrderDraftListProps) => {
   const navigate = useNavigator();
   const notify = useNotifier();
   const intl = useIntl();
   const { updateListSettings, settings } = useListSettings(ListViews.DRAFT_LIST);
-  const { enabled: isDraftOrdersFilteringEnabled } = useFlag("new_filters");
   const { valueProvider } = useConditionalFilterContext();
   const filter = createDraftOrderQueryVariables(valueProvider.value);
 
@@ -117,16 +115,8 @@ export const OrderDraftList = ({ params }: OrderDraftListProps) => {
     storageUtils,
   });
   const paginationState = createPaginationState(settings.rowNumber, params);
-  const queryVariables = React.useMemo(
-    () => ({
-      ...paginationState,
-      filter: getFilterVariables(params),
-      sort: getSortQueryVariables(params),
-    }),
-    [paginationState, params],
-  );
 
-  const newFiltersQueryVariables = React.useMemo(
+  const newFiltersQueryVariables = useMemo(
     () => ({
       ...paginationState,
       filter: {
@@ -140,7 +130,7 @@ export const OrderDraftList = ({ params }: OrderDraftListProps) => {
 
   const { data, refetch } = useOrderDraftListQuery({
     displayLoader: true,
-    variables: isDraftOrdersFilteringEnabled ? newFiltersQueryVariables : queryVariables,
+    variables: newFiltersQueryVariables,
   });
   const orderDrafts = mapEdgesToItems(data?.draftOrders);
   const paginationValues = usePaginator({

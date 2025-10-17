@@ -25,7 +25,6 @@ import { FetchMoreProps, ListActions, ReorderEvent, UserError } from "@dashboard
 import { mapMetadataItemToInput } from "@dashboard/utils/maps";
 import useMetadataChangeTrigger from "@dashboard/utils/metadata/useMetadataChangeTrigger";
 import { Box, Text, Toggle } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import ProductTypeAttributes from "../ProductTypeAttributes/ProductTypeAttributes";
@@ -50,7 +49,7 @@ export interface ProductTypeForm extends MetadataFormData {
   weight: number;
 }
 
-export interface ProductTypeDetailsPageProps {
+interface ProductTypeDetailsPageProps {
   errors: UserError[];
   productType: ProductTypeDetailsQuery["productType"];
   defaultWeightUnit: WeightUnitsEnum;

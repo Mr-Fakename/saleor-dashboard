@@ -5,23 +5,23 @@ import { removeAtIndex, updateAtIndex } from "@dashboard/utils/lists";
 import { TableBody, TableCell, TextField } from "@material-ui/core";
 import { DeleteIcon, IconButton } from "@saleor/macaw-ui";
 import clsx from "clsx";
-import React, { ChangeEvent } from "react";
+import { ChangeEvent } from "react";
 import { useIntl } from "react-intl";
 
 import { messages } from "./messages";
-import useStyles from "./styles";
+import { useStyles } from "./styles";
 import { Header, stringifyHeaders } from "./utils";
 
 const nameSeparator = ":";
 const nameInputPrefix = "name";
 const valueInputPrefix = "value";
 
-export interface WebhookHeadersTableBodyProps {
+interface WebhookHeadersTableBodyProps {
   onChange: FormChange;
   headers: Header[];
 }
 
-const WebhookHeadersTableBody = ({ onChange, headers }: WebhookHeadersTableBodyProps) => {
+export const WebhookHeadersTableBody = ({ onChange, headers }: WebhookHeadersTableBodyProps) => {
   const classes = useStyles();
   const intl = useIntl();
   const updateWebhookItem = (target: EventTarget & HTMLTextAreaElement) => {
@@ -114,4 +114,3 @@ const WebhookHeadersTableBody = ({ onChange, headers }: WebhookHeadersTableBodyP
 };
 
 WebhookHeadersTableBody.displayName = "WebhookHeadersTableRow";
-export default WebhookHeadersTableBody;

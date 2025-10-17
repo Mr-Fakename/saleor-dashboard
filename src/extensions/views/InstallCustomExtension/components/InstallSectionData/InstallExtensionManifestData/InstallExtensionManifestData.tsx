@@ -1,9 +1,8 @@
 import { DashboardCard } from "@dashboard/components/Card";
-import { ExternalLinkUnstyled } from "@dashboard/extensions/components/ExternalLinkUnstyled";
+import { ExternalLinkUnstyled } from "@dashboard/extensions/components/ExternalLinkUnstyled/ExternalLinkUnstyled";
 import { messages } from "@dashboard/extensions/messages";
 import { ExclamationIcon } from "@dashboard/icons/ExclamationIcon";
 import { Box, Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage } from "react-intl";
 
 import { InstallDetailsManifestData } from "../../../types";

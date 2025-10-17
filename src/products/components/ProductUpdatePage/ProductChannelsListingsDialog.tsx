@@ -4,7 +4,6 @@ import useStateFromProps from "@dashboard/hooks/useStateFromProps";
 import { DialogProps } from "@dashboard/types";
 import { arrayDiff } from "@dashboard/utils/arrays";
 import { toggle } from "@dashboard/utils/lists";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { ProductUpdateData } from "./types";
@@ -13,7 +12,7 @@ export type ProductChannelsListingDialogSubmit = (
   update: Record<"added" | "removed", string[]>,
 ) => void;
 
-export interface ProductChannelsListingsDialogProps extends DialogProps {
+interface ProductChannelsListingsDialogProps extends DialogProps {
   channels: ChannelFragment[];
   data: Pick<ProductUpdateData, "channels">;
   onConfirm: ProductChannelsListingDialogSubmit;

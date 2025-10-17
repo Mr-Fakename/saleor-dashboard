@@ -10,7 +10,6 @@ import useNotifier from "@dashboard/hooks/useNotifier";
 import { getMutationErrors } from "@dashboard/misc";
 import createMetadataCreateHandler from "@dashboard/utils/handlers/metadataCreateHandler";
 import { getParsedDataForJsonStringField } from "@dashboard/utils/richText/misc";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import CategoryCreatePage from "../components/CategoryCreatePage";
@@ -89,4 +88,3 @@ export const CategoryCreateView = ({ parentId }: CategoryCreateViewProps) => {
     </>
   );
 };
-export default CategoryCreateView;

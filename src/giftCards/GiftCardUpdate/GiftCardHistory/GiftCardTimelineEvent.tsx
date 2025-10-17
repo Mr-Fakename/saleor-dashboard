@@ -1,14 +1,11 @@
 // @ts-strict-ignore
-import { AppPaths, AppUrls } from "@dashboard/apps/urls";
 import Link from "@dashboard/components/Link";
 import { TimelineEvent } from "@dashboard/components/Timeline";
 import { customerPath } from "@dashboard/customers/urls";
-import { ExtensionsUrls } from "@dashboard/extensions/urls";
-import { useFlag } from "@dashboard/featureFlags";
+import { ExtensionsPaths, ExtensionsUrls } from "@dashboard/extensions/urls";
 import { GiftCardDetailsQuery, GiftCardEventsEnum } from "@dashboard/graphql";
 import { orderUrl } from "@dashboard/orders/urls";
 import { staffMemberDetailsUrl } from "@dashboard/staff/urls";
-import React from "react";
 import { IntlShape, useIntl } from "react-intl";
 
 import { giftCardHistoryTimelineMessages as timelineMessages } from "./messages";
@@ -32,28 +29,20 @@ const getUserOrApp = (event: GiftCardEventType): string | null => {
 
   return null;
 };
-const getUserOrAppUrl = (event: GiftCardEventType, areExtensionsEnabled: boolean): string => {
+const getUserOrAppUrl = (event: GiftCardEventType): string => {
   if (event.user) {
     return staffMemberDetailsUrl(event.user.id);
   }
 
   if (event.app) {
-    if (areExtensionsEnabled) {
-      return ExtensionsUrls.resolveViewManifestExtensionUrl(event.app.id);
-    }
-
-    return AppUrls.resolveAppUrl(event.app.id);
+    return ExtensionsUrls.resolveViewManifestExtensionUrl(event.app.id);
   }
 
   return null;
 };
-const getEventMessage = (
-  event: GiftCardEventType,
-  intl: IntlShape,
-  areExtensionsEnabled: boolean,
-) => {
+const getEventMessage = (event: GiftCardEventType, intl: IntlShape) => {
   const user = getUserOrApp(event);
-  const userUrl = getUserOrAppUrl(event, areExtensionsEnabled);
+  const userUrl = getUserOrAppUrl(event);
 
   switch (event.type) {
     case GiftCardEventsEnum.ACTIVATED:
@@ -106,7 +95,9 @@ const getEventMessage = (
               !!user && (
                 <Link
                   href={
-                    event.user ? customerPath(event.user.id) : AppPaths.resolveAppPath(event.app.id)
+                    event.user
+                      ? customerPath(event.user.id)
+                      : ExtensionsPaths.resolveViewManifestExtension(event.app.id)
                   }
                 >{`${content} ${user}`}</Link>
               ),
@@ -117,22 +108,15 @@ const getEventMessage = (
   }
 };
 
-export interface GiftCardTimelineEventProps {
+interface GiftCardTimelineEventProps {
   date: string;
   event: GiftCardEventType;
 }
 
 const GiftCardTimelineEvent = ({ date, event }: GiftCardTimelineEventProps) => {
   const intl = useIntl();
-  const { enabled: areExtensionsEnabled } = useFlag("extensions");
 
-  return (
-    <TimelineEvent
-      date={date}
-      title={getEventMessage(event, intl, areExtensionsEnabled)}
-      hasPlainDate={false}
-    />
-  );
+  return <TimelineEvent date={date} title={getEventMessage(event, intl)} hasPlainDate={false} />;
 };
 
 export default GiftCardTimelineEvent;

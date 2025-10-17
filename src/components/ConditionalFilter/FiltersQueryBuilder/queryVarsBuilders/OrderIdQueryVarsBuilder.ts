@@ -3,13 +3,12 @@ import { FilterElement } from "../../FilterElement";
 import { isItemOptionArray } from "../../FilterElement/ConditionValue";
 import { BaseMappableQueryVarsBuilder } from "./BaseMappableQueryVarsBuilder";
 
-export type OrderIdFilterQueryPart = {
+type OrderIdFilterQueryPart = {
   ids?: string[];
 };
 
 /** Maps IDs for OrderWhereInput to a simple array, instead of `{oneOf: []}` object */
-export class OrderIdQueryVarsBuilder
-  extends BaseMappableQueryVarsBuilder<OrderIdFilterQueryPart> {
+export class OrderIdQueryVarsBuilder extends BaseMappableQueryVarsBuilder<OrderIdFilterQueryPart> {
   canHandle(element: FilterElement): boolean {
     return element.value.value === "ids";
   }
@@ -22,7 +21,9 @@ export class OrderIdQueryVarsBuilder
     return element.value.value;
   }
 
-  protected getConditionValue(element: FilterElement): OrderIdFilterQueryPart[keyof OrderIdFilterQueryPart] {
+  protected getConditionValue(
+    element: FilterElement,
+  ): OrderIdFilterQueryPart[keyof OrderIdFilterQueryPart] {
     const { value: selectedValue } = element.condition.selected;
 
     // For IDs, we need to return plain array, not {oneOf: [...]} structure

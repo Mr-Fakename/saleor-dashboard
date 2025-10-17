@@ -5,10 +5,9 @@ import { FormChange } from "@dashboard/hooks/useForm";
 import { getFormErrors } from "@dashboard/utils/errors";
 import getAppErrorMessage from "@dashboard/utils/errors/app";
 import { Input } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
-export interface CustomExtensionInfoProps {
+interface CustomExtensionInfoProps {
   data: {
     name: string;
   };
@@ -17,7 +16,7 @@ export interface CustomExtensionInfoProps {
   onChange: FormChange;
 }
 
-const CustomExtensionInformation = ({
+export const CustomExtensionInformation = ({
   data,
   disabled,
   errors,
@@ -57,5 +56,4 @@ const CustomExtensionInformation = ({
   );
 };
 
-CustomExtensionInformation.displayName = "CustomAppInformation";
-export default CustomExtensionInformation;
+CustomExtensionInformation.displayName = "CustomExtensionInformation";

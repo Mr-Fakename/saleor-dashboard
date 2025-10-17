@@ -1,16 +1,15 @@
 import { AppQuery } from "@dashboard/graphql";
 import errorTracker from "@dashboard/services/errorTracking";
 import { Box, Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 import { AppWebhooksDisplay } from "../AppWebhooksDisplay/AppWebhooksDisplay";
 import { AboutCard } from "./AboutCard";
 import { DataPrivacyCard } from "./DataPrivacyCard";
-import Header from "./Header";
+import { Header } from "./Header";
 import { PermissionsCard } from "./PermissionsCard";
 
-export interface AppDetailsPageProps {
+interface AppDetailsPageProps {
   loading: boolean;
   data: AppQuery["app"];
   onAppActivateOpen: () => void;

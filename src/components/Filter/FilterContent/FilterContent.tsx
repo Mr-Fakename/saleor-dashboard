@@ -4,15 +4,15 @@ import useStateFromProps from "@dashboard/hooks/useStateFromProps";
 import { makeStyles, Paper } from "@material-ui/core";
 import { Accordion, AccordionSummary } from "@saleor/macaw-ui";
 import { Text } from "@saleor/macaw-ui-next";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { FilterAutocompleteDisplayValues } from "../FilterAutocompleteField";
 import { FilterReducerAction } from "../reducer";
 import { FieldType, FilterElement, FilterErrorMessages, IFilter, InvalidFilters } from "../types";
-import FilterContentBody, { FilterContentBodyProps } from "./FilterContentBody";
-import FilterContentBodyNameField from "./FilterContentBodyNameField";
-import FilterContentHeader from "./FilterContentHeader";
-import FilterErrorsList from "./FilterErrorsList";
+import { FilterContentBody, FilterContentBodyProps } from "./FilterContentBody";
+import { FilterContentBodyNameField } from "./FilterContentBodyNameField";
+import { FilterContentHeader } from "./FilterContentHeader";
+import { FilterErrorsList } from "./FilterErrorsList";
 
 const useExpanderStyles = makeStyles(
   theme => ({
@@ -57,7 +57,7 @@ const useSummaryStyles = makeStyles(
   { name: "FilterContentExpanderSummary" },
 );
 
-export interface FilterContentProps<K extends string = string> {
+interface FilterContentProps<K extends string = string> {
   filters: IFilter<K>;
   onFilterPropertyChange: <T extends FieldType>(value: FilterReducerAction<K, T>) => void;
   onFilterAttributeFocus?: (id?: string) => void;
@@ -69,7 +69,7 @@ export interface FilterContentProps<K extends string = string> {
   errorMessages?: FilterErrorMessages<K>;
 }
 
-const FilterContent = ({
+export const FilterContent = ({
   currencySymbol,
   errors,
   errorMessages,
@@ -240,4 +240,3 @@ const FilterContent = ({
 };
 
 FilterContent.displayName = "FilterContent";
-export default FilterContent;

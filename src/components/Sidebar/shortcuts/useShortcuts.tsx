@@ -1,19 +1,24 @@
 import { useDevModeContext } from "@dashboard/components/DevModePanel/hooks";
 import { useNavigatorSearchContext } from "@dashboard/components/NavigatorSearch/useNavigatorSearchContext";
-import { Graphql } from "@dashboard/icons/Graphql";
+import { GraphqlIcon } from "@dashboard/icons/GraphqlIcon";
 import { TerminalIcon } from "@dashboard/icons/TerminalIcon";
+import { Ripple } from "@dashboard/ripples/components/Ripple";
+import { rippleIntroducedRipples } from "@dashboard/ripples/ripples/introducedRipples";
+import { useAllRipplesModalState } from "@dashboard/ripples/state";
 import { Box } from "@saleor/macaw-ui-next";
-import React, { useCallback, useMemo } from "react";
+import { GiftIcon } from "lucide-react";
+import { useCallback, useMemo } from "react";
 import { useIntl } from "react-intl";
 
+import { LucideIconsWrapper } from "../LucideIconsWrapper";
 import { shortcutsMessages } from "./messages";
 import { getShortcutLeadingKey } from "./utils";
 
 export interface Shortcut {
   id: string;
-  name: string;
+  name: string | React.ReactNode;
   icon: React.ReactNode;
-  shortcut: string;
+  shortcut?: string;
   action: () => void;
 }
 
@@ -32,13 +37,15 @@ export const useShortcuts = (): Shortcut[] => {
     setNavigatorVisibility(true);
   }, []);
 
+  const { setModalState } = useAllRipplesModalState();
+
   const shortcuts = useMemo(
     () => [
       {
         id: "search",
         name: intl.formatMessage(shortcutsMessages.search),
         icon: (
-          <Box __width="22px" __height="22px">
+          <Box __marginLeft={"-2px"}>
             <TerminalIcon />
           </Box>
         ),
@@ -48,9 +55,28 @@ export const useShortcuts = (): Shortcut[] => {
       {
         id: "playground",
         name: intl.formatMessage(shortcutsMessages.playground),
-        icon: <Graphql />,
+        icon: <GraphqlIcon />,
         shortcut: `${controlKey} + '`,
         action: handleOpenPlayground,
+      },
+      {
+        id: "recent-changes-ripples",
+        name: (
+          <Box>
+            {intl.formatMessage(shortcutsMessages.recentChanges)}{" "}
+            <Box marginLeft={4} display="inline-block">
+              <Ripple model={rippleIntroducedRipples} />
+            </Box>
+          </Box>
+        ),
+        icon: (
+          <LucideIconsWrapper>
+            <GiftIcon />
+          </LucideIconsWrapper>
+        ),
+        action: () => {
+          setModalState(true);
+        },
       },
     ],
     [intl],

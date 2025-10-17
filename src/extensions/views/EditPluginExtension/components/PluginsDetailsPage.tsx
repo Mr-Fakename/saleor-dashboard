@@ -16,21 +16,20 @@ import { ChangeEvent, SubmitPromise } from "@dashboard/hooks/useForm";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { getStringOrPlaceholder } from "@dashboard/misc";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { isSecretField } from "../utils";
 import { PluginAuthorization } from "./PluginAuthorization";
 import { PluginDetailsChannelsCard } from "./PluginDetailsChannelsCard";
 import { PluginInfo } from "./PluginInfo";
-import { PluginSettings } from "./PluginSettings";
+import { PluginSettings } from "./PluginSettings/PluginSettings";
 
 export interface PluginDetailsPageFormData {
   active: boolean;
   configuration: ConfigurationItemFragment[];
 }
 
-export interface PluginsDetailsPageProps {
+interface PluginsDetailsPageProps {
   disabled: boolean;
   errors: PluginErrorFragment[];
   plugin?: PluginsDetailsFragment;

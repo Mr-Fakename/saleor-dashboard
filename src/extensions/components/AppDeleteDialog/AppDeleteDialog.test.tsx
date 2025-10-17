@@ -1,8 +1,7 @@
 import Wrapper from "@test/wrapper";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
-import AppDeleteDialog from "./AppDeleteDialog";
+import { AppDeleteDialog } from "./AppDeleteDialog";
 import msgs from "./messages";
 
 describe("Apps AppDeleteDialog", () => {
@@ -25,7 +24,7 @@ describe("Apps AppDeleteDialog", () => {
 
     const dialogContent = screen.getByTestId("dialog-content");
     // Assert
-    const expectedText = msgs.deleteNamedApp.defaultMessage.replace("{name}", name);
+    const expectedText = msgs.deleteNamedApp.defaultMessage;
     const expectedQuestion = msgs.deleteAppQuestion.defaultMessage;
 
     expect(dialogContent).toHaveTextContent(expectedText);
@@ -50,7 +49,7 @@ describe("Apps AppDeleteDialog", () => {
 
     const dialogContent = screen.getByTestId("dialog-content");
     // Assert
-    const expectedText = msgs.deleteLocalNamedApp.defaultMessage.replace("{name}", name);
+    const expectedText = msgs.deleteLocalNamedApp.defaultMessage;
     const expectedQuestion = msgs.deleteAppQuestion.defaultMessage;
 
     expect(dialogContent).toHaveTextContent(expectedText);

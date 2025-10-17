@@ -3,12 +3,11 @@ import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButto
 import { buttonMessages } from "@dashboard/intl";
 import { getStringOrPlaceholder } from "@dashboard/misc";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import msgs from "./messages";
 
-export interface AppDeactivateDialogProps {
+interface AppDeactivateDialogProps {
   confirmButtonState: ConfirmButtonTransitionState;
   open: boolean;
   name?: string | null;
@@ -17,7 +16,7 @@ export interface AppDeactivateDialogProps {
   onConfirm: () => void;
 }
 
-const AppDeactivateDialog = ({
+export const AppDeactivateDialog = ({
   confirmButtonState,
   open,
   name,
@@ -61,4 +60,3 @@ const AppDeactivateDialog = ({
 };
 
 AppDeactivateDialog.displayName = "AppDeactivateDialog";
-export default AppDeactivateDialog;

@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import strikethroughIcon from "@dashboard/icons/StrikethroughIcon";
+import { StrikethroughIcon } from "@dashboard/icons/StrikethroughIcon";
 import Attaches from "@editorjs/attaches";
 import Checklist from "@editorjs/checklist";
 import Code from "@editorjs/code";
@@ -40,8 +40,6 @@ export const tools: Record<string, ToolConstructable | ToolSettings> = {
     inlineToolbar,
   },
   list: {
-    // TODO: Update @editorjs/list to see if it fixes type mismatch
-    // @ts-expect-error Type mismatch between editorjs libraries (@editorjs/list and @editorjs/editorjs)
     class: List,
     inlineToolbar,
   },
@@ -105,7 +103,7 @@ export const tools: Record<string, ToolConstructable | ToolSettings> = {
     },
     shortcut: "CMD+S",
     tagName: "s",
-    toolboxIcon: strikethroughIcon,
+    toolboxIcon: StrikethroughIcon,
   }),
   marker: {
     class: Marker,

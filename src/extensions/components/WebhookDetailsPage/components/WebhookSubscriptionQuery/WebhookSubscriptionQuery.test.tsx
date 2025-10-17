@@ -3,20 +3,14 @@ import { Fetcher } from "@graphiql/toolkit";
 import { ThemeProvider } from "@saleor/macaw-ui-next";
 import { ApolloMockedProvider } from "@test/ApolloMockedProvider";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
-import WebhookSubscriptionQuery from "./WebhookSubscriptionQuery";
+import { WebhookSubscriptionQuery } from "./WebhookSubscriptionQuery";
 
 jest.mock("@graphiql/toolkit", () => ({
   clear: jest.fn(),
   createGraphiQLFetcher: jest.fn(_x => jest.fn() as Fetcher),
 }));
-jest.mock("react-intl", () => ({
-  useIntl: jest.fn(() => ({
-    formatMessage: jest.fn(x => x.defaultMessage),
-  })),
-  defineMessages: jest.fn(x => x),
-}));
+
 beforeEach(() => {
   window.localStorage.clear();
 });

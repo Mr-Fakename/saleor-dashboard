@@ -6,10 +6,10 @@ import { getFormErrors } from "@dashboard/utils/errors";
 import getAccountErrorMessage from "@dashboard/utils/errors/account";
 import { TextField } from "@material-ui/core";
 import { Text } from "@saleor/macaw-ui-next";
-import React from "react";
+import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-export interface CustomerCreateNoteProps {
+interface CustomerCreateNoteProps {
   data: {
     note: string;
   };

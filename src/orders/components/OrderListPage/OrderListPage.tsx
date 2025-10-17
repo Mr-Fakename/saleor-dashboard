@@ -31,17 +31,17 @@ import {
 } from "@dashboard/types";
 import { hasLimits, isLimitReached } from "@dashboard/utils/limits";
 import { Box, Button, ChevronRightIcon, Tooltip } from "@saleor/macaw-ui-next";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import OrderLimitReached from "../OrderLimitReached";
 import { OrderListDatagrid } from "../OrderListDatagrid";
 
-export interface OrderListPageProps
+interface OrderListPageProps
   extends PageListProps,
-  SearchPageProps,
-  Omit<TabPageProps, "onTabDelete">,
-  SortPage<OrderListUrlSortField> {
+    SearchPageProps,
+    Omit<TabPageProps, "onTabDelete">,
+    SortPage<OrderListUrlSortField> {
   limits: RefreshLimitsQuery["shop"]["limits"];
   orders: RelayToFlat<OrderListQuery["orders"]>;
   hasPresetsChanged: boolean;
@@ -58,7 +58,6 @@ const OrderListPage = ({
   onAdd,
   onSearchChange,
   onSettingsOpen,
-  params,
   onTabChange,
   onTabDelete,
   onTabSave,

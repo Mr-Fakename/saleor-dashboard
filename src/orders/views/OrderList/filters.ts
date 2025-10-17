@@ -1,16 +1,13 @@
 import { OrderAuthorizeStatusEnum, OrderChargeStatusEnum, OrderStatus } from "@dashboard/graphql";
-import {
-  OrderFilterKeys,
-} from "@dashboard/orders/components/OrderListPage/filters";
+import { OrderFilterKeys } from "@dashboard/orders/components/OrderListPage/filters";
 
 import {
   FilterElement,
   FilterElementKeyValue,
   FilterElementRegular,
-} from "../../../components/Filter";
+} from "../../../components/Filter/types";
 import {
   createFilterTabUtils,
-  createFilterUtils,
   getKeyValueQueryParam,
   getMinMaxQueryParam,
   getMultipleEnumValueQueryParam,
@@ -22,10 +19,9 @@ import {
   OrderListUrlFilters,
   OrderListUrlFiltersEnum,
   OrderListUrlFiltersWithMultipleValues,
-  OrderListUrlQueryParams,
 } from "../../urls";
 
-export const ORDER_FILTERS_KEY = "orderFiltersPresets";
+const ORDER_FILTERS_KEY = "orderFiltersPresets";
 
 export function getFilterQueryParam(filter: FilterElement<OrderFilterKeys>): OrderListUrlFilters {
   const { name } = filter;
@@ -74,7 +70,11 @@ export function getFilterQueryParam(filter: FilterElement<OrderFilterKeys>): Ord
       return getSingleValueQueryParam(filter, OrderListUrlFiltersEnum.hasFulfillments);
 
     case OrderFilterKeys.invoicesCreatedAt:
-      return getMinMaxQueryParam(filter, OrderListUrlFiltersEnum.invoicesCreatedFrom, OrderListUrlFiltersEnum.invoicesCreatedTo);
+      return getMinMaxQueryParam(
+        filter,
+        OrderListUrlFiltersEnum.invoicesCreatedFrom,
+        OrderListUrlFiltersEnum.invoicesCreatedTo,
+      );
 
     case OrderFilterKeys.authorizeStatus:
       return getMultipleEnumValueQueryParam(
@@ -94,14 +94,4 @@ export function getFilterQueryParam(filter: FilterElement<OrderFilterKeys>): Ord
   }
 }
 
-
 export const storageUtils = createFilterTabUtils<string>(ORDER_FILTERS_KEY);
-
-export const { areFiltersApplied, getActiveFilters, getFiltersCurrentTab } = createFilterUtils<
-  OrderListUrlQueryParams,
-  OrderListUrlFilters
->({
-  ...OrderListUrlFiltersEnum,
-  ...OrderListUrlFiltersWithMultipleValues,
-  ...OrderListFitersWithKeyValueValues,
-});

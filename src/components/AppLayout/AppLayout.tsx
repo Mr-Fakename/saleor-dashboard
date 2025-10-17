@@ -1,12 +1,13 @@
 import useAppState from "@dashboard/hooks/useAppState";
 import { LinearProgress } from "@material-ui/core";
 import { Box } from "@saleor/macaw-ui-next";
-import React from "react";
+import * as React from "react";
 
 import { DevModePanel } from "../DevModePanel/DevModePanel";
 import NavigatorSearch from "../NavigatorSearch";
 import { useSavebarRef } from "../Savebar/SavebarRefContext";
 import { Sidebar } from "../Sidebar";
+import { SidebarProvider } from "../Sidebar/SidebarContext";
 import { useStyles } from "./styles";
 
 interface AppLayoutProps {
@@ -20,7 +21,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const [appState] = useAppState();
 
   return (
-    <>
+    <SidebarProvider>
       <DevModePanel />
       <NavigatorSearch />
 
@@ -58,7 +59,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           />
         </Box>
       </Box>
-    </>
+    </SidebarProvider>
   );
 };
 

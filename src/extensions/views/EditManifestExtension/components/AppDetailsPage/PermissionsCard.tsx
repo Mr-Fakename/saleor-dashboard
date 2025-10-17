@@ -3,10 +3,10 @@ import { PermissionEnum } from "@dashboard/graphql";
 import { useHasManagedAppsPermission } from "@dashboard/hooks/useHasManagedAppsPermission";
 import { buttonMessages } from "@dashboard/intl";
 import { Box, BoxProps, Skeleton, Text } from "@saleor/macaw-ui-next";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { AppPermissionsDialog } from "../AppPermissionsDialog";
+import { AppPermissionsDialog } from "../AppPermissionsDialog/AppPermissionsDialog";
 import messages from "./messages";
 
 type PermissionsCardProps = {

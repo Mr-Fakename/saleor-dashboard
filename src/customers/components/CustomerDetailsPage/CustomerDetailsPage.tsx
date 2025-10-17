@@ -1,5 +1,4 @@
 // @ts-strict-ignore
-import { AppWidgets } from "@dashboard/apps/components/AppWidgets/AppWidgets";
 import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import { Backlink } from "@dashboard/components/Backlink";
 import { CardSpacer } from "@dashboard/components/CardSpacer";
@@ -11,6 +10,7 @@ import { MetadataFormData } from "@dashboard/components/Metadata/types";
 import RequirePermissions from "@dashboard/components/RequirePermissions";
 import { Savebar } from "@dashboard/components/Savebar";
 import { customerAddressesUrl, customerListPath } from "@dashboard/customers/urls";
+import { AppWidgets } from "@dashboard/extensions/components/AppWidgets/AppWidgets";
 import { extensionMountPoints } from "@dashboard/extensions/extensionMountPoints";
 import { getExtensionsItemsForCustomerDetails } from "@dashboard/extensions/getExtensionsItems";
 import { useExtensions } from "@dashboard/extensions/hooks/useExtensions";
@@ -24,7 +24,6 @@ import { orderListUrl } from "@dashboard/orders/urls";
 import { mapEdgesToItems, mapMetadataItemToInput } from "@dashboard/utils/maps";
 import useMetadataChangeTrigger from "@dashboard/utils/metadata/useMetadataChangeTrigger";
 import { Divider } from "@saleor/macaw-ui-next";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import { getUserName } from "../../../misc";
@@ -42,7 +41,7 @@ export interface CustomerDetailsPageFormData extends MetadataFormData {
   note: string;
 }
 
-export interface CustomerDetailsPageProps {
+interface CustomerDetailsPageProps {
   customerId: string;
   customer: CustomerDetailsQuery["user"];
   disabled: boolean;

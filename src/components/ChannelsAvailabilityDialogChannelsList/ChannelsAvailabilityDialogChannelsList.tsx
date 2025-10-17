@@ -3,9 +3,8 @@ import { ControlledCheckbox } from "@dashboard/components/ControlledCheckbox";
 import Hr from "@dashboard/components/Hr";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Text } from "@saleor/macaw-ui-next";
-import React from "react";
 
-export const useStyles = makeStyles(
+const useStyles = makeStyles(
   theme => ({
     label: {
       fontSize: 14,
@@ -22,7 +21,7 @@ export const useStyles = makeStyles(
   { name: "ChannelsAvailabilityContent" },
 );
 
-export interface ChannelsAvailabilityContentProps {
+interface ChannelsAvailabilityContentProps {
   isChannelSelected: (channel: Channel) => boolean;
   channels: Channel[];
   onChange: (option: Channel) => void;

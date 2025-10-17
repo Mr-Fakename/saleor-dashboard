@@ -8,7 +8,7 @@ import { commonMessages } from "@dashboard/intl";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Skeleton, vars } from "@saleor/macaw-ui-next";
-import React from "react";
+import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { CategoryUpdateData } from "../CategoryUpdatePage/form";
@@ -39,7 +39,7 @@ const useStyles = makeStyles(
   { name: "CategoryBackground" },
 );
 
-export interface CategoryBackgroundProps {
+interface CategoryBackgroundProps {
   data: CategoryUpdateData;
   image: CategoryDetailsFragment["backgroundImage"] | undefined | null;
   onChange: (event: React.ChangeEvent<any>) => void;

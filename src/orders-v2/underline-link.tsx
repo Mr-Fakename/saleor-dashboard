@@ -1,5 +1,4 @@
 import { Text, TextProps } from "@saleor/macaw-ui-next";
-import React from "react";
 import { Link, LinkProps } from "react-router-dom";
 
 interface UnderlineLinkProps extends LinkProps {
@@ -13,7 +12,7 @@ export const UnderlineLink = ({ children, textProps, ...props }: UnderlineLinkPr
 );
 
 // TODO: move to MacawUI
-export const UnderlineText = ({ children, ...props }: TextProps) => (
+const UnderlineText = ({ children, ...props }: TextProps) => (
   <Text
     as="span"
     textDecoration="underline"

@@ -2,7 +2,7 @@ import { Route } from "@dashboard/components/Router";
 import { sectionNames } from "@dashboard/intl";
 import { asSortParams } from "@dashboard/utils/sort";
 import { parse as parseQs } from "qs";
-import React from "react";
+import * as React from "react";
 import { useIntl } from "react-intl";
 import { RouteComponentProps, Switch } from "react-router-dom";
 
@@ -37,7 +37,7 @@ const PageTypeDetails: React.FC<RouteComponentProps<PageTypeDetailsRouteParams>>
   return <PageTypeDetailsComponent id={decodeURIComponent(match.params.id)} params={params} />;
 };
 
-export const PageTypeRouter = () => {
+const PageTypeRouter = () => {
   const intl = useIntl();
 
   return (
@@ -51,5 +51,6 @@ export const PageTypeRouter = () => {
     </>
   );
 };
+
 PageTypeRouter.displayName = "PageTypeRouter";
 export default PageTypeRouter;

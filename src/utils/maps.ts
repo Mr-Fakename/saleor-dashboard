@@ -6,13 +6,10 @@ import {
   CountryWithCodeFragment,
   MetadataInput,
   MetadataItemFragment,
-  PageFragment,
 } from "@dashboard/graphql";
-import { getFullName } from "@dashboard/misc";
 import { pageUrl } from "@dashboard/modeling/urls";
 import { productUrl, productVariantEditUrl } from "@dashboard/products/urls";
-import { Node, SlugNode, TagNode } from "@dashboard/types";
-import { Choice } from "@saleor/macaw-ui";
+import { Node, SlugNode } from "@dashboard/types";
 import { Option } from "@saleor/macaw-ui-next";
 
 interface Edge<T> {
@@ -37,13 +34,6 @@ export function mapCountriesToChoices(countries: CountryWithCodeFragment[]) {
   }));
 }
 
-export function mapPagesToChoices(pages: Array<Pick<PageFragment, "title" | "id">>): Choice[] {
-  return pages.map(page => ({
-    label: page.title,
-    value: page.id,
-  }));
-}
-
 type ExtendedNode = Node & Record<"name", string>;
 
 export function mapNodeToChoice<T extends ExtendedNode>(nodes: T[]): Option[];
@@ -65,10 +55,6 @@ export function mapNodeToChoice<T extends ExtendedNode>(nodes: T[], getterFn?: (
 
 export function mapSlugNodeToChoice(nodes: Array<ExtendedNode & SlugNode>): Option[] {
   return mapNodeToChoice(nodes, node => node.slug);
-}
-
-export function mapTagNodeToChoice(nodes: Array<Node & TagNode>): Option[] {
-  return mapNodeToChoice(nodes, node => node.tag);
 }
 
 export function mapMetadataItemToInput(item: MetadataItemFragment): MetadataInput {
@@ -114,23 +100,6 @@ export function mapSingleValueNodeToChoice<T extends Record<string, any>>(
   }
 
   return (nodes as T[]).map(node => ({ label: node[key], value: node[key] }));
-}
-
-interface Person {
-  firstName: string;
-  lastName: string;
-  id: string;
-}
-
-export function mapPersonNodeToChoice<T extends Person>(nodes: T[]): Option[] {
-  if (!nodes) {
-    return [];
-  }
-
-  return nodes.map(({ firstName, lastName, id }) => ({
-    value: id,
-    label: getFullName({ firstName, lastName }),
-  }));
 }
 
 export function getLoadableList<T>(data: Connection<T> | undefined | null): T[] | undefined {

@@ -4,24 +4,31 @@ import { GraphQLError } from "graphql";
 
 import { UserContextError } from "./types";
 
-export enum JWTError {
+enum JWTError {
   invalid = "InvalidTokenError",
   invalidSignature = "InvalidSignatureError",
   expired = "ExpiredSignatureError",
 }
 
-export const AuthError = {
+const AuthError = {
   PermissionDenied: "PermissionDenied",
   OAuthError: "OAuthError",
 } as const;
 
-export type AuthError = (typeof AuthError)[keyof typeof AuthError];
+type AuthError = (typeof AuthError)[keyof typeof AuthError];
+
+/**
+ * Exception body is not typed so we assert it. In previous graphql typings it was type "any", now its "unknown"
+ */
+type ExceptionWithCode = {
+  code: string;
+};
 
 export function isJwtError(error: GraphQLError): boolean {
   let jwtError: boolean;
 
   try {
-    jwtError = !!findValueInEnum(error.extensions?.exception.code, JWTError);
+    jwtError = !!findValueInEnum((error.extensions?.exception as ExceptionWithCode).code, JWTError);
   } catch (e) {
     jwtError = false;
   }
@@ -30,11 +37,15 @@ export function isJwtError(error: GraphQLError): boolean {
 }
 
 export function isTokenExpired(error: GraphQLError): boolean {
-  return error.extensions?.exception.code === JWTError.expired;
+  try {
+    return (error.extensions?.exception as ExceptionWithCode).code === JWTError.expired;
+  } catch (e) {
+    return false;
+  }
 }
 
-export function getAuthErrorType(graphQLError: GraphQLError): UserContextError {
-  switch (graphQLError.extensions?.exception?.code as AuthError) {
+function getAuthErrorType(graphQLError: GraphQLError): UserContextError {
+  switch ((graphQLError.extensions?.exception as ExceptionWithCode)?.code as AuthError) {
     case AuthError.PermissionDenied:
       return UserContextError.noPermissionsError;
     case AuthError.OAuthError:

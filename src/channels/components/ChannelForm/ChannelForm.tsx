@@ -19,7 +19,6 @@ import { commonMessages } from "@dashboard/intl";
 import { getFormErrors } from "@dashboard/utils/errors";
 import getChannelsErrorMessage from "@dashboard/utils/errors/channels";
 import { Box, Button, CopyIcon, Input, Option, Text } from "@saleor/macaw-ui-next";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { AllowUnpaidOrders } from "./AllowUnpaidOrders";
@@ -45,7 +44,7 @@ export interface FormData extends StockSettingsInput {
   automaticallyCompleteCheckouts: boolean;
 }
 
-export interface ChannelFormProps {
+interface ChannelFormProps {
   data: FormData;
   disabled: boolean;
   currencyCodes?: Option[];

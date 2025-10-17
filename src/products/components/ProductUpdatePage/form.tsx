@@ -9,8 +9,8 @@ import {
   createAttributeChangeHandler,
   createAttributeFileChangeHandler,
   createAttributeMultiChangeHandler,
+  createAttributeReferenceAdditionalDataHandler,
   createAttributeReferenceChangeHandler,
-  createAttributeReferenceMetadataHandler,
   createAttributeValueReorderHandler,
   createFetchMoreReferencesHandler,
   createFetchReferencesHandler,
@@ -38,7 +38,8 @@ import useMetadataChangeTrigger from "@dashboard/utils/metadata/useMetadataChang
 import { RichTextContext } from "@dashboard/utils/richText/context";
 import { useMultipleRichText } from "@dashboard/utils/richText/useMultipleRichText";
 import useRichText from "@dashboard/utils/richText/useRichText";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import * as React from "react";
 
 import { useProductChannelListingsForm } from "./formChannels";
 import {
@@ -130,11 +131,11 @@ export function useProductUpdateForm(
     triggerChange,
   );
   const handleAttributeReferenceChange = createAttributeReferenceChangeHandler(
-    attributes.change,
+    attributes,
     triggerChange,
   );
-  const handleAttributeMetadataChange = createAttributeReferenceMetadataHandler(
-    attributes.setMetadata,
+  const handleAttributeMetadataChange = createAttributeReferenceAdditionalDataHandler(
+    attributes,
     triggerChange,
   );
   const handleFetchReferences = createFetchReferencesHandler(
@@ -173,17 +174,16 @@ export function useProductUpdateForm(
   const changeMetadata = makeMetadataChangeHandler(handleChange);
   const data: ProductUpdateData = {
     ...formData,
-    attributes: getAttributesDisplayData(
-      attributes.data,
-      attributesWithNewFileValue.data,
-      opts.referencePages,
-      opts.referenceProducts,
-      opts.referenceCollections,
-      opts.referenceCategories,
-    ),
+    attributes: getAttributesDisplayData(attributes.data, attributesWithNewFileValue.data, {
+      pages: opts.referencePages,
+      products: opts.referenceProducts,
+      collections: opts.referenceCollections,
+      categories: opts.referenceCategories,
+    }),
     channels,
     description: null,
   };
+
   const getSubmitData = async (): Promise<ProductUpdateSubmitData> => ({
     ...form.changedData,
     ...getMetadata(data, isMetadataModified, isPrivateMetadataModified),
@@ -290,7 +290,7 @@ export function useProductUpdateForm(
       selectAttributeFile: handleAttributeFileChange,
       selectAttributeMultiple: handleAttributeMultiChange,
       selectAttributeReference: handleAttributeReferenceChange,
-      selectAttributeReferenceMetadata: handleAttributeMetadataChange,
+      selectAttributeReferenceAdditionalData: handleAttributeMetadataChange,
       selectCategory: handleCategorySelect,
       selectCollection: handleCollectionSelect,
       selectTaxClass: handleTaxClassSelect,

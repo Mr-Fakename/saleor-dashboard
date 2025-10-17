@@ -7,7 +7,7 @@ import { commonMessages } from "@dashboard/intl";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Button, Skeleton, vars } from "@saleor/macaw-ui-next";
-import React from "react";
+import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 const useStyles = makeStyles(
@@ -47,7 +47,7 @@ const useStyles = makeStyles(
   },
 );
 
-export interface CollectionImageProps {
+interface CollectionImageProps {
   data: {
     backgroundImageAlt: string;
   };
@@ -135,4 +135,3 @@ export const CollectionImage = (props: CollectionImageProps) => {
 };
 
 CollectionImage.displayName = "CollectionImage";
-export default CollectionImage;

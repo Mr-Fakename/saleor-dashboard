@@ -1,11 +1,10 @@
 import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import { LanguageFragment } from "@dashboard/graphql";
-import React from "react";
 import { useIntl } from "react-intl";
 
 import TranslationsLanguageList from "../TranslationsLanguageList";
 
-export interface TranslationsLanguageListPageProps {
+interface TranslationsLanguageListPageProps {
   languages: LanguageFragment[];
 }
 

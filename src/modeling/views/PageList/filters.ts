@@ -1,45 +1,21 @@
 // @ts-strict-ignore
-import { FilterElement, IFilter } from "@dashboard/components/Filter";
+import { FilterElement } from "@dashboard/components/Filter/types";
 import { SearchWithFetchMoreProps } from "@dashboard/giftCards/GiftCardsList/GiftCardListSearchAndFilters/types";
 import { SearchPageTypesQuery } from "@dashboard/graphql";
-import {
-  PageListUrlFilters,
-  PageListUrlFiltersWithMultipleValues,
-  PageListUrlSort,
-} from "@dashboard/modeling/urls";
-import {
-  ActiveTab,
-  AutocompleteFilterOpts,
-  FilterOpts,
-  Pagination,
-  Search,
-} from "@dashboard/types";
-import {
-  createFilterTabUtils,
-  createFilterUtils,
-  getMultipleValueQueryParam,
-} from "@dashboard/utils/filters";
-import { createAutocompleteField } from "@dashboard/utils/filters/fields";
+import { PageListUrlFilters } from "@dashboard/modeling/urls";
+import { AutocompleteFilterOpts, FilterOpts } from "@dashboard/types";
+import { createFilterTabUtils, getMultipleValueQueryParam } from "@dashboard/utils/filters";
 import { mapNodeToChoice, mapSingleValueNodeToChoice } from "@dashboard/utils/maps";
-import { defineMessages, IntlShape } from "react-intl";
 
 export enum PageListFilterKeys {
   pageTypes = "pageTypes",
 }
 
-export const PAGES_FILTERS_KEY = "pagesFilters";
+const PAGES_FILTERS_KEY = "pagesFilters";
 
 export interface PageListFilterOpts {
   pageType: FilterOpts<string[]> & AutocompleteFilterOpts;
 }
-
-const messages = defineMessages({
-  pageType: {
-    id: "zpWcU5",
-    defaultMessage: "Model types",
-    description: "Types",
-  },
-});
 
 interface PageListFilterOptsProps {
   params: PageListUrlFilters;
@@ -65,32 +41,6 @@ export const getFilterOpts = ({
   },
 });
 
-export function createFilterStructure(
-  intl: IntlShape,
-  opts: PageListFilterOpts,
-): IFilter<PageListFilterKeys> {
-  return [
-    {
-      ...createAutocompleteField(
-        PageListFilterKeys.pageTypes,
-        intl.formatMessage(messages.pageType),
-        opts.pageType.value,
-        opts.pageType.displayValues,
-        true,
-        opts.pageType.choices,
-        {
-          hasMore: opts.pageType.hasMore,
-          initialSearch: "",
-          loading: opts.pageType.loading,
-          onFetchMore: opts.pageType.onFetchMore,
-          onSearchChange: opts.pageType.onSearchChange,
-        },
-      ),
-      active: opts.pageType.active,
-    },
-  ];
-}
-
 export function getFilterQueryParam(filter: FilterElement<PageListFilterKeys>): PageListUrlFilters {
   const { name } = filter;
   const { pageTypes } = PageListFilterKeys;
@@ -101,15 +51,4 @@ export function getFilterQueryParam(filter: FilterElement<PageListFilterKeys>): 
   }
 }
 
-export type PageListUrlQueryParams = Pagination &
-  PageListUrlFilters &
-  PageListUrlSort &
-  ActiveTab &
-  Search;
-
 export const storageUtils = createFilterTabUtils<string>(PAGES_FILTERS_KEY);
-
-export const { areFiltersApplied, getActiveFilters, getFiltersCurrentTab } = createFilterUtils<
-  PageListUrlQueryParams,
-  PageListUrlFilters
->(PageListUrlFiltersWithMultipleValues);
