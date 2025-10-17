@@ -26,7 +26,7 @@ export function useCustomCellRenderers() {
       dateCellRenderer(locale),
       dropdownCellRenderer,
       thumbnailCellRenderer,
-      ...customRenderers,
+      ...(customRenderers ?? []),
     ],
     [customRenderers, locale],
   );
