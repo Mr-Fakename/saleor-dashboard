@@ -5,6 +5,7 @@ export const fragmentOrderEvent = gql`
     id
     amount
     shippingCostsIncluded
+
     date
     email
     emailType
@@ -270,6 +271,7 @@ export const orderDiscount = gql`
 export const fragmentOrderDetails = gql`
   fragment OrderDetails on Order {
     id
+    displayGrossPrices
     ...Metadata
     billingAddress {
       ...Address
@@ -427,6 +429,7 @@ export const fragmentOrderDetails = gql`
       }
     }
     chargeStatus
+    authorizeStatus
   }
 `;
 
@@ -682,6 +685,11 @@ export const fragmentOrderGrantedRefunds = gql`
     app {
       id
       name
+      brand {
+        logo {
+          default(format: WEBP, size: 64)
+        }
+      }
     }
     lines {
       id

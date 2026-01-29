@@ -90,9 +90,10 @@ export interface UseProductUpdateFormOutput
     RichTextProps {
   datagrid: UseDatagridChangeState;
   formErrors: FormErrors<ProductUpdateSubmitData>;
+  touchedChannels: string[];
 }
 
-type UseProductUpdateFormRenderProps = Omit<UseProductUpdateFormOutput, "datagrid" | "richText">;
+type UseProductUpdateFormRenderProps = Omit<UseProductUpdateFormOutput, "datagrid">;
 
 export interface UseProductUpdateFormOpts
   extends Record<"categories" | "collections" | "taxClasses", Option[]> {

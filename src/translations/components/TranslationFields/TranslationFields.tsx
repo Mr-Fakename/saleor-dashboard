@@ -9,10 +9,10 @@ import { buttonMessages } from "@dashboard/intl";
 import { TranslationField, TranslationFieldType } from "@dashboard/translations/types";
 import { ListProps } from "@dashboard/types";
 import { OutputData } from "@editorjs/editorjs";
-import ArrowIcon from "@material-ui/icons/ArrowDropDown";
 import { Button, IconButton, makeStyles } from "@saleor/macaw-ui";
 import { Skeleton, Text } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
+import { ChevronDown } from "lucide-react";
 import { Fragment, useState } from "react";
 import { FormattedMessage } from "react-intl";
 
@@ -23,7 +23,7 @@ import TranslationFieldsShort from "./TranslationFieldsShort";
 type Pagination = Pick<ListProps, Exclude<keyof ListProps, "getRowHref" | "disabled">>;
 
 interface TranslationFieldsProps {
-  activeField: string;
+  activeField: string | string[];
   disabled: boolean;
   title: string;
   fields: TranslationField[];
@@ -34,6 +34,7 @@ interface TranslationFieldsProps {
   onEdit: (field: string) => void;
   onDiscard: () => void;
   onSubmit: (field: TranslationField, data: string | OutputData) => SubmitPromise;
+  onValueChange?(field: TranslationField, currentValue: string): void;
 }
 
 const useStyles = makeStyles(
@@ -114,6 +115,7 @@ const TranslationFields = (props: TranslationFieldsProps) => {
     onEdit,
     onDiscard,
     onSubmit,
+    onValueChange,
   } = props;
   const classes = useStyles(props);
   const [expanded, setExpandedState] = useState(initialState);
@@ -124,7 +126,7 @@ const TranslationFields = (props: TranslationFieldsProps) => {
         <DashboardCard.Title>{title}</DashboardCard.Title>
         <DashboardCard.Toolbar>
           <IconButton variant="secondary" onClick={() => setExpandedState(!expanded)}>
-            <ArrowIcon
+            <ChevronDown
               className={clsx({
                 [classes.rotate]: expanded,
               })}
@@ -166,6 +168,11 @@ const TranslationFields = (props: TranslationFieldsProps) => {
                         saveButtonState="default"
                         onDiscard={onDiscard}
                         onSubmit={undefined}
+                        onValueChange={v => {
+                          if (onValueChange) {
+                            onValueChange(field, v);
+                          }
+                        }}
                       />
                     ) : field.type === TranslationFieldType.LONG ? (
                       <TranslationFieldsLong
@@ -175,6 +182,11 @@ const TranslationFields = (props: TranslationFieldsProps) => {
                         saveButtonState="default"
                         onDiscard={onDiscard}
                         onSubmit={undefined}
+                        onValueChange={v => {
+                          if (onValueChange) {
+                            onValueChange(field, v);
+                          }
+                        }}
                       />
                     ) : (
                       <TranslationFieldsRich
@@ -185,6 +197,11 @@ const TranslationFields = (props: TranslationFieldsProps) => {
                         saveButtonState="default"
                         onDiscard={onDiscard}
                         onSubmit={undefined}
+                        onValueChange={v => {
+                          if (onValueChange) {
+                            onValueChange(field, v);
+                          }
+                        }}
                       />
                     )
                   ) : (
@@ -196,30 +213,57 @@ const TranslationFields = (props: TranslationFieldsProps) => {
                     field.type === TranslationFieldType.SHORT ? (
                       <TranslationFieldsShort
                         disabled={disabled}
-                        edit={activeField === field.name}
+                        edit={
+                          Array.isArray(activeField)
+                            ? activeField.includes(field.name)
+                            : activeField === field.name
+                        }
                         initial={field.translation}
                         saveButtonState={saveButtonState}
                         onDiscard={onDiscard}
                         onSubmit={data => onSubmit(field, data)}
+                        onValueChange={v => {
+                          if (onValueChange) {
+                            onValueChange(field, v);
+                          }
+                        }}
                       />
                     ) : field.type === TranslationFieldType.LONG ? (
                       <TranslationFieldsLong
                         disabled={disabled}
-                        edit={activeField === field.name}
+                        edit={
+                          Array.isArray(activeField)
+                            ? activeField.includes(field.name)
+                            : activeField === field.name
+                        }
                         initial={field.translation}
                         saveButtonState={saveButtonState}
                         onDiscard={onDiscard}
                         onSubmit={data => onSubmit(field, data)}
+                        onValueChange={v => {
+                          if (onValueChange) {
+                            onValueChange(field, v);
+                          }
+                        }}
                       />
                     ) : (
                       <TranslationFieldsRich
                         resetKey={richTextResetKey}
                         disabled={disabled}
-                        edit={activeField === field.name}
+                        edit={
+                          Array.isArray(activeField)
+                            ? activeField.includes(field.name)
+                            : activeField === field.name
+                        }
                         initial={field.translation}
                         saveButtonState={saveButtonState}
                         onDiscard={onDiscard}
                         onSubmit={data => onSubmit(field, data)}
+                        onValueChange={v => {
+                          if (onValueChange) {
+                            onValueChange(field, v);
+                          }
+                        }}
                       />
                     )
                   ) : (

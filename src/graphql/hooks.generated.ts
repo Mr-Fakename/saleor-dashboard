@@ -17,6 +17,16 @@ export const AppManifestFragmentDoc = gql`
   dataPrivacyUrl
   homepageUrl
   supportUrl
+  extensions {
+    targetName
+    permissions {
+      code
+      name
+    }
+    mountName
+    url
+    label
+  }
   permissions {
     code
     name
@@ -361,6 +371,8 @@ export const ChannelDetailsFragmentDoc = gql`
   }
   checkoutSettings {
     automaticallyCompleteFullyPaidCheckouts
+    automaticCompletionDelay
+    automaticCompletionCutOffDate
   }
 }
     ${ChannelFragmentDoc}
@@ -405,6 +417,7 @@ export const ChannelListingProductWithoutPricingFragmentDoc = gql`
   channel {
     id
     name
+    slug
     currencyCode
   }
 }
@@ -1639,6 +1652,11 @@ export const AppAvatarFragmentDoc = gql`
     fragment AppAvatar on App {
   id
   name
+  brand {
+    logo {
+      default(format: WEBP, size: 64)
+    }
+  }
 }
     `;
 export const TransactionEventFragmentDoc = gql`
@@ -1790,6 +1808,11 @@ export const OrderGrantedRefundFragmentDoc = gql`
   app {
     id
     name
+    brand {
+      logo {
+        default(format: WEBP, size: 64)
+      }
+    }
   }
   lines {
     id
@@ -2017,6 +2040,7 @@ export const InvoiceFragmentDoc = gql`
 export const OrderDetailsFragmentDoc = gql`
     fragment OrderDetails on Order {
   id
+  displayGrossPrices
   ...Metadata
   billingAddress {
     ...Address
@@ -2172,6 +2196,7 @@ export const OrderDetailsFragmentDoc = gql`
     }
   }
   chargeStatus
+  authorizeStatus
 }
     ${MetadataFragmentDoc}
 ${AddressFragmentDoc}
@@ -2405,9 +2430,8 @@ export const AttributeFragmentDoc = gql`
   filterableInStorefront
   unit
   inputType
-  ...Metadata
 }
-    ${MetadataFragmentDoc}`;
+    `;
 export const PageTypeDetailsFragmentDoc = gql`
     fragment PageTypeDetails on PageType {
   ...PageType
@@ -2795,6 +2819,16 @@ export const ProductVariantAttributesFragmentDoc = gql`
     variantAttributes {
       ...VariantAttribute
     }
+    selectionVariantAttributes: variantAttributes(
+      variantSelection: VARIANT_SELECTION
+    ) {
+      ...VariantAttribute
+    }
+    nonSelectionVariantAttributes: variantAttributes(
+      variantSelection: NOT_VARIANT_SELECTION
+    ) {
+      ...VariantAttribute
+    }
   }
   channelListings {
     channel {
@@ -2972,6 +3006,11 @@ export const ProductVariantFragmentDoc = gql`
     name
     thumbnail {
       url
+    }
+    productType {
+      id
+      name
+      hasVariants
     }
     channelListings {
       id
@@ -3653,9 +3692,17 @@ export const WarehouseDetailsFragmentDoc = gql`
   address {
     ...Address
   }
+  email
+  metadata {
+    ...MetadataItem
+  }
+  privateMetadata {
+    ...MetadataItem
+  }
 }
     ${WarehouseWithShippingFragmentDoc}
-${AddressFragmentDoc}`;
+${AddressFragmentDoc}
+${MetadataItemFragmentDoc}`;
 export const WebhookDetailsFragmentDoc = gql`
     fragment WebhookDetails on Webhook {
   ...Webhook
@@ -4038,6 +4085,7 @@ export const AttributeDetailsDocument = gql`
     query AttributeDetails($id: ID!, $firstValues: Int, $afterValues: String, $lastValues: Int, $beforeValues: String) {
   attribute(id: $id) {
     ...AttributeDetails
+    ...Metadata
     choices(
       first: $firstValues
       after: $afterValues
@@ -4049,6 +4097,7 @@ export const AttributeDetailsDocument = gql`
   }
 }
     ${AttributeDetailsFragmentDoc}
+${MetadataFragmentDoc}
 ${AttributeValueListFragmentDoc}`;
 
 /**
@@ -9418,21 +9467,10 @@ export const ExtensionListDocument = gql`
         id
         label
         url
-        mount
-        target
+        mountName
+        targetName
+        settings
         accessToken
-        options {
-          ... on AppExtensionOptionsWidget {
-            widgetTarget {
-              method
-            }
-          }
-          ... on AppExtensionOptionsNewTab {
-            newTabTarget {
-              method
-            }
-          }
-        }
         permissions {
           code
         }
@@ -15168,17 +15206,32 @@ export type ProductBulkDeleteMutationHookResult = ReturnType<typeof useProductBu
 export type ProductBulkDeleteMutationResult = Apollo.MutationResult<Types.ProductBulkDeleteMutation>;
 export type ProductBulkDeleteMutationOptions = Apollo.BaseMutationOptions<Types.ProductBulkDeleteMutation, Types.ProductBulkDeleteMutationVariables>;
 export const ProductVariantBulkCreateDocument = gql`
-    mutation ProductVariantBulkCreate($id: ID!, $inputs: [ProductVariantBulkCreateInput!]!) {
-  productVariantBulkCreate(product: $id, variants: $inputs) {
+    mutation ProductVariantBulkCreate($id: ID!, $inputs: [ProductVariantBulkCreateInput!]!, $errorPolicy: ErrorPolicyEnum) {
+  productVariantBulkCreate(
+    product: $id
+    variants: $inputs
+    errorPolicy: $errorPolicy
+  ) {
     errors {
       ...BulkProductError
     }
+    results {
+      errors {
+        ...ProductVariantBulkError
+      }
+      productVariant {
+        id
+        name
+      }
+    }
     productVariants {
       id
+      name
     }
   }
 }
-    ${BulkProductErrorFragmentDoc}`;
+    ${BulkProductErrorFragmentDoc}
+${ProductVariantBulkErrorFragmentDoc}`;
 export type ProductVariantBulkCreateMutationFn = Apollo.MutationFunction<Types.ProductVariantBulkCreateMutation, Types.ProductVariantBulkCreateMutationVariables>;
 
 /**
@@ -15196,6 +15249,7 @@ export type ProductVariantBulkCreateMutationFn = Apollo.MutationFunction<Types.P
  *   variables: {
  *      id: // value for 'id'
  *      inputs: // value for 'inputs'
+ *      errorPolicy: // value for 'errorPolicy'
  *   },
  * });
  */
@@ -15286,9 +15340,16 @@ export const ProductChannelListingUpdateDocument = gql`
     errors {
       ...ProductChannelListingError
     }
+    product {
+      id
+      channelListings {
+        ...ChannelListingProductWithoutPricing
+      }
+    }
   }
 }
-    ${ProductChannelListingErrorFragmentDoc}`;
+    ${ProductChannelListingErrorFragmentDoc}
+${ChannelListingProductWithoutPricingFragmentDoc}`;
 export type ProductChannelListingUpdateMutationFn = Apollo.MutationFunction<Types.ProductChannelListingUpdateMutation, Types.ProductChannelListingUpdateMutationVariables>;
 
 /**
@@ -15758,6 +15819,8 @@ export const ProductVariantCreateDataDocument = gql`
     name
     productType {
       id
+      name
+      hasVariants
       selectionVariantAttributes: variantAttributes(
         variantSelection: VARIANT_SELECTION
       ) {
@@ -16029,6 +16092,67 @@ export function useGridWarehousesLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GridWarehousesQueryHookResult = ReturnType<typeof useGridWarehousesQuery>;
 export type GridWarehousesLazyQueryHookResult = ReturnType<typeof useGridWarehousesLazyQuery>;
 export type GridWarehousesQueryResult = Apollo.QueryResult<Types.GridWarehousesQuery, Types.GridWarehousesQueryVariables>;
+export const ChannelDiagnosticsDocument = gql`
+    query ChannelDiagnostics {
+  channels {
+    id
+    name
+    slug
+    currencyCode
+    isActive
+    warehouses {
+      id
+      name
+    }
+  }
+  shippingZones(first: 100) {
+    edges {
+      node {
+        id
+        name
+        channels {
+          id
+        }
+        warehouses {
+          id
+          name
+        }
+        countries {
+          code
+          country
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useChannelDiagnosticsQuery__
+ *
+ * To run a query within a React component, call `useChannelDiagnosticsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelDiagnosticsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelDiagnosticsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChannelDiagnosticsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<Types.ChannelDiagnosticsQuery, Types.ChannelDiagnosticsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<Types.ChannelDiagnosticsQuery, Types.ChannelDiagnosticsQueryVariables>(ChannelDiagnosticsDocument, options);
+      }
+export function useChannelDiagnosticsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<Types.ChannelDiagnosticsQuery, Types.ChannelDiagnosticsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<Types.ChannelDiagnosticsQuery, Types.ChannelDiagnosticsQueryVariables>(ChannelDiagnosticsDocument, options);
+        }
+export type ChannelDiagnosticsQueryHookResult = ReturnType<typeof useChannelDiagnosticsQuery>;
+export type ChannelDiagnosticsLazyQueryHookResult = ReturnType<typeof useChannelDiagnosticsLazyQuery>;
+export type ChannelDiagnosticsQueryResult = Apollo.QueryResult<Types.ChannelDiagnosticsQuery, Types.ChannelDiagnosticsQueryVariables>;
 export const SetRefundReasonTypeDocument = gql`
     mutation SetRefundReasonType($modelTypeId: ID!) {
   refundSettingsUpdate(input: {refundReasonReferenceType: $modelTypeId}) {

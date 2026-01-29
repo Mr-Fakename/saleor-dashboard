@@ -30,6 +30,8 @@ jobs:
       IS_CLOUD_INSTANCE: true
       ENABLED_SERVICE_NAME_HEADER: true
       ONBOARDING_USER_JOINED_DATE_THRESHOLD: ${{ vars.STAGING_ONBOARDING_USER_JOINED_DATE_THRESHOLD }}
+      # master-staging uses core unstable/unreleased schema, so this deployment will have enabled features available only on this branch
+      FF_USE_STAGING_SCHEMA: true
     steps:
       - uses: actions/checkout@v2
       - name: Set custom version
@@ -39,18 +41,20 @@ jobs:
           RELEASE="${CURRENT_VERSION}-${HASH}"
           echo "CUSTOM_VERSION=${RELEASE}" >> $GITHUB_ENV
           echo "SENTRY_RELEASE=${RELEASE}" >> $GITHUB_ENV
+      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
+          cache: "pnpm"
       - name: Package
         timeout-minutes: 15
         run: |
-          npm ci
+          pnpm install
 
       - name: Build
         run: |
-          npm run build
+          pnpm run build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4

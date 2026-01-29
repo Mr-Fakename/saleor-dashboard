@@ -26,7 +26,7 @@ import {
   OrderCustomerChangeData,
 } from "@dashboard/orders/components/OrderCustomerChangeDialog/form";
 import OrderCustomerChangeDialog from "@dashboard/orders/components/OrderCustomerChangeDialog/OrderCustomerChangeDialog";
-import { OrderMetadataDialog } from "@dashboard/orders/components/OrderMetadataDialog";
+import { OrderLineMetadataDialog } from "@dashboard/orders/components/OrderLineMetadataDialog/OrderLineMetadataDialog";
 import { getVariantSearchAddress, isAnyAddressEditModalOpen } from "@dashboard/orders/utils/data";
 import { OrderDiscountProvider } from "@dashboard/products/components/OrderDiscountProviders/OrderDiscountProvider";
 import { OrderLineDiscountProvider } from "@dashboard/products/components/OrderDiscountProviders/OrderLineDiscountProvider";
@@ -41,7 +41,7 @@ import { extractMutationErrors, getStringOrPlaceholder } from "../../../../misc"
 import { productUrl } from "../../../../products/urls";
 import OrderAddressFields from "../../../components/OrderAddressFields/OrderAddressFields";
 import OrderDraftCancelDialog from "../../../components/OrderDraftCancelDialog/OrderDraftCancelDialog";
-import OrderDraftPage from "../../../components/OrderDraftPage";
+import OrderDraftPage from "../../../components/OrderDraftPage/OrderDraftPage";
 import OrderProductAddDialog from "../../../components/OrderProductAddDialog";
 import OrderShippingMethodEditDialog from "../../../components/OrderShippingMethodEditDialog";
 import { orderDraftListUrl, OrderUrlDialog, OrderUrlQueryParams } from "../../../urls";
@@ -227,7 +227,7 @@ export const OrderDraftDetails = ({
             onDraftFinalize={() => orderDraftFinalize.mutate({ id })}
             onDraftRemove={() => openModal("cancel")}
             onOrderLineAdd={() => openModal("add-order-line")}
-            onShowMetadata={id => openModal("view-metadata", { id })}
+            onOrderLineShowMetadata={id => openModal("view-order-line-metadata", { id })}
             order={order}
             channelUsabilityData={channelUsabilityData}
             onProductClick={id => () => navigate(productUrl(encodeURIComponent(id)))}
@@ -257,8 +257,11 @@ export const OrderDraftDetails = ({
       <OrderShippingMethodEditDialog
         confirmButtonState={orderShippingMethodUpdate.opts.status}
         errors={orderShippingMethodUpdate.opts.data?.orderUpdateShipping.errors || []}
+        isClearable
         open={params.action === "edit-shipping"}
         shippingMethod={order?.shippingMethod?.id}
+        shippingMethodName={order?.shippingMethodName}
+        shippingPrice={order?.shippingPrice}
         shippingMethods={order?.shippingMethods}
         onClose={closeModal}
         onSubmit={variables =>
@@ -298,8 +301,8 @@ export const OrderDraftDetails = ({
         onClose={closeModal}
         onConfirm={handleCustomerChangeAction}
       />
-      <OrderMetadataDialog
-        open={params.action === "view-metadata"}
+      <OrderLineMetadataDialog
+        open={params.action === "view-order-line-metadata"}
         onClose={closeModal}
         lineId={params.id}
         orderId={id}

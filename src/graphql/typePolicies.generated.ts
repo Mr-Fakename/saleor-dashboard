@@ -341,16 +341,19 @@ export type AppErrorFieldPolicy = {
 	message?: FieldPolicy<any> | FieldReadFunction<any>,
 	permissions?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type AppExtensionKeySpecifier = ('accessToken' | 'app' | 'id' | 'label' | 'mount' | 'options' | 'permissions' | 'target' | 'url' | AppExtensionKeySpecifier)[];
+export type AppExtensionKeySpecifier = ('accessToken' | 'app' | 'id' | 'label' | 'mount' | 'mountName' | 'options' | 'permissions' | 'settings' | 'target' | 'targetName' | 'url' | AppExtensionKeySpecifier)[];
 export type AppExtensionFieldPolicy = {
 	accessToken?: FieldPolicy<any> | FieldReadFunction<any>,
 	app?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
 	label?: FieldPolicy<any> | FieldReadFunction<any>,
 	mount?: FieldPolicy<any> | FieldReadFunction<any>,
+	mountName?: FieldPolicy<any> | FieldReadFunction<any>,
 	options?: FieldPolicy<any> | FieldReadFunction<any>,
 	permissions?: FieldPolicy<any> | FieldReadFunction<any>,
+	settings?: FieldPolicy<any> | FieldReadFunction<any>,
 	target?: FieldPolicy<any> | FieldReadFunction<any>,
+	targetName?: FieldPolicy<any> | FieldReadFunction<any>,
 	url?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type AppExtensionCountableConnectionKeySpecifier = ('edges' | 'pageInfo' | 'totalCount' | AppExtensionCountableConnectionKeySpecifier)[];
@@ -411,12 +414,15 @@ export type AppManifestBrandLogoKeySpecifier = ('default' | AppManifestBrandLogo
 export type AppManifestBrandLogoFieldPolicy = {
 	default?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type AppManifestExtensionKeySpecifier = ('label' | 'mount' | 'permissions' | 'target' | 'url' | AppManifestExtensionKeySpecifier)[];
+export type AppManifestExtensionKeySpecifier = ('label' | 'mount' | 'mountName' | 'permissions' | 'settings' | 'target' | 'targetName' | 'url' | AppManifestExtensionKeySpecifier)[];
 export type AppManifestExtensionFieldPolicy = {
 	label?: FieldPolicy<any> | FieldReadFunction<any>,
 	mount?: FieldPolicy<any> | FieldReadFunction<any>,
+	mountName?: FieldPolicy<any> | FieldReadFunction<any>,
 	permissions?: FieldPolicy<any> | FieldReadFunction<any>,
+	settings?: FieldPolicy<any> | FieldReadFunction<any>,
 	target?: FieldPolicy<any> | FieldReadFunction<any>,
+	targetName?: FieldPolicy<any> | FieldReadFunction<any>,
 	url?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type AppManifestRequiredSaleorVersionKeySpecifier = ('constraint' | 'satisfied' | AppManifestRequiredSaleorVersionKeySpecifier)[];
@@ -1442,8 +1448,10 @@ export type CheckoutRemovePromoCodeFieldPolicy = {
 	checkoutErrors?: FieldPolicy<any> | FieldReadFunction<any>,
 	errors?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type CheckoutSettingsKeySpecifier = ('automaticallyCompleteFullyPaidCheckouts' | 'useLegacyErrorFlow' | CheckoutSettingsKeySpecifier)[];
+export type CheckoutSettingsKeySpecifier = ('automaticCompletionCutOffDate' | 'automaticCompletionDelay' | 'automaticallyCompleteFullyPaidCheckouts' | 'useLegacyErrorFlow' | CheckoutSettingsKeySpecifier)[];
 export type CheckoutSettingsFieldPolicy = {
+	automaticCompletionCutOffDate?: FieldPolicy<any> | FieldReadFunction<any>,
+	automaticCompletionDelay?: FieldPolicy<any> | FieldReadFunction<any>,
 	automaticallyCompleteFullyPaidCheckouts?: FieldPolicy<any> | FieldReadFunction<any>,
 	useLegacyErrorFlow?: FieldPolicy<any> | FieldReadFunction<any>
 };
@@ -5922,7 +5930,7 @@ export type ShippingZoneUpdatedFieldPolicy = {
 	shippingZone?: FieldPolicy<any> | FieldReadFunction<any>,
 	version?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ShopKeySpecifier = ('allowLoginWithoutConfirmation' | 'automaticFulfillmentDigitalProducts' | 'availableExternalAuthentications' | 'availablePaymentGateways' | 'availableShippingMethods' | 'availableTaxApps' | 'channelCurrencies' | 'chargeTaxesOnShipping' | 'companyAddress' | 'countries' | 'customerSetPasswordUrl' | 'defaultCountry' | 'defaultDigitalMaxDownloads' | 'defaultDigitalUrlValidDays' | 'defaultMailSenderAddress' | 'defaultMailSenderName' | 'defaultWeightUnit' | 'description' | 'displayGrossPrices' | 'domain' | 'enableAccountConfirmationByEmail' | 'fulfillmentAllowUnpaid' | 'fulfillmentAutoApprove' | 'headerText' | 'id' | 'includeTaxesInPrices' | 'languages' | 'limitQuantityPerCheckout' | 'limits' | 'metadata' | 'metafield' | 'metafields' | 'name' | 'permissions' | 'phonePrefixes' | 'privateMetadata' | 'privateMetafield' | 'privateMetafields' | 'reserveStockDurationAnonymousUser' | 'reserveStockDurationAuthenticatedUser' | 'schemaVersion' | 'staffNotificationRecipients' | 'trackInventoryByDefault' | 'translation' | 'version' | ShopKeySpecifier)[];
+export type ShopKeySpecifier = ('allowLoginWithoutConfirmation' | 'automaticFulfillmentDigitalProducts' | 'availableExternalAuthentications' | 'availablePaymentGateways' | 'availableShippingMethods' | 'availableTaxApps' | 'channelCurrencies' | 'chargeTaxesOnShipping' | 'companyAddress' | 'countries' | 'customerSetPasswordUrl' | 'defaultCountry' | 'defaultDigitalMaxDownloads' | 'defaultDigitalUrlValidDays' | 'defaultMailSenderAddress' | 'defaultMailSenderName' | 'defaultWeightUnit' | 'description' | 'displayGrossPrices' | 'domain' | 'enableAccountConfirmationByEmail' | 'fulfillmentAllowUnpaid' | 'fulfillmentAutoApprove' | 'headerText' | 'id' | 'includeTaxesInPrices' | 'languages' | 'limitQuantityPerCheckout' | 'limits' | 'metadata' | 'metafield' | 'metafields' | 'name' | 'permissions' | 'phonePrefixes' | 'privateMetadata' | 'privateMetafield' | 'privateMetafields' | 'reserveStockDurationAnonymousUser' | 'reserveStockDurationAuthenticatedUser' | 'schemaVersion' | 'staffNotificationRecipients' | 'trackInventoryByDefault' | 'translation' | 'useLegacyUpdateWebhookEmission' | 'version' | ShopKeySpecifier)[];
 export type ShopFieldPolicy = {
 	allowLoginWithoutConfirmation?: FieldPolicy<any> | FieldReadFunction<any>,
 	automaticFulfillmentDigitalProducts?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -5968,6 +5976,7 @@ export type ShopFieldPolicy = {
 	staffNotificationRecipients?: FieldPolicy<any> | FieldReadFunction<any>,
 	trackInventoryByDefault?: FieldPolicy<any> | FieldReadFunction<any>,
 	translation?: FieldPolicy<any> | FieldReadFunction<any>,
+	useLegacyUpdateWebhookEmission?: FieldPolicy<any> | FieldReadFunction<any>,
 	version?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type ShopAddressUpdateKeySpecifier = ('errors' | 'shop' | 'shopErrors' | ShopAddressUpdateKeySpecifier)[];

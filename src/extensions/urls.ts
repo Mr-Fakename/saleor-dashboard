@@ -12,7 +12,6 @@ export const LegacyAppSections = {
 export const LegacyAppPaths = {
   appListPath: LegacyAppSections.appsSection,
   resolveAppPath: (id: string) => urlJoin(LegacyAppSections.appsSection, id, "app"),
-  appInstallPath: urlJoin(LegacyAppSections.appsSection, "install"),
 };
 
 export const extensionsSection = "/extensions";
@@ -45,12 +44,26 @@ export const ExtensionsPaths = {
   resolveEditPluginExtension: (id: string) => urlJoin(extensionsPluginSection, id),
 };
 
+type TranslationContext =
+  | "product"
+  | "variant"
+  | "category"
+  | "collection"
+  | "sale"
+  | "voucher"
+  | "model"
+  | "attribute"
+  | "shipping-method"
+  | "structure";
+
 export const MANIFEST_ATTR = "manifestUrl";
 export type ExtensionInstallQueryParams = { [MANIFEST_ATTR]?: string };
 export type ExtensionsListUrlDialog = "app-installation-remove";
 export type ExtensionsListUrlQueryParams = Dialog<ExtensionsListUrlDialog> & SingleAction;
 export type AppDetailsUrlDialog = "app-activate" | "app-deactivate" | "app-delete";
 export interface AppDetailsUrlMountQueryParams {
+  attributeId?: string;
+  attributeIds?: string[];
   productId?: string;
   productIds?: string[];
   productSlug?: string;
@@ -74,6 +87,14 @@ export interface AppDetailsUrlMountQueryParams {
   pageTypeIds?: string[];
   menuId?: string;
   menuIds?: string[];
+  translationContext?: TranslationContext;
+  saleId?: string;
+  saleIds?: string[];
+  structureId?: string;
+  structureIds?: string[];
+  shippingMethodId?: string;
+  shippingMethodIds?: string[];
+  translationLanguage?: string;
 }
 interface FeatureFlagsQueryParams {
   featureFlags?: FlagList;

@@ -136,6 +136,8 @@ export const productVariantCreateQuery = gql`
       name
       productType {
         id
+        name
+        hasVariants
         selectionVariantAttributes: variantAttributes(variantSelection: VARIANT_SELECTION) {
           ...VariantAttribute
         }
@@ -269,3 +271,43 @@ export const defaultGraphiQLQuery = `query ProductDetails($id: ID!) {
     description
   }
 }`;
+
+/**
+ * Query for product availability diagnostics.
+ * Fetches channel and shipping zone data needed to determine
+ * if a product can be purchased in each channel.
+ */
+export const channelDiagnosticsQuery = gql`
+  query ChannelDiagnostics {
+    channels {
+      id
+      name
+      slug
+      currencyCode
+      isActive
+      warehouses {
+        id
+        name
+      }
+    }
+    shippingZones(first: 100) {
+      edges {
+        node {
+          id
+          name
+          channels {
+            id
+          }
+          warehouses {
+            id
+            name
+          }
+          countries {
+            code
+            country
+          }
+        }
+      }
+    }
+  }
+`;

@@ -3,15 +3,23 @@ import { makeStyles } from "@saleor/macaw-ui";
 import { useTheme, vars } from "@saleor/macaw-ui-next";
 import { useMemo } from "react";
 
-export const cellHeight = 40;
+import { rightColumnBoxShadow } from "./ColumnPicker/utils";
 
-const useStyles = makeStyles<{ actionButtonPosition?: "left" | "right" }>(
+export const cellHeight = 40;
+// Width for a single action button container (column picker, single row action)
+export const singleActionWidth = cellHeight;
+// Default width for the row action bar (can be overridden via Datagrid prop)
+export const rowActionBarWidth = singleActionWidth;
+
+const useStyles = makeStyles<{
+  actionButtonPosition?: "left" | "right";
+  showMetadataButton?: boolean;
+}>(
   () => {
     const rowActionSelected = {
-      background: vars.colors.background.default1,
+      background: "transparent",
       color: vars.colors.border.default1,
     };
-    const activeBorderColor = vars.colors.border.default1;
 
     return {
       actionBtnBar: {
@@ -34,15 +42,23 @@ const useStyles = makeStyles<{ actionButtonPosition?: "left" | "right" }>(
       columnPicker: {
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-end",
         height: cellHeight,
+        width: "100%",
       },
       columnPickerBackground: {
         background: vars.colors.background.default1,
       },
       ghostIcon: {
         color: vars.colors.text.default1,
-        padding: vars.spacing[1],
+        // Fixed size with 6px smaller than cell for visual padding
+        width: cellHeight - 8,
+        height: cellHeight - 8,
+        padding: 0,
+        margin: "auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       },
       portal: {
         "& input::-webkit-outer-spin-button, input::-webkit-inner-spin-button": {
@@ -99,12 +115,9 @@ const useStyles = makeStyles<{ actionButtonPosition?: "left" | "right" }>(
       },
       rowActionBar: {
         height: "100%",
-        width: 36,
+        width: rowActionBarWidth,
       },
-      rowActionvBarWithItems: {
-        borderLeft: `1px solid ${activeBorderColor}`,
-        background: vars.colors.background.default1,
-      },
+      rowActionvBarWithItems: {},
       rowActionBarScrolledToRight: {
         borderLeftColor: vars.colors.border.default1,
       },
@@ -115,18 +128,21 @@ const useStyles = makeStyles<{ actionButtonPosition?: "left" | "right" }>(
         "&:not(:last-child)": {
           marginBottom: -1,
         },
-        border: `1px solid ${vars.colors.border.default1}`,
-        borderLeft: "none",
+        borderTop: `1px solid ${vars.colors.border.default1}`,
+        borderBottom: `1px solid ${vars.colors.border.default1}`,
+        borderLeft: `1px solid ${vars.colors.border.default1}`,
         borderRight: "none",
         color: vars.colors.text.default1,
-        marginLeft: -1,
-        display: "flex",
+        display: "grid",
+        gridTemplateColumns: props => (props.showMetadataButton ? "1fr auto 1fr" : "1fr"),
         alignItems: "center",
-        justifyContent: "center",
+        justifyItems: "center",
         height: `calc(${cellHeight}px - 1px)`,
+        background: vars.colors.background.default1,
+        boxShadow: rightColumnBoxShadow,
       },
       rowColumnGroup: {
-        height: cellHeight,
+        height: `calc(${cellHeight}px - 1px)`,
       },
       rowActionScrolledToRight: {
         borderLeftColor: vars.colors.border.default1,
@@ -153,7 +169,7 @@ const useStyles = makeStyles<{ actionButtonPosition?: "left" | "right" }>(
         boxShadow: "-1px 0px 12px transparent",
       },
       rowActionBarShadowActive: {
-        boxShadow: "-1px 0px 12px rgba(0, 0, 0, 0.80)",
+        boxShadow: "none",
       },
       rowActionSelected,
     };
@@ -184,20 +200,18 @@ export function useDatagridTheme(readonly?: boolean, hasHeaderClickable?: boolea
   const { themeValues } = useTheme();
   const datagridTheme = useMemo(
     (): Partial<Theme> => ({
-      accentColor: themeValues.colors.background.accent1,
-      accentLight: themeValues.colors.background.accent1Hovered,
+      accentColor: "transparent",
+      accentLight: themeValues.colors.background.default2,
       accentFg: "transparent",
       bgCell: themeValues.colors.background.default1,
       bgHeader: themeValues.colors.background.default1,
-      bgHeaderHasFocus: themeValues.colors.background.default1Hovered,
-      bgHeaderHovered: hasHeaderClickable
-        ? themeValues.colors.background.default1Hovered
-        : themeValues.colors.background.default1,
+      bgHeaderHasFocus: "transparent",
+      bgHeaderHovered: "transparent",
       bgBubbleSelected: themeValues.colors.background.default1,
       borderColor: themeValues.colors.border.default1,
       fontFamily: "'Inter var', sans-serif",
-      baseFontStyle: `${themeValues.fontWeight.medium} ${themeValues.fontSize[3]}`,
-      headerFontStyle: `${themeValues.fontWeight.bold} ${themeValues.fontSize[3]}`,
+      baseFontStyle: `${themeValues.fontWeight.regular} ${themeValues.fontSize[3]}`,
+      headerFontStyle: `${themeValues.fontWeight.medium} ${themeValues.fontSize[2]}`,
       editorFontSize: themeValues.fontSize[3],
       textMedium: themeValues.colors.text.default1,
       textGroupHeader: themeValues.colors.text.default1,
@@ -205,7 +219,8 @@ export function useDatagridTheme(readonly?: boolean, hasHeaderClickable?: boolea
       textDark: themeValues.colors.text.default1,
       textLight: themeValues.colors.text.default2,
       textHeader: themeValues.colors.text.default1,
-      textHeaderSelected: themeValues.colors.background.default1,
+      textHeaderSelected: themeValues.colors.text.default1,
+      fgIconHeader: themeValues.colors.text.default1,
       cellHorizontalPadding: 8,
       cellVerticalPadding: 8,
       lineHeight: 20,
@@ -215,8 +230,8 @@ export function useDatagridTheme(readonly?: boolean, hasHeaderClickable?: boolea
   const readonylDatagridTheme = useMemo(
     () => ({
       ...datagridTheme,
-      accentColor: themeValues.colors.background.accent1,
-      accentLight: themeValues.colors.background.default1Hovered,
+      accentColor: "transparent",
+      accentLight: themeValues.colors.background.default2,
     }),
     [themeValues, datagridTheme],
   );

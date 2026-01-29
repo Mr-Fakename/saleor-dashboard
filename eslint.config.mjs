@@ -36,7 +36,7 @@ export default tseslint.config(
   tseslint.configs.recommended, // Note: we can migrate to rules using TypeScript types
   react.configs.flat.recommended,
   react.configs.flat["jsx-runtime"],
-  reactHooks.configs["recommended-latest"],
+  reactHooks.configs.flat["recommended-latest"],
   reactRefresh.configs.vite,
   reactYouMightNotNeedAnEffect.configs.recommended,
 
@@ -64,6 +64,23 @@ export default tseslint.config(
       "react-hooks/exhaustive-deps": "warn",
       // Allow constant exports is thanks to Vite (see recommended config)
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+
+      // Override React Compiler rules to warnings (for gradual adoption)
+      // The recommended config sets these as errors, we downgrade to warn
+      "react-hooks/purity": "warn", // Side effects during render
+      "react-hooks/refs": "warn", // Reading/writing refs during render
+      "react-hooks/set-state-in-render": "warn", // setState during render
+      "react-hooks/set-state-in-effect": "warn", // Synchronous setState in effects
+      "react-hooks/immutability": "warn", // Mutation of props/state
+      "react-hooks/static-components": "warn", // Dynamic component creation
+      "react-hooks/use-memo": "warn", // useMemo violations
+      "react-hooks/void-use-memo": "warn", // useMemo returning void
+      "react-hooks/component-hook-factories": "warn", // Component/hook factory violations
+      "react-hooks/preserve-manual-memoization": "warn", // Manual memoization issues
+      "react-hooks/globals": "warn", // Global variable usage
+      "react-hooks/error-boundaries": "warn", // Error boundary violations
+      "react-hooks/config": "warn", // Config violations
+      "react-hooks/gating": "warn", // Conditional rendering violations
 
       // Migration in progress:
       // Tracked in https://github.com/saleor/saleor-dashboard/issues/3813
@@ -191,7 +208,7 @@ export default tseslint.config(
     },
   },
 
-  // Disable rules for specific dfiles
+  // Disable rules for specific files
   {
     files: ["vite.config.js"],
     languageOptions: {
@@ -223,9 +240,21 @@ export default tseslint.config(
       "react-refresh/only-export-components": "off",
     },
   },
+  {
+    files: ["scripts/**.cjs"],
+    rules: {
+      // cjs doesn't work with ES Import
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 
   {
     rules: {
+      /**
+       * Reasoning: This allows to understand what function does without reading it's implementation.
+       * It also protects it's input and output - chanigng function internal will show error in it's body, not in other files that consuming
+       */
+      "@typescript-eslint/explicit-function-return-type": "warn",
       "no-restricted-imports": [
         "warn",
         {

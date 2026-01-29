@@ -10,13 +10,14 @@ import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import AssignAttributeValueDialog from "@dashboard/components/AssignAttributeValueDialog";
 import { AttributeInput, Attributes } from "@dashboard/components/Attributes";
 import CardSpacer from "@dashboard/components/CardSpacer";
-import ChannelsAvailabilityCard from "@dashboard/components/ChannelsAvailabilityCard";
 import { ConfirmButtonTransitionState } from "@dashboard/components/ConfirmButton";
 import { useDevModeContext } from "@dashboard/components/DevModePanel/hooks";
 import { DetailPageLayout } from "@dashboard/components/Layouts";
 import { Metadata } from "@dashboard/components/Metadata/Metadata";
+import { InitialConstraints } from "@dashboard/components/ModalFilters/entityConfigs/ModalProductFilterProvider";
 import { Savebar } from "@dashboard/components/Savebar";
 import { SeoForm } from "@dashboard/components/SeoForm";
+import { useActiveAppExtension } from "@dashboard/extensions/components/AppExtensionContext/AppExtensionContextProvider";
 import { AppWidgets } from "@dashboard/extensions/components/AppWidgets/AppWidgets";
 import { extensionMountPoints } from "@dashboard/extensions/extensionMountPoints";
 import { getExtensionsItemsForProductDetails } from "@dashboard/extensions/getExtensionsItems";
@@ -30,6 +31,8 @@ import {
   ProductErrorFragment,
   ProductErrorWithAttributesFragment,
   ProductFragment,
+  ProductVariantBulkCreateInput,
+  ProductWhereInput,
   RefreshLimitsQuery,
   SearchAttributeValuesQuery,
   SearchCategoriesQuery,
@@ -39,7 +42,7 @@ import {
   TaxClassBaseFragment,
 } from "@dashboard/graphql";
 import { useBackLinkWithState } from "@dashboard/hooks/useBackLinkWithState";
-import { SubmitPromise } from "@dashboard/hooks/useForm";
+import { FormChange, SubmitPromise } from "@dashboard/hooks/useForm";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import useStateFromProps from "@dashboard/hooks/useStateFromProps";
 import { maybe } from "@dashboard/misc";
@@ -55,15 +58,22 @@ import { TranslationsButton } from "@dashboard/translations/components/Translati
 import { productUrl as createTranslateProductUrl } from "@dashboard/translations/urls";
 import { useCachedLocales } from "@dashboard/translations/useCachedLocales";
 import { FetchMoreProps, RelayToFlat } from "@dashboard/types";
+import { UseRichTextResult } from "@dashboard/utils/richText/useRichText";
+import { OutputData } from "@editorjs/editorjs";
 import { Box, Divider, Option } from "@saleor/macaw-ui-next";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 
 import { AttributeValuesMetadata, getChoices } from "../../utils/data";
 import { ProductDetailsForm } from "../ProductDetailsForm";
+import { AvailabilityCard } from "../ProductDoctor/AvailabilityCard";
+import { useProductAvailabilityDiagnostics } from "../ProductDoctor/hooks/useProductAvailabilityDiagnostics";
+import { mapProductToDiagnosticData } from "../ProductDoctor/utils/mapProductToDiagnosticData";
 import ProductMedia from "../ProductMedia";
-import ProductTaxes from "../ProductTaxes";
-import ProductVariants from "../ProductVariants";
+import { ProductShipping } from "../ProductShipping";
+import { ProductTaxes } from "../ProductTaxes/ProductTaxes";
+import { BulkCreateResult } from "../ProductVariantGenerator/types";
+import { ProductVariants } from "../ProductVariants/ProductVariants";
 import ProductUpdateForm from "./form";
 import { messages } from "./messages";
 import ProductChannelsListingsDialog from "./ProductChannelsListingsDialog";
@@ -121,6 +131,13 @@ interface ProductUpdatePageProps {
   onImageUpload: (file: File) => any;
   onMediaUrlUpload: (mediaUrl: string) => any;
   onSeoClick?: () => any;
+  onProductFilterChange?: (
+    filterVariables: ProductWhereInput,
+    channel: string | undefined,
+    query: string,
+  ) => void;
+  onBulkCreateVariants?: (inputs: ProductVariantBulkCreateInput[]) => Promise<BulkCreateResult>;
+  initialConstraints?: InitialConstraints;
 }
 
 const ProductUpdatePage = ({
@@ -175,7 +192,19 @@ const ProductUpdatePage = ({
   refetch,
   onCloseDialog,
   onAttributeSelectBlur,
+  onProductFilterChange,
+  onBulkCreateVariants,
+  initialConstraints,
 }: ProductUpdatePageProps) => {
+  // Cache inner form data so it can be passed into App when modal is opened
+  const dataCache = useRef<ProductUpdateData | null>(null);
+  // Description is not passed in root "data"
+  const descriptionCache = useRef<OutputData | null>(null);
+  // Store form change handler to allow updating form from outside render prop
+  const changeHandlerRef = useRef<FormChange | null>(null);
+  // Store richText ref to allow updating description from outside render prop
+  const richTextRef = useRef<UseRichTextResult | null>(null);
+
   const intl = useIntl();
   const { user } = useUser();
   const canTranslate = user && hasPermission(PermissionEnum.MANAGE_TRANSLATIONS, user);
@@ -246,6 +275,100 @@ const ProductUpdatePage = ({
     path: productListPath,
   });
 
+  // Availability diagnostics for the new AvailabilityCard
+  const productDiagnosticData = useMemo(() => mapProductToDiagnosticData(product), [product]);
+  const availabilityDiagnostics = useProductAvailabilityDiagnostics({
+    product: productDiagnosticData,
+    enabled: Boolean(product),
+  });
+
+  const { attachFormState, active, framesByFormType } = useActiveAppExtension();
+
+  const formFramesFromApp = framesByFormType["product-edit"];
+
+  useEffect(() => {
+    if (!formFramesFromApp || !changeHandlerRef.current) {
+      return;
+    }
+
+    const lastFrame = formFramesFromApp[formFramesFromApp.length - 1];
+
+    // Handle productName field
+    if (lastFrame?.fields?.productName) {
+      const productNameField = lastFrame.fields.productName;
+
+      const newProductName = productNameField.value;
+      const currentProductName = dataCache.current?.name;
+
+      // Only update if the value has changed
+      if (newProductName !== currentProductName) {
+        changeHandlerRef.current({
+          target: {
+            name: "name",
+            value: newProductName,
+          },
+        });
+      }
+    }
+
+    // Handle productDescription field
+    if (lastFrame?.fields?.productDescription) {
+      const productDescriptionField = lastFrame.fields.productDescription;
+
+      const newProductDescription = productDescriptionField.value;
+
+      // cache may be empty if editor was not used before sending event to app
+      const productDescriptionWithFallback = descriptionCache.current ?? product.description;
+
+      try {
+        const parsedEditorJs = JSON.parse(newProductDescription) as OutputData;
+
+        // Only update if the value has changed
+        if (
+          JSON.stringify(parsedEditorJs.blocks) !==
+          JSON.stringify(productDescriptionWithFallback.blocks)
+        ) {
+          // Update the EditorJS content directly
+          if (richTextRef.current?.editorRef?.current) {
+            richTextRef.current.editorRef.current.render(parsedEditorJs).then(() => {
+              // Mark as dirty and trigger change after render completes
+              richTextRef.current.handleChange();
+            });
+          }
+        }
+      } catch (e) {
+        console.error(e);
+
+        console.warn("App returned invalid response for product description field, ignoring");
+      }
+    }
+  }, [formFramesFromApp]);
+
+  useEffect(() => {
+    if (active && product) {
+      attachFormState({
+        form: "product-edit",
+        productId: productId,
+        fields: {
+          productName: {
+            currentValue: dataCache.current?.name ?? product.name,
+            type: "short-text",
+            fieldName: "productName",
+            originalValue: product.name,
+          },
+          productDescription: {
+            currentValue: descriptionCache.current
+              ? JSON.stringify(descriptionCache.current)
+              : product.description,
+            type: "editorjs",
+            fieldName: "productDescription",
+            originalValue: product.description,
+          },
+        },
+      });
+    }
+  }, [active, product, productId]);
+
   return (
     <ProductUpdateForm
       isSimpleProduct={isSimpleProduct}
@@ -275,28 +398,13 @@ const ProductUpdatePage = ({
       disabled={disabled}
       refetch={refetch}
     >
-      {({ change, data, handlers, submit, isSaveDisabled, attributeRichTextGetters }) => {
-        const availabilityCommonProps = {
-          managePermissions: [PermissionEnum.MANAGE_PRODUCTS],
-          messages: {
-            hiddenLabel: intl.formatMessage({
-              id: "saKXY3",
-              defaultMessage: "Not published",
-              description: "product label",
-            }),
+      {({ change, data, handlers, submit, isSaveDisabled, attributeRichTextGetters, richText }) => {
+        // Store change handler so it can be accessed from useEffect
+        changeHandlerRef.current = change;
+        // Store richText so it can be accessed from useEffect
+        richTextRef.current = richText;
 
-            visibleLabel: intl.formatMessage({
-              id: "qJedl0",
-              defaultMessage: "Published",
-              description: "product label",
-            }),
-          },
-          errors: channelsErrors,
-          allChannelsCount: channels?.length,
-          disabled,
-          onChange: handlers.changeChannels,
-          openModal: () => setChannelPickerOpen(true),
-        };
+        dataCache.current = data;
 
         const byChannel = mapByChannel(channels);
         const listings = data.channels.updateChannels?.map<ChannelData>(byChannel);
@@ -307,192 +415,227 @@ const ProductUpdatePage = ({
         );
 
         return (
-          <DetailPageLayout>
-            <TopNav href={backLinkProductUrl} title={header}>
-              {canTranslate && (
-                <TranslationsButton
-                  marginRight={3}
-                  onClick={() =>
-                    navigate(createTranslateProductUrl(lastUsedLocaleOrFallback, productId))
+          <>
+            <DetailPageLayout>
+              <TopNav href={backLinkProductUrl} title={header}>
+                {canTranslate && (
+                  <TranslationsButton
+                    marginRight={3}
+                    onClick={() =>
+                      navigate(createTranslateProductUrl(lastUsedLocaleOrFallback, productId))
+                    }
+                  />
+                )}
+                <TopNav.Menu
+                  items={[
+                    ...extensionMenuItems,
+                    {
+                      label: intl.formatMessage(messages.openGraphiQL),
+                      onSelect: openPlaygroundURL,
+                      testId: "graphiql-redirect",
+                    },
+                  ]}
+                  dataTestId="menu"
+                />
+              </TopNav>
+
+              <DetailPageLayout.Content>
+                <ProductDetailsForm
+                  data={data}
+                  disabled={disabled}
+                  errors={productErrors}
+                  onChange={change}
+                  onDescriptionChange={value => {
+                    descriptionCache.current = value;
+                  }}
+                />
+                <ProductMedia
+                  media={media}
+                  onImageDelete={onImageDelete}
+                  onImageReorder={onImageReorder}
+                  onImageUpload={onImageUpload}
+                  openMediaUrlModal={() => setMediaUrlModalStatus(true)}
+                  getImageEditUrl={imageId => productImageUrl(productId, imageId)}
+                />
+                {data.attributes.length > 0 && (
+                  <Attributes
+                    attributes={data.attributes}
+                    attributeValues={attributeValues}
+                    errors={productErrors}
+                    loading={disabled}
+                    disabled={disabled}
+                    onChange={handlers.selectAttribute}
+                    onMultiChange={handlers.selectAttributeMultiple}
+                    onFileChange={handlers.selectAttributeFile}
+                    onReferencesRemove={handlers.selectAttributeReference}
+                    onReferencesAddClick={onAssignReferencesClick}
+                    onReferencesReorder={handlers.reorderAttributeValue}
+                    fetchAttributeValues={fetchAttributeValues}
+                    fetchMoreAttributeValues={fetchMoreAttributeValues}
+                    onAttributeSelectBlur={onAttributeSelectBlur}
+                    richTextGetters={attributeRichTextGetters}
+                  />
+                )}
+                {isSimpleProduct && (
+                  <>
+                    <ProductShipping
+                      data={data}
+                      disabled={disabled}
+                      errors={productErrors}
+                      weightUnit={product?.weight?.unit}
+                      onChange={change}
+                    />
+                    <CardSpacer />
+                  </>
+                )}
+                <ProductVariants
+                  productId={productId}
+                  productTypeId={product?.productType.id ?? ""}
+                  productName={product?.name}
+                  errors={variantListErrors}
+                  channels={listings}
+                  limits={limits}
+                  variants={variants}
+                  variantAttributes={product?.productType.variantAttributes}
+                  selectionVariantAttributes={product?.productType.selectionVariantAttributes}
+                  nonSelectionVariantAttributes={product?.productType.nonSelectionVariantAttributes}
+                  hasVariants={hasVariants ?? false}
+                  onAttributeValuesSearch={onAttributeValuesSearch}
+                  onChange={handlers.changeVariants}
+                  onRowClick={onVariantShow}
+                  onBulkCreate={onBulkCreateVariants}
+                />
+                <CardSpacer />
+                <SeoForm
+                  errors={productErrors}
+                  title={data.seoTitle}
+                  titlePlaceholder={data.name}
+                  description={data.seoDescription}
+                  descriptionPlaceholder={""} // TODO: cast description to string
+                  slug={data.slug}
+                  slugPlaceholder={data.name}
+                  loading={disabled}
+                  onClick={onSeoClick}
+                  onChange={change}
+                  helperText={intl.formatMessage({
+                    id: "LKoIB1",
+                    defaultMessage:
+                      "Add search engine title and description to make this product easier to find",
+                  })}
+                />
+                <Metadata data={data} onChange={handlers.changeMetadata} />
+              </DetailPageLayout.Content>
+              <DetailPageLayout.RightSidebar>
+                <ProductOrganization
+                  canChangeType={false}
+                  categories={categories}
+                  categoryInputDisplayValue={selectedCategory}
+                  collections={collections}
+                  collectionsInputDisplayValue={selectedCollections}
+                  data={data}
+                  disabled={disabled}
+                  errors={productOrganizationErrors}
+                  fetchCategories={fetchCategories}
+                  fetchCollections={fetchCollections}
+                  fetchMoreCategories={fetchMoreCategories}
+                  fetchMoreCollections={fetchMoreCollections}
+                  productType={product?.productType}
+                  onCategoryChange={handlers.selectCategory}
+                  onCollectionChange={handlers.selectCollection}
+                  selectedProductCategory={selectedProductCategory}
+                />
+                <AvailabilityCard
+                  diagnostics={availabilityDiagnostics}
+                  totalChannelsCount={channels?.length ?? 0}
+                  onManageClick={() => setChannelPickerOpen(true)}
+                  onChannelChange={handlers.changeChannels}
+                  disabled={disabled}
+                  formChannelData={data.channels.updateChannels}
+                  removeChannels={data.channels.removeChannels}
+                  channels={channels}
+                  errors={channelsErrors}
+                  productId={product?.id}
+                />
+                <Box paddingBottom={52}>
+                  <ProductTaxes
+                    value={data.taxClassId}
+                    disabled={disabled}
+                    onChange={handlers.selectTaxClass}
+                    taxClassDisplayName={selectedTaxClass}
+                    taxClasses={taxClasses}
+                    onFetchMore={fetchMoreTaxClasses}
+                  />
+                </Box>
+                {PRODUCT_DETAILS_WIDGETS.length > 0 && productId && (
+                  <>
+                    <Divider />
+                    <AppWidgets
+                      extensions={PRODUCT_DETAILS_WIDGETS}
+                      params={{
+                        productId: productId,
+                        productSlug: product?.slug,
+                      }}
+                    />
+                  </>
+                )}
+              </DetailPageLayout.RightSidebar>
+
+              <Savebar>
+                <Savebar.DeleteButton onClick={onDelete} />
+                <Savebar.Spacer />
+                <Savebar.CancelButton onClick={() => navigate(productListUrl())} />
+                <Savebar.ConfirmButton
+                  transitionState={saveButtonBarState}
+                  onClick={submit}
+                  disabled={isSaveDisabled}
+                />
+              </Savebar>
+
+              {canOpenAssignReferencesAttributeDialog && entityType && (
+                <AssignAttributeValueDialog
+                  entityType={entityType}
+                  confirmButtonState={"default"}
+                  products={referenceProducts}
+                  pages={referencePages}
+                  collections={referenceCollections}
+                  categories={referenceCategories}
+                  attribute={data.attributes.find(({ id }) => id === assignReferencesAttributeId)}
+                  hasMore={handlers.fetchMoreReferences?.hasMore}
+                  open={canOpenAssignReferencesAttributeDialog}
+                  onFetch={handlers.fetchReferences}
+                  onFetchMore={handlers.fetchMoreReferences?.onFetchMore}
+                  loading={handlers.fetchMoreReferences?.loading}
+                  onClose={onCloseDialog}
+                  onFilterChange={onProductFilterChange}
+                  initialConstraints={initialConstraints}
+                  onSubmit={attributeValues =>
+                    handleAssignReferenceAttribute(
+                      attributeValues.map(container => ({
+                        value: container.id,
+                        label: container.name,
+                      })),
+                      data,
+                      handlers,
+                    )
                   }
                 />
               )}
-              <TopNav.Menu
-                items={[
-                  ...extensionMenuItems,
-                  {
-                    label: intl.formatMessage(messages.openGraphiQL),
-                    onSelect: openPlaygroundURL,
-                    testId: "graphiql-redirect",
-                  },
-                ]}
-                dataTestId="menu"
-              />
-            </TopNav>
 
-            <DetailPageLayout.Content>
-              <ProductDetailsForm
+              <ProductExternalMediaDialog
+                product={product}
+                onClose={() => setMediaUrlModalStatus(false)}
+                open={mediaUrlModalStatus}
+                onSubmit={onMediaUrlUpload}
+              />
+              <ProductChannelsListingsDialog
+                channels={channels}
                 data={data}
-                disabled={disabled}
-                errors={productErrors}
-                onChange={change}
+                onClose={() => setChannelPickerOpen(false)}
+                open={channelPickerOpen}
+                onConfirm={handlers.updateChannelList}
               />
-              <ProductMedia
-                media={media}
-                onImageDelete={onImageDelete}
-                onImageReorder={onImageReorder}
-                onImageUpload={onImageUpload}
-                openMediaUrlModal={() => setMediaUrlModalStatus(true)}
-                getImageEditUrl={imageId => productImageUrl(productId, imageId)}
-              />
-              {data.attributes.length > 0 && (
-                <Attributes
-                  attributes={data.attributes}
-                  attributeValues={attributeValues}
-                  errors={productErrors}
-                  loading={disabled}
-                  disabled={disabled}
-                  onChange={handlers.selectAttribute}
-                  onMultiChange={handlers.selectAttributeMultiple}
-                  onFileChange={handlers.selectAttributeFile}
-                  onReferencesRemove={handlers.selectAttributeReference}
-                  onReferencesAddClick={onAssignReferencesClick}
-                  onReferencesReorder={handlers.reorderAttributeValue}
-                  fetchAttributeValues={fetchAttributeValues}
-                  fetchMoreAttributeValues={fetchMoreAttributeValues}
-                  onAttributeSelectBlur={onAttributeSelectBlur}
-                  richTextGetters={attributeRichTextGetters}
-                />
-              )}
-              <ProductVariants
-                productId={productId}
-                productName={product?.name}
-                errors={variantListErrors}
-                channels={listings}
-                limits={limits}
-                variants={variants}
-                variantAttributes={product?.productType.variantAttributes}
-                onAttributeValuesSearch={onAttributeValuesSearch}
-                onChange={handlers.changeVariants}
-                onRowClick={onVariantShow}
-              />
-              <CardSpacer />
-              <SeoForm
-                errors={productErrors}
-                title={data.seoTitle}
-                titlePlaceholder={data.name}
-                description={data.seoDescription}
-                descriptionPlaceholder={""} // TODO: cast description to string
-                slug={data.slug}
-                slugPlaceholder={data.name}
-                loading={disabled}
-                onClick={onSeoClick}
-                onChange={change}
-                helperText={intl.formatMessage({
-                  id: "LKoIB1",
-                  defaultMessage:
-                    "Add search engine title and description to make this product easier to find",
-                })}
-              />
-              <Metadata data={data} onChange={handlers.changeMetadata} />
-            </DetailPageLayout.Content>
-            <DetailPageLayout.RightSidebar>
-              <ProductOrganization
-                canChangeType={false}
-                categories={categories}
-                categoryInputDisplayValue={selectedCategory}
-                collections={collections}
-                collectionsInputDisplayValue={selectedCollections}
-                data={data}
-                disabled={disabled}
-                errors={productOrganizationErrors}
-                fetchCategories={fetchCategories}
-                fetchCollections={fetchCollections}
-                fetchMoreCategories={fetchMoreCategories}
-                fetchMoreCollections={fetchMoreCollections}
-                productType={product?.productType}
-                onCategoryChange={handlers.selectCategory}
-                onCollectionChange={handlers.selectCollection}
-                selectedProductCategory={selectedProductCategory}
-              />
-              <ChannelsAvailabilityCard {...availabilityCommonProps} channels={listings ?? []} />
-              <Box paddingBottom={52}>
-                <ProductTaxes
-                  value={data.taxClassId}
-                  disabled={disabled}
-                  onChange={handlers.selectTaxClass}
-                  taxClassDisplayName={selectedTaxClass}
-                  taxClasses={taxClasses}
-                  onFetchMore={fetchMoreTaxClasses}
-                />
-              </Box>
-              {PRODUCT_DETAILS_WIDGETS.length > 0 && productId && (
-                <>
-                  <Divider />
-                  <AppWidgets
-                    extensions={PRODUCT_DETAILS_WIDGETS}
-                    params={{
-                      productId: productId,
-                      productSlug: product?.slug,
-                    }}
-                  />
-                </>
-              )}
-            </DetailPageLayout.RightSidebar>
-
-            <Savebar>
-              <Savebar.DeleteButton onClick={onDelete} />
-              <Savebar.Spacer />
-              <Savebar.CancelButton onClick={() => navigate(productListUrl())} />
-              <Savebar.ConfirmButton
-                transitionState={saveButtonBarState}
-                onClick={submit}
-                disabled={isSaveDisabled}
-              />
-            </Savebar>
-
-            {canOpenAssignReferencesAttributeDialog && entityType && (
-              <AssignAttributeValueDialog
-                entityType={entityType}
-                confirmButtonState={"default"}
-                products={referenceProducts}
-                pages={referencePages}
-                collections={referenceCollections}
-                categories={referenceCategories}
-                attribute={data.attributes.find(({ id }) => id === assignReferencesAttributeId)}
-                hasMore={handlers.fetchMoreReferences?.hasMore}
-                open={canOpenAssignReferencesAttributeDialog}
-                onFetch={handlers.fetchReferences}
-                onFetchMore={handlers.fetchMoreReferences?.onFetchMore}
-                loading={handlers.fetchMoreReferences?.loading}
-                onClose={onCloseDialog}
-                onSubmit={attributeValues =>
-                  handleAssignReferenceAttribute(
-                    attributeValues.map(container => ({
-                      value: container.id,
-                      label: container.name,
-                    })),
-                    data,
-                    handlers,
-                  )
-                }
-              />
-            )}
-
-            <ProductExternalMediaDialog
-              product={product}
-              onClose={() => setMediaUrlModalStatus(false)}
-              open={mediaUrlModalStatus}
-              onSubmit={onMediaUrlUpload}
-            />
-            <ProductChannelsListingsDialog
-              channels={channels}
-              data={data}
-              onClose={() => setChannelPickerOpen(false)}
-              open={channelPickerOpen}
-              onConfirm={handlers.updateChannelList}
-            />
-          </DetailPageLayout>
+            </DetailPageLayout>
+          </>
         );
       }}
     </ProductUpdateForm>

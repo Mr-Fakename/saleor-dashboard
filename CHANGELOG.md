@@ -1,5 +1,368 @@
 # Changelog
 
+## 3.22.28
+
+### Patch Changes
+
+- [#6266](https://github.com/saleor/saleor-dashboard/pull/6266) [`2983f07`](https://github.com/saleor/saleor-dashboard/commit/2983f07a934e00bdadfc535e6cf199f331a06b82) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Refactored filtering logic in Product selection modal, shouldn't introduce any changes for users
+
+- [#6273](https://github.com/saleor/saleor-dashboard/pull/6273) [`c16e37a`](https://github.com/saleor/saleor-dashboard/commit/c16e37acfd15488b2b5be10d23dfc024021e9f92) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Update lodash version to `4.17.23`
+
+- [#6257](https://github.com/saleor/saleor-dashboard/pull/6257) [`57cef53`](https://github.com/saleor/saleor-dashboard/commit/57cef5304ea96f4d178a790833998dd5d2e2ba8e) Thanks [@mirekm](https://github.com/mirekm)! - Added bulk variant generator - Quickly create all product variant combinations by selecting attribute values, with live preview, optional SKU/stock defaults, and automatic skipping of existing variants.
+
+- [#6270](https://github.com/saleor/saleor-dashboard/pull/6270) [`a38274b`](https://github.com/saleor/saleor-dashboard/commit/a38274b84aca391954fef6eff3dea159ffa9a6a6) Thanks [@mirekm](https://github.com/mirekm)! - Improve variant attributes discoverability
+
+  Added better messaging for variant attributes in both Product Type and Variant views.
+
+- [#6278](https://github.com/saleor/saleor-dashboard/pull/6278) [`21eacd7`](https://github.com/saleor/saleor-dashboard/commit/21eacd7b71cc4a55db630b3a41d0d5fd9aaff719) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Fix combobox components in Attribute selection. "Add new value" option was added again for clear UX. New values are added when clicked "Save" in the form, like previously. Fixed fetching more items in the combobox: now when user enters a value in the input, we fetch options using input from user as `query` parameter.
+
+- [#6274](https://github.com/saleor/saleor-dashboard/pull/6274) [`3b0ec28`](https://github.com/saleor/saleor-dashboard/commit/3b0ec2836a26c62bb4506da00e480059dee21e2f) Thanks [@mirekm](https://github.com/mirekm)! - Unify success notification messages
+  - Pattern: {Entity} {action} - e.g., "Product updated", "Order cancelled"
+  - Past tense - the action is complete
+  - No filler words - avoid "successfully", "has been", "was"
+  - Specific over generic - avoid commonMessages.savedChanges, use contextual messages
+  - Compound actions use comma - "Products returned, refund granted"
+
+- [#6277](https://github.com/saleor/saleor-dashboard/pull/6277) [`ace3e01`](https://github.com/saleor/saleor-dashboard/commit/ace3e019d06f3969963e9ffe5c5528258a630081) Thanks [@mirekm](https://github.com/mirekm)! - Redesigned product availability panel with built-in diagnostics. The new panel identifies configuration issues preventing purchase (missing prices, no stock, inactive channels) and includes a "Test" button to verify actual storefront visibility via the public API. Scheduling for publication and availability dates is now supported directly in the panel.
+
+- [#6280](https://github.com/saleor/saleor-dashboard/pull/6280) [`b193657`](https://github.com/saleor/saleor-dashboard/commit/b193657a7314069805724da28ff5bcfbd4cfde70) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Remove intrusive error on app invalid action and rely on console logs for better debugging.
+
+## 3.22.27
+
+### Patch Changes
+
+- [#6268](https://github.com/saleor/saleor-dashboard/pull/6268) [`6c31454`](https://github.com/saleor/saleor-dashboard/commit/6c31454b9433ac9dd040472e1fa911e30c98407d) Thanks [@mirekm](https://github.com/mirekm)! - Fix accidental exiting of GraphQL Playground by pressing Esc
+
+- [#6267](https://github.com/saleor/saleor-dashboard/pull/6267) [`7eb3eaf`](https://github.com/saleor/saleor-dashboard/commit/7eb3eafb8731f90092df758809c2cad4d668eeb5) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Replaced custom Combobox component with one provided by MacawUI library. This solves bug with incorrect value rendering in Chromium 144
+
+- [#6250](https://github.com/saleor/saleor-dashboard/pull/6250) [`472d0cd`](https://github.com/saleor/saleor-dashboard/commit/472d0cda9657aae75f017f4c0284d9e2b3473327) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Improved display of Links. Now they inherit size of the parent element, usually paragraph. Links should no longer looks strange within text blocks
+
+- [#6265](https://github.com/saleor/saleor-dashboard/pull/6265) [`813da60`](https://github.com/saleor/saleor-dashboard/commit/813da6060d72e1a03cd3c832bc0c31568e32c0d0) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Updated pnpm settings to be more strict about installed packages: minimum age 24h, cannot use downgraded security (e.g. trusted publisher -> untrusted), dependencies resolving to git repo or tarball
+
+- [#6207](https://github.com/saleor/saleor-dashboard/pull/6207) [`6b89f21`](https://github.com/saleor/saleor-dashboard/commit/6b89f217e19167b2e39befe11c3cf0990b5f6f79) Thanks [@mirekm](https://github.com/mirekm)! - Redesigned toast notifications for better user experience:
+  - **Notifications now stack compactly** instead of flooding the screen
+  - **Refined visual design** that's less disruptive and better aligned with the dashboard aesthetic
+  - **Long messages expand on hover** with "Show more/less" toggle instead of being truncated
+  - **Error notifications persist** until manually dismissed
+
+  **Next up:** Refining notification message copy for clarity and consistency across the dashboard.
+
+## 3.22.26
+
+### Patch Changes
+
+- [#6256](https://github.com/saleor/saleor-dashboard/pull/6256) [`8bed1a4`](https://github.com/saleor/saleor-dashboard/commit/8bed1a4f9ae61019b30eb3d4eae902a3de59f402) Thanks [@lkostrowski](https://github.com/lkostrowski)! - When reference-type attribute is being selected in product variant page, selected references should now properly display label instead of ID
+
+- [#6262](https://github.com/saleor/saleor-dashboard/pull/6262) [`2934387`](https://github.com/saleor/saleor-dashboard/commit/2934387578c62d563a0c769b6c5a9716975f80ad) Thanks [@mirekm](https://github.com/mirekm)! - Fixed bug introduced in Chromium 144, where some of custom Comboboxes were broken and their value was reset to empty. Components were replaced with Combobox from Macaw UI
+
+## 3.22.25
+
+### Patch Changes
+
+- [#6243](https://github.com/saleor/saleor-dashboard/pull/6243) [`1a04311`](https://github.com/saleor/saleor-dashboard/commit/1a043114383f657839a441e7a40b9c5f3a1e0965) Thanks [@NyanKiyoshi](https://github.com/NyanKiyoshi)! - Added support for [devcontainers] to facilitate local development.
+
+  [devcontainers]: https://containers.dev/
+
+- [#6226](https://github.com/saleor/saleor-dashboard/pull/6226) [`1486e12`](https://github.com/saleor/saleor-dashboard/commit/1486e1207176b6cf571a22c0c8b7c7146c9755c6) Thanks [@mirekm](https://github.com/mirekm)! - Prevent accidental variant metadata edits from order context
+
+  Previously, users could edit product variant metadata directly from the Order Line Metadata dialog. This could be misleading because variant metadata is shared across all orders—changes made here would affect the variant globally, not just this order.
+
+  Variant metadata is now displayed as read-only in the order context, with a direct link to the variant page for intentional edits.
+
+- [#6242](https://github.com/saleor/saleor-dashboard/pull/6242) [`8a48470`](https://github.com/saleor/saleor-dashboard/commit/8a484705dbc85d93cc9aa05ba6924865c8b203cb) Thanks [@mirekm](https://github.com/mirekm)! - Redesigned "What's New" modal with timeline layout, type badges, and improved visual hierarchy for better readability.
+
+- [#6255](https://github.com/saleor/saleor-dashboard/pull/6255) [`02197fd`](https://github.com/saleor/saleor-dashboard/commit/02197fd8a0eb6d9efbd0c904cb93c0a87ee0a557) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Fixed a bug that prevented creating refunds when clicked "Set maximal quantities" button on Order Return & replace page
+
+- [#6251](https://github.com/saleor/saleor-dashboard/pull/6251) [`ce04007`](https://github.com/saleor/saleor-dashboard/commit/ce040077c57bf067e67132048d23387cde2a4d6d) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed bold border in configuration page cards
+
+- [#6200](https://github.com/saleor/saleor-dashboard/pull/6200) [`f824411`](https://github.com/saleor/saleor-dashboard/commit/f8244119445e5c969c91480893559cc19fe65cba) Thanks [@mirekm](https://github.com/mirekm)! - New capture dialog for capturing payments with support for:
+  - Full and partial authorization status indicators
+  - Custom capture amount input with currency-aware decimal validation
+  - Order balance and transaction-level capture tracking
+  - Outcome prediction showing resulting order status
+
+- [#6245](https://github.com/saleor/saleor-dashboard/pull/6245) [`bc27812`](https://github.com/saleor/saleor-dashboard/commit/bc278122cb81f6303cdee816e35c929043209254) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Updated `qs`, and patched `posthog` to use packages without security warnings
+
+## 3.22.24
+
+### Patch Changes
+
+- [#6238](https://github.com/saleor/saleor-dashboard/pull/6238) [`2b2311e`](https://github.com/saleor/saleor-dashboard/commit/2b2311eb2a0a98567efbbe5eef5c3daf66eeeb92) Thanks [@mirekm](https://github.com/mirekm)! - - Fixed broken question mark icons in Product Type variant attributes view
+
+- [#6233](https://github.com/saleor/saleor-dashboard/pull/6233) [`e5b2c3c`](https://github.com/saleor/saleor-dashboard/commit/e5b2c3c634c2ea46a31b31d5291e03231e7ade1e) Thanks [@mirekm](https://github.com/mirekm)! - Fixed info icon sizing and alignment in Product details view attributes. Info icons are now consistently small (16px) and properly aligned with text labels.
+
+- [#6225](https://github.com/saleor/saleor-dashboard/pull/6225) [`f7ef997`](https://github.com/saleor/saleor-dashboard/commit/f7ef9972d9f9ca69681aee68a4967ec5450958b7) Thanks [@mirekm](https://github.com/mirekm)! - Move Cloud env link to the Saleor Dashboard top-left logo hover state
+
+- [#6165](https://github.com/saleor/saleor-dashboard/pull/6165) [`f5d17f8`](https://github.com/saleor/saleor-dashboard/commit/f5d17f8dc869e4925bd804a7c2ab8fae2e95f96c) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Modals for assigning Products will now show Filter button.
+  This means that list in the modal can now be filtered based on the same conditions available on the Product list page.
+  This new UI will also display constraints based on context (e.g. limited Product type filter, based on Reference Types config when assigning attribute).
+
+## 3.22.23
+
+### Patch Changes
+
+- [#6227](https://github.com/saleor/saleor-dashboard/pull/6227) [`2db65da`](https://github.com/saleor/saleor-dashboard/commit/2db65da3b027e7736388fa60490532dbff4301e0) Thanks [@mirekm](https://github.com/mirekm)! - Added confirmation dialog ("Leave without saving changes?") to prevent accidental data loss when closing metadata dialogs with unsaved changes:
+  - Order metadata dialog
+  - Order fulfillment metadata dialog
+  - Order line metadata dialog
+
+- [#6224](https://github.com/saleor/saleor-dashboard/pull/6224) [`adb6abe`](https://github.com/saleor/saleor-dashboard/commit/adb6abe535a2967a191bac76c0940c6090e2e0dc) Thanks [@mirekm](https://github.com/mirekm)! - Use Tooltip component for info icon and dates in timeline
+
+- [#6223](https://github.com/saleor/saleor-dashboard/pull/6223) [`974e327`](https://github.com/saleor/saleor-dashboard/commit/974e327f1ee52dacddd67b719b7f10007200d0b3) Thanks [@mirekm](https://github.com/mirekm)! - Fix removing saved filters
+
+- [#6222](https://github.com/saleor/saleor-dashboard/pull/6222) [`f21cadf`](https://github.com/saleor/saleor-dashboard/commit/f21cadf38995c9901aa40bc4f654167c037e180b) Thanks [@mirekm](https://github.com/mirekm)! - Remove redundant elements in the main titles
+
+## 3.22.22
+
+### Patch Changes
+
+- [#6217](https://github.com/saleor/saleor-dashboard/pull/6217) [`9670756`](https://github.com/saleor/saleor-dashboard/commit/967075601bedbd199715c746f3e953288d4965a8) Thanks [@mirekm](https://github.com/mirekm)! - Transaction actions: The Capture button is now directly visible on transaction cards for quicker access, while destructive actions like Cancel remain safely tucked in the menu.
+
+- [#6178](https://github.com/saleor/saleor-dashboard/pull/6178) [`33d7143`](https://github.com/saleor/saleor-dashboard/commit/33d71430997daeef3b408c9f75e2d8dfa1567f12) Thanks [@mirekm](https://github.com/mirekm)! - Update order Transactions cards
+
+- [#6189](https://github.com/saleor/saleor-dashboard/pull/6189) [`0e6e5a3`](https://github.com/saleor/saleor-dashboard/commit/0e6e5a3f7e0da47415d79a17f1423c9939d6f42c) Thanks [@mirekm](https://github.com/mirekm)! - Introduced a redesigned "Order summary" section that unifies order details and payment information across all order types, including Drafts and Unconfirmed orders. The updated "Order value" breakdown now clearly separates subtotal, taxes, discounts, and shipping. Additionally, a new "Payments summary" section has been added, featuring a dedicated "no data" state when no payments are present.
+
+- [#6213](https://github.com/saleor/saleor-dashboard/pull/6213) [`e2ca67b`](https://github.com/saleor/saleor-dashboard/commit/e2ca67b92745fedc62ad704fd66b0f3702a3d8dd) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed redirection between Customer Details -> See all orders to Orders List (which this customer selected). Now filter is properly set on the URL and only relevant orders are displayed
+
+## 3.22.21
+
+### Patch Changes
+
+- [#6196](https://github.com/saleor/saleor-dashboard/pull/6196) [`5f22cde`](https://github.com/saleor/saleor-dashboard/commit/5f22cded76c3736447dae769b6564fe6fd05e4d9) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Invalid event sent from app to dashboard will not throw anymore, but gracefully show notification
+
+- [#6150](https://github.com/saleor/saleor-dashboard/pull/6150) [`e0f798c`](https://github.com/saleor/saleor-dashboard/commit/e0f798cf09b7fb761febdc57b653155644fe6329) Thanks [@mirekm](https://github.com/mirekm)! - Fix and redesign Order history
+
+- [#6205](https://github.com/saleor/saleor-dashboard/pull/6205) [`fb40e57`](https://github.com/saleor/saleor-dashboard/commit/fb40e57ab0c6a5842c87fbfe03c3e2486019e3b9) Thanks [@mirekm](https://github.com/mirekm)! - Fix main title overflow
+
+- [#6168](https://github.com/saleor/saleor-dashboard/pull/6168) [`c366f94`](https://github.com/saleor/saleor-dashboard/commit/c366f9487affa218ab04ff0b9c0ebfae54a585ed) Thanks [@mirekm](https://github.com/mirekm)! - Cleanup order's Customer Details and Addresses sections
+
+- [#6204](https://github.com/saleor/saleor-dashboard/pull/6204) [`dacee7d`](https://github.com/saleor/saleor-dashboard/commit/dacee7de926a45c8c8ee91284882e18fcdb35fae) Thanks [@mirekm](https://github.com/mirekm)! - New label for ConfirmButton error state
+
+- [#6196](https://github.com/saleor/saleor-dashboard/pull/6196) [`5f22cde`](https://github.com/saleor/saleor-dashboard/commit/5f22cded76c3736447dae769b6564fe6fd05e4d9) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Clipboard operations no longer crash the website if browser permissions are not enabled
+
+- [#6206](https://github.com/saleor/saleor-dashboard/pull/6206) [`a0893de`](https://github.com/saleor/saleor-dashboard/commit/a0893deb0a4b78ba4c69a6a220d48049ac4af78c) Thanks [@mirekm](https://github.com/mirekm)! - Improve icons color consistency with timeline
+
+- [#6208](https://github.com/saleor/saleor-dashboard/pull/6208) [`bcb4854`](https://github.com/saleor/saleor-dashboard/commit/bcb485469a0327a518deb3d91dfb68b8501c8e61) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Added UI to control "automatic checkout completion" from the dashboard settings page. What previously was allowed only via graphQL, now can be controlled easily by staff.
+
+## 3.22.20
+
+### Patch Changes
+
+- [#6195](https://github.com/saleor/saleor-dashboard/pull/6195) [`c9ed5f7`](https://github.com/saleor/saleor-dashboard/commit/c9ed5f7d2ac75658218fc860ef4886bd9de95fe1) Thanks [@wcislo-saleor](https://github.com/wcislo-saleor)! - Added "Allow legacy gift card use" flag to Channel configuration
+
+- [#6188](https://github.com/saleor/saleor-dashboard/pull/6188) [`7833de8`](https://github.com/saleor/saleor-dashboard/commit/7833de81a816fc4298fd73be58d5377de2b98a00) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Updated `@saleor/macaw-ui-next` to `1.4.1`. This version should resolve potential issues with React 18+ timing crashes
+
+## 3.22.19
+
+### Patch Changes
+
+- [#6172](https://github.com/saleor/saleor-dashboard/pull/6172) [`5373ccd`](https://github.com/saleor/saleor-dashboard/commit/5373ccdb3571e1294008224cf911bcd79f1b56b7) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Update app-sdk package to 1.4.0
+
+- [#6177](https://github.com/saleor/saleor-dashboard/pull/6177) [`cdf694d`](https://github.com/saleor/saleor-dashboard/commit/cdf694dd083de4a12ebbe67b86ba56ed50f7d79a) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Changed Address component to use modern MacawUI text inputs
+
+- [#6174](https://github.com/saleor/saleor-dashboard/pull/6174) [`dbe7709`](https://github.com/saleor/saleor-dashboard/commit/dbe7709d27287a9280119073f1d4217c15a39210) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Updated `@saleor/app-sdk` to `1.5.0`.
+  `next` should no longer be automatically installed with Saleor Dashboard. Previously this package installed into `node_modules`, even though it wasn't used.
+
+- [#6185](https://github.com/saleor/saleor-dashboard/pull/6185) [`995c330`](https://github.com/saleor/saleor-dashboard/commit/995c330af5564c110d6226239289ece3281a8b43) Thanks [@mirekm](https://github.com/mirekm)! - Improve replaced icons visual consistency
+
+- [#6180](https://github.com/saleor/saleor-dashboard/pull/6180) [`4de2650`](https://github.com/saleor/saleor-dashboard/commit/4de265041e98106868c79b2b86113fdbf517704e) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed attribute tooltip icon size
+
+- [#6179](https://github.com/saleor/saleor-dashboard/pull/6179) [`8584e5f`](https://github.com/saleor/saleor-dashboard/commit/8584e5fee1adff5efb930dc1ebc9a9c3fb967c4d) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Icons overhaul part 1: Removed some old icons with fresh Lucide icons
+
+- [#6186](https://github.com/saleor/saleor-dashboard/pull/6186) [`adddfde`](https://github.com/saleor/saleor-dashboard/commit/adddfde2b97f31e7a7b0b0f63fd4a684dcbdcd47) Thanks [@mirekm](https://github.com/mirekm)! - Fix sizing of the main datagrid based views
+
+## 3.22.18
+
+### Patch Changes
+
+- [#6170](https://github.com/saleor/saleor-dashboard/pull/6170) [`03fc5a0`](https://github.com/saleor/saleor-dashboard/commit/03fc5a018d2376191015798a188fe66f7a61ba75) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Configured build to minify built code. This change should increase overall performance and loading speed.
+
+- [#6166](https://github.com/saleor/saleor-dashboard/pull/6166) [`10d1d92`](https://github.com/saleor/saleor-dashboard/commit/10d1d925058bd99f386f46ffde4bed373003b9a6) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Enabled React Strict mode for development
+
+## 3.22.17
+
+### Patch Changes
+
+- [#6154](https://github.com/saleor/saleor-dashboard/pull/6154) [`52b7665`](https://github.com/saleor/saleor-dashboard/commit/52b76653848d0aa7a3ab6ca2c51ef99c8d92637f) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fix bug where TRANSLATION_MORE_ACTIONS extension mount didn't send event if translation was empty
+
+## 3.22.16
+
+### Patch Changes
+
+- [#6155](https://github.com/saleor/saleor-dashboard/pull/6155) [`2cac4ef`](https://github.com/saleor/saleor-dashboard/commit/2cac4ef453a847335aaf88d8419b88cf49e218ce) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed broken permissions on product edit page, if user did not have MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES permission. It was caused by "Attribute" object being fetched with privateMetadata on every page, not only "attribute edit" page
+
+## 3.22.15
+
+### Patch Changes
+
+- [#6149](https://github.com/saleor/saleor-dashboard/pull/6149) [`746184a`](https://github.com/saleor/saleor-dashboard/commit/746184a14578a4072343ad96200770094a337ec4) Thanks [@mirekm](https://github.com/mirekm)! - Fix typo in Delete Draft Order view
+
+- [#6144](https://github.com/saleor/saleor-dashboard/pull/6144) [`4d0d1dc`](https://github.com/saleor/saleor-dashboard/commit/4d0d1dc01936298dfca1158787f79b2e253bdd9c) Thanks [@mirekm](https://github.com/mirekm)! - Fix "Payments summary" pill colors in dark mode
+
+- [#6148](https://github.com/saleor/saleor-dashboard/pull/6148) [`0b242e4`](https://github.com/saleor/saleor-dashboard/commit/0b242e4caad7011cc1d146e8a7a19a6e73a12bde) Thanks [@mirekm](https://github.com/mirekm)! - Fix order related pills consistency and semantics
+
+- [#6145](https://github.com/saleor/saleor-dashboard/pull/6145) [`e28787f`](https://github.com/saleor/saleor-dashboard/commit/e28787f536b24606f2ec3d1dbd8abc792d224ff1) Thanks [@mirekm](https://github.com/mirekm)! - Until we have better support for skeletons, replace the spinning throbber with a dash-based animation.
+
+- [#6139](https://github.com/saleor/saleor-dashboard/pull/6139) [`0cccea0`](https://github.com/saleor/saleor-dashboard/commit/0cccea01da34f99a416cf1e63b4c2a2a803bca4b) Thanks [@kzuraw](https://github.com/kzuraw)! - Fix order fulfillment page - don't require quantity to be set if warehouse is not selected
+
+- [#6014](https://github.com/saleor/saleor-dashboard/pull/6014) [`9ee100d`](https://github.com/saleor/saleor-dashboard/commit/9ee100d3710c475ec39fb6a40f9c831ce688e5ee) Thanks [@mariobrgomes](https://github.com/mariobrgomes)! - Fixed shipping weight field not appearing when editing simple products. The weight field now displays correctly on the product edit page and updates are properly saved to the backend. Users can now also clear the weight by setting it to an empty string, which sends null to the backend. Weight handling is now consistent across product creation, product updates, and variant updates.
+
+- [#6136](https://github.com/saleor/saleor-dashboard/pull/6136) [`84cac1e`](https://github.com/saleor/saleor-dashboard/commit/84cac1e6b1eb541da9132efd45ba85ac30e367f8) Thanks [@kzuraw](https://github.com/kzuraw)! - Refactor PaymentsSummary component to simplify rendering logic and remove unused OrderDetailsViewModel methods
+
+- [#6137](https://github.com/saleor/saleor-dashboard/pull/6137) [`cce1339`](https://github.com/saleor/saleor-dashboard/commit/cce1339a9af15fbcfb18acb801d28299451d38a3) Thanks [@kzuraw](https://github.com/kzuraw)! - Fixes order value for tax
+
+- [#6142](https://github.com/saleor/saleor-dashboard/pull/6142) [`f52e048`](https://github.com/saleor/saleor-dashboard/commit/f52e048970fbe1048567aff09aba47bb19be777e) Thanks [@IKarbowiak](https://github.com/IKarbowiak)! - Adjust the `CustomerDetailsPage` component to trigger a single mutation when metadata changes. This update ensures that only one `customerMetadataUpdated` webhook is generated, preventing duplication.
+
+- [#6146](https://github.com/saleor/saleor-dashboard/pull/6146) [`0cddff8`](https://github.com/saleor/saleor-dashboard/commit/0cddff8c8fe2f10d7ddca3ec88af439dc74d486c) Thanks [@mirekm](https://github.com/mirekm)! - Add `Go to/Create Product Type` entry to the Cmd+K menu
+
+- [#6147](https://github.com/saleor/saleor-dashboard/pull/6147) [`62f5706`](https://github.com/saleor/saleor-dashboard/commit/62f5706dee0bc0dbb68c6017272c051b24b7ef56) Thanks [@mirekm](https://github.com/mirekm)! - Improve additional info that we provide for fulfillment groups
+
+## 3.22.14
+
+### Patch Changes
+
+- [#6122](https://github.com/saleor/saleor-dashboard/pull/6122) [`62f2911`](https://github.com/saleor/saleor-dashboard/commit/62f29118a7e2cf315d609a42c8575cfa6385c011) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Redesign order details payments and transactions section
+
+  Introduced new `OrderSummary` component that consolidates order value and payments information into a unified, two-column layout. The new design provides:
+  - **Order Value column**: Displays subtotal, shipping, taxes, discounts, and gift cards with clear itemization
+  - **Payments Summary column**: Shows payment status, authorized/captured/refunded amounts, and transaction state
+  - **Improved visual hierarchy**: Card-based layout with clear separation between order value and payment status
+  - **Better payment flow handling**: Distinct UI for legacy payments API vs. transactions API
+  - **Enhanced transaction display**: Consolidated view of all payment transactions with status pills
+
+  This redesign improves clarity when reviewing order financial information and payment states.
+
+- [#6128](https://github.com/saleor/saleor-dashboard/pull/6128) [`787c5fa`](https://github.com/saleor/saleor-dashboard/commit/787c5fab9a58d0b28705601eff53496d9f2aa701) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Remove focus border from datagrid cells while preserving header click highlight
+
+  Previously, clicking on datagrid cells displayed a visible focus border around the cell. The border has been removed by setting `drawFocusRing={false}` on the DataEditor component, while maintaining the header selection color functionality.
+
+- [#6132](https://github.com/saleor/saleor-dashboard/pull/6132) [`75826b1`](https://github.com/saleor/saleor-dashboard/commit/75826b104369678982b28ef057c26053d950a516) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed bug with App (with extensions) installation - now validation on the frontend checks new API fields properly
+
+## 3.22.13
+
+### Patch Changes
+
+- [#6090](https://github.com/saleor/saleor-dashboard/pull/6090) [`4c24b50`](https://github.com/saleor/saleor-dashboard/commit/4c24b508a69276fb6d7dabb30009a61c7a556796) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Fix visual regressions introduced in 3.22.12: missing sort arrow on datagrid when column is focused and changing order of buttons on order metadata / order line metadata dialogs to match other places in dashboard.
+
+- [#6081](https://github.com/saleor/saleor-dashboard/pull/6081) [`7b2d6d2`](https://github.com/saleor/saleor-dashboard/commit/7b2d6d24688d77bde321b89d98a8b02dbd69874a) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Dashboard now uses new API to filter appExtensions query - `mountName` instead `mount`
+
+- [#6097](https://github.com/saleor/saleor-dashboard/pull/6097) [`989aa1d`](https://github.com/saleor/saleor-dashboard/commit/989aa1d66dea035a1b7fc57447b2cb7a0a1a11ac) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Fix row checkbox visibility in DataGrid by overriding rowMarkerTheme accentColor. Previously, checked row checkboxes had light gray background with white checkmark, making them invisible. Now they use dark text color for background, matching header checkbox appearance.
+
+- [#6093](https://github.com/saleor/saleor-dashboard/pull/6093) [`77ce8c2`](https://github.com/saleor/saleor-dashboard/commit/77ce8c23bc863d0da6eedf5219b61a9f34699308) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Add fulfillment metadata editing with button and modal dialog. Replace cancel fulfillment trash icon with dropdown menu. Improve tracking number copy button to show only on hover.
+
+- [#6100](https://github.com/saleor/saleor-dashboard/pull/6100) [`90e5db9`](https://github.com/saleor/saleor-dashboard/commit/90e5db90272170e8b1584c378d02a21df999589d) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Improve order details datagrid visual polish
+
+  Enhanced the visual appearance of order details datagrids with the following improvements:
+  - Refined column selection styling to use a more subtle hover color, creating a cleaner visual experience when selecting columns
+  - Improved fulfillment card spacing by making the last card's bottom border white, providing better visual separation from surrounding content
+  - Fixed visual clutter by hiding the drag handle icon on the empty spacing column
+  - Added left padding and adjusted spacing for better content alignment
+  - Enhanced draft order cards with subtle shadows for improved depth perception
+  - Refined font sizing for better readability
+
+  These changes improve the overall visual consistency and polish of the order management interface.
+
+- [#6098](https://github.com/saleor/saleor-dashboard/pull/6098) [`b7b0ed1`](https://github.com/saleor/saleor-dashboard/commit/b7b0ed1c69cce94eeaffae6184b99d82f9116184) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Improve draft order line item management with quick actions
+
+  Order draft line items now feature a row action bar for faster access to common operations. Metadata can be viewed via the metadata icon button, while additional actions (product details, remove item) are available through the menu dropdown.
+
+- [#6082](https://github.com/saleor/saleor-dashboard/pull/6082) [`290c67e`](https://github.com/saleor/saleor-dashboard/commit/290c67ed7f4e1e9d447ee3c872c9be5c044a908d) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Improved order fulfillment cards with better keyboard accessibility - tracking number copy buttons now work with keyboard navigation. Enhanced screen reader support with proper labels for order status indicators.
+
+- [#6121](https://github.com/saleor/saleor-dashboard/pull/6121) [`2632bf0`](https://github.com/saleor/saleor-dashboard/commit/2632bf0741d87d3790481283d117fae9a6b8a26d) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed error when bulk operations on large number of items (over 20) caused runtime error - for example selecting 100 items to be unassigned from collecton, caused page to crash. Now limit is set to 100
+
+## 3.22.12
+
+### Patch Changes
+
+- [#6042](https://github.com/saleor/saleor-dashboard/pull/6042) [`e78b4a1`](https://github.com/saleor/saleor-dashboard/commit/e78b4a14b1ceb4282431300a6f06b30184f8e0f5) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Metadata filters will now omit `value` if none is provided for filters that are using `WHERE` API (Products, Orders, etc.). This way users can filter for metadata key existence instead of key:value pairs.
+
+- [#6074](https://github.com/saleor/saleor-dashboard/pull/6074) [`2aa042d`](https://github.com/saleor/saleor-dashboard/commit/2aa042ddab5f26e8b11e0b73dc473ee0f2927638) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Improve datagrid UI styling:
+  - Add drag indicator icon to selected column headers
+  - Change header icons (sorting arrows and grip) to black for better visibility
+  - Add white background to row action sections
+  - Add left border to row actions and column picker
+  - Remove shadow from row action bar
+  - Make backgrounds transparent where needed for cleaner appearance
+
+- [#6065](https://github.com/saleor/saleor-dashboard/pull/6065) [`c1cb87f`](https://github.com/saleor/saleor-dashboard/commit/c1cb87fce895707756859afe668ca4e7804ec0ca) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Increase extension name display width in InstalledExtensionsList from 200px to 400px to improve readability for extensions with longer names
+
+- [#6083](https://github.com/saleor/saleor-dashboard/pull/6083) [`fa7aab9`](https://github.com/saleor/saleor-dashboard/commit/fa7aab97244388967cbe77c7bea13d32002321cc) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Updated dependencies to fix security vulnerabilities in js-yaml (GHSA-mh29-5h37-fv8m, moderate severity) and glob (GHSA-5j98-mcp5-4vw2, high severity). Added pnpm overrides for defense-in-depth protection against these vulnerabilities.
+
+- [#6042](https://github.com/saleor/saleor-dashboard/pull/6042) [`e78b4a1`](https://github.com/saleor/saleor-dashboard/commit/e78b4a14b1ceb4282431300a6f06b30184f8e0f5) Thanks [@witoszekdev](https://github.com/witoszekdev)! - Metadata filter fields will now validate if `key` is provided. Previously users were able to enter data without `key` which resulted in an error. `value` is optional.
+
+- [#6009](https://github.com/saleor/saleor-dashboard/pull/6009) [`f519aa3`](https://github.com/saleor/saleor-dashboard/commit/f519aa3f61f8a1d03c19fc3cd19a7f43e587d4cf) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Add metadata button to order line datagrid for quick access to line item metadata
+
+- [#6066](https://github.com/saleor/saleor-dashboard/pull/6066) [`0c83a47`](https://github.com/saleor/saleor-dashboard/commit/0c83a477cc08cebdd9c2d473adade22165d16e6d) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Add order metadata dialog with Code icon button in order details page. Users can now view and edit order metadata (public and private) directly from the order page by clicking the new Code icon button in the top navigation bar next to the settings menu.
+
+- [#6030](https://github.com/saleor/saleor-dashboard/pull/6030) [`ccc854d`](https://github.com/saleor/saleor-dashboard/commit/ccc854d9bdb81d17497c0c65e85317731c9047dd) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Add support for Translation extensions (popup only) to establish bi-directional communication to update form state.
+
+- [#6079](https://github.com/saleor/saleor-dashboard/pull/6079) [`7834e01`](https://github.com/saleor/saleor-dashboard/commit/7834e01c6d3c5011dbcde7f78c33e020e1b1b417) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Update unfulfilled order card title and move fulfill button to toolbar for better UX
+
+## 3.22.11
+
+### Patch Changes
+
+- [#6048](https://github.com/saleor/saleor-dashboard/pull/6048) [`6f099dd`](https://github.com/saleor/saleor-dashboard/commit/6f099ddc52c600a98fa6fbef55ff7691b3fbf1f1) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Fixed broken sidebar app alert url to installed extension page
+
+- [#6033](https://github.com/saleor/saleor-dashboard/pull/6033) [`b1a048a`](https://github.com/saleor/saleor-dashboard/commit/b1a048ab34fbae0b907dc8e86f82fac30c88017a) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Dropped support for node 18. Migrated npm to pnpm
+
+## 3.22.10
+
+### Patch Changes
+
+- [#5992](https://github.com/saleor/saleor-dashboard/pull/5992) [`7465a3a`](https://github.com/saleor/saleor-dashboard/commit/7465a3a707f5100c4133b498913ab8f81fc7369d) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Added a new extension mount point: TRANSLATIONS_MORE_ACTIONS that will render app extension on translation pages
+
+- [#6032](https://github.com/saleor/saleor-dashboard/pull/6032) [`ccdfdec`](https://github.com/saleor/saleor-dashboard/commit/ccdfdec1973adde8e1e4f7c633efdcbc618cefb4) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Fix warehouse assignment modal: prevent duplicates and enable proper deselection. Previously, when selecting warehouses in the assignment modal, deselecting an option would still add it to the list, resulting in duplicate entries on submit.
+
+- [#5990](https://github.com/saleor/saleor-dashboard/pull/5990) [`db8fc50`](https://github.com/saleor/saleor-dashboard/commit/db8fc508864b13702988dd4e3a209e6dedf57c67) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Added new API for communication between App and Dashboard. Now Dashboard will send form state (only Product Update page) to opened app (only POPUP). App will be able to send form fields back to the Dashboard, which will update the form. See docs [todo]
+
+## 3.22.9
+
+### Patch Changes
+
+- [#6016](https://github.com/saleor/saleor-dashboard/pull/6016) [`595e1ee`](https://github.com/saleor/saleor-dashboard/commit/595e1ee42de0ebe71da0bc7a7ab4b47057044269) Thanks [@xseignard](https://github.com/xseignard)! - Add email field on warehouse details page
+
+- [#6015](https://github.com/saleor/saleor-dashboard/pull/6015) [`04b419a`](https://github.com/saleor/saleor-dashboard/commit/04b419af2c19bb50b5a8a25a170519a70d8aa007) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Switched to the new AppExtension fields introduced in 3.22 patch (mount -> mountName, target -> targetName, options -> settings). This does not introduce a functional change, but is a part of the larger extension logic overhaul.
+
+## 3.22.8
+
+### Patch Changes
+
+- [#6019](https://github.com/saleor/saleor-dashboard/pull/6019) [`78c8d64`](https://github.com/saleor/saleor-dashboard/commit/78c8d64f592dcbd9c36788f38febb12c7bbb2550) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fix error with invalid extension manifest validation, cause by invalid permissions schema
+
+## 3.22.7
+
+### Patch Changes
+
+- [#6011](https://github.com/saleor/saleor-dashboard/pull/6011) [`8aca1b7`](https://github.com/saleor/saleor-dashboard/commit/8aca1b775a8365f01c28d92e9a31b27b07940549) Thanks [@lkostrowski](https://github.com/lkostrowski)! - During app installation, Dashboard prevents installation in case errors occur. This mimics the behavior of API-side validation.
+
+- [#6010](https://github.com/saleor/saleor-dashboard/pull/6010) [`73f1ab6`](https://github.com/saleor/saleor-dashboard/commit/73f1ab66e2229c99b366d71b6db104c766be6427) Thanks [@lkostrowski](https://github.com/lkostrowski)! - AppExtension validation on installation page now properly validates relative extension URL.
+
+- [#6007](https://github.com/saleor/saleor-dashboard/pull/6007) [`abb3edc`](https://github.com/saleor/saleor-dashboard/commit/abb3edc8bc6c9b00f2ba54ab7f83f55f8033e351) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Add missing logic for handling product variant metadata when accessed from order line modal (on order details page).
+
+## 3.22.6
+
+### Patch Changes
+
+- [#6002](https://github.com/saleor/saleor-dashboard/pull/6002) [`770e1b1`](https://github.com/saleor/saleor-dashboard/commit/770e1b1a5c621b00e7c8696009dfb6a8d13e6028) Thanks [@lkostrowski](https://github.com/lkostrowski)! - App <iframe>s now enable pop-ups (`"allow-popups"`) which means App can use native links to open new tab, instead using AppBridge action. In the nutshell `<a target="_blank"` is now working. It's still recommended to use `rel="noreferrer"` due to security reasons.
+
+- [#6003](https://github.com/saleor/saleor-dashboard/pull/6003) [`727c049`](https://github.com/saleor/saleor-dashboard/commit/727c049ad39a91a8e1377426f1811ae21bbddefc) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed cmd/ctrl + click on Datagrid rows. Now they will properly open row in the new tab as expected
+
+## 3.22.5
+
+### Patch Changes
+
+- [#5997](https://github.com/saleor/saleor-dashboard/pull/5997) [`0e45316`](https://github.com/saleor/saleor-dashboard/commit/0e453168b70f9c8bbebea8904df53ce9b7484abe) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Added local-frontend validation of a subset of App Manifest fields during installation. Installing apps will be now more liberal, some errors initially thrown on the API level will be now warnings that don't block app installation.
+
+- [#5987](https://github.com/saleor/saleor-dashboard/pull/5987) [`457fb84`](https://github.com/saleor/saleor-dashboard/commit/457fb8450daff51e23aff7cc5276f5565e93de18) Thanks [@lkostrowski](https://github.com/lkostrowski)! - Fixed redirection from Apps Widgets (app name) to app page.
+
+- [#5999](https://github.com/saleor/saleor-dashboard/pull/5999) [`a1eec49`](https://github.com/saleor/saleor-dashboard/commit/a1eec4902e1e9849efa76b2a780126761c943e54) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Update Saleor logo on login page
+
+- [#5901](https://github.com/saleor/saleor-dashboard/pull/5901) [`af290ca`](https://github.com/saleor/saleor-dashboard/commit/af290ca104bb65c90207d482e83c500aa72f7d8a) Thanks [@krzysztofzuraw](https://github.com/krzysztofzuraw)! - Improved handling of long reference attribute lists in the Product Create, the Product Edit, and the Page Details views:
+  - Reference attributes (such as product references or page references) with more than 5 items now display a "Show more" button when collapsed and a "Show less" button when expanded
+  - Users can toggle between collapsed view (showing first 5 items) and expanded view (showing all items)
+  - Makes working with products and pages that have many reference attributes more manageable
+
 ## 3.22.4
 
 ### Patch Changes

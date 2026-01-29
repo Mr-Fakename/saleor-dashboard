@@ -5,14 +5,15 @@ import {
   ChannelCreateInput,
   ChannelCreateMutation,
   ChannelErrorFragment,
+  isStagingSchema,
   useChannelCreateMutation,
   useChannelReorderWarehousesMutation,
 } from "@dashboard/graphql";
+import { ChannelCreateInput as ChannelCreateInputWithAllowLegacyGiftCardUse } from "@dashboard/graphql/staging";
 import { getSearchFetchMoreProps } from "@dashboard/hooks/makeTopLevelSearch/utils";
 import useNavigator from "@dashboard/hooks/useNavigator";
-import useNotifier from "@dashboard/hooks/useNotifier";
+import { useNotifier } from "@dashboard/hooks/useNotifier";
 import useShop from "@dashboard/hooks/useShop";
-import { commonMessages } from "@dashboard/intl";
 import getChannelsErrorMessage from "@dashboard/utils/errors/channels";
 import currencyCodes from "currency-codes";
 import { useIntl } from "react-intl";
@@ -39,7 +40,7 @@ const ChannelCreateView = () => {
       if (!errors.length) {
         notify({
           status: "success",
-          text: intl.formatMessage(commonMessages.savedChanges),
+          text: intl.formatMessage({ id: "HA0fD3", defaultMessage: "Channel created" }),
         });
       }
     },
@@ -74,6 +75,7 @@ const ChannelCreateView = () => {
     warehousesIdsToAdd,
     warehousesToDisplay,
     automaticallyCompleteCheckouts,
+    allowLegacyGiftCardUse,
   }: FormData) => {
     const input: ChannelCreateInput = {
       name,
@@ -98,7 +100,18 @@ const ChannelCreateView = () => {
       },
     };
 
-    return saveChannel(input, warehousesToDisplay);
+    const inputWithAllowLegacyGiftCardUse: ChannelCreateInputWithAllowLegacyGiftCardUse = {
+      ...input,
+      checkoutSettings: {
+        automaticallyCompleteFullyPaidCheckouts: automaticallyCompleteCheckouts,
+        allowLegacyGiftCardUse: allowLegacyGiftCardUse,
+      },
+    };
+
+    return saveChannel(
+      isStagingSchema() ? inputWithAllowLegacyGiftCardUse : input,
+      warehousesToDisplay,
+    );
   };
   const {
     shippingZonesCountData,

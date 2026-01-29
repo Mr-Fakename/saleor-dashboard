@@ -22,4 +22,19 @@ export const productUpdatePageMessages = defineMessages({
       "{counter,plural,one{Are you sure you want to delete this variant?} other{Are you sure you want to delete {displayQuantity} variants?}}",
     description: "delete variant dialog subtitle",
   },
+  variantBulkCreateAllFailed: {
+    id: "4sYqlg",
+    defaultMessage: "All variants failed to create",
+    description: "error message when bulk variant creation fails completely",
+  },
+  variantBulkCreateSuccess: {
+    id: "t1XcOo",
+    defaultMessage: "{count} variants created successfully",
+    description: "success message when all variants are created",
+  },
+  variantBulkCreatePartial: {
+    id: "5ye4Ik",
+    defaultMessage: "{success} variants created, {failed} failed",
+    description: "warning message when some variants failed to create",
+  },
 });
