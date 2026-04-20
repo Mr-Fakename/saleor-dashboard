@@ -5,6 +5,7 @@ import { useTheme } from "@saleor/macaw-ui-next";
 import { useMemo } from "react";
 
 import { dropdownCellRenderer } from "./DropdownCell";
+import { expanderCellRenderer } from "./ExpanderCell";
 import { moneyCellRenderer } from "./Money/MoneyCell";
 import { moneyDiscountedCellRenderer } from "./Money/MoneyDiscountedCell";
 import { numberCellRenderer } from "./NumberCell";
@@ -26,6 +27,7 @@ export function useCustomCellRenderers() {
       dateCellRenderer(locale),
       dropdownCellRenderer,
       thumbnailCellRenderer,
+      expanderCellRenderer,
       ...(customRenderers ?? []),
     ],
     [customRenderers, locale],

@@ -811,8 +811,10 @@ export const ATTRIBUTE_INPUT_TYPE_CONDITIONS = {
 };
 
 export const getAttributeInputType = (item: ConditionItem | null) => {
+  const label = item?.originalLabel || item?.label;
+
   const result = Object.entries(ATTRIBUTE_INPUT_TYPE_CONDITIONS).find(([_, value]) =>
-    value.find(entry => entry.type === item?.type && entry.label === item.label),
+    value.find(entry => entry.type === item?.type && entry.label === label),
   );
 
   return result && result[0];

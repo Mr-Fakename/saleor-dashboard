@@ -79,7 +79,7 @@ const useStyles = makeStyles(
           backgroundColor: vars.colors.background.default1,
         },
         "& .ce-popover__items": {
-          overflowY: "hidden",
+          overflowY: "scroll",
         },
         "& .ce-popover__item": {
           ...hover,

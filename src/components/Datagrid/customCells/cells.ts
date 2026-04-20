@@ -9,6 +9,7 @@ import { CustomCell, GridCell, GridCellKind, TextCell } from "@glideapps/glide-d
 import { Option } from "@saleor/macaw-ui-next";
 
 import { DropdownCell, DropdownCellProps } from "./DropdownCell";
+import { ExpanderCell } from "./ExpanderCell";
 import { MoneyCell, MoneyDiscuntedCell } from "./Money";
 import { hueToPillColorLight, PillCell, PillColor, stringToHue } from "./PillCell";
 import { StatusCell } from "./StatusCell";
@@ -235,6 +236,24 @@ export function pillCell(
       color: pillColor ?? fallbackColor,
     },
     kind: GridCellKind.Custom,
+  };
+}
+
+export function expanderCell(
+  isExpanded: boolean,
+  hasExpander: boolean,
+  opts?: Partial<GridCell>,
+): ExpanderCell {
+  return {
+    ...common,
+    ...opts,
+    kind: GridCellKind.Custom,
+    copyData: "",
+    data: {
+      kind: "expander-cell",
+      isExpanded,
+      hasExpander,
+    },
   };
 }
 

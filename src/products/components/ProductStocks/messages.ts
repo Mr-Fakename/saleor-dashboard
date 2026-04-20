@@ -131,4 +131,15 @@ export const messages = defineMessages({
     defaultMessage: "Assigning the stocks will be possible after the product is saved.",
     description: "variant stocks section subtitle",
   },
+  preorderAutoEnabled: {
+    id: "yWaFGI",
+    defaultMessage:
+      "Pre-order was automatically enabled because all stock quantities are zero. Set a quantity above zero to disable it.",
+    description: "preorder auto-toggle info message",
+  },
+  preorderAutoDisabled: {
+    id: "toYxVK",
+    defaultMessage: "Pre-order was automatically disabled because stock is now available.",
+    description: "preorder auto-toggle info message",
+  },
 });

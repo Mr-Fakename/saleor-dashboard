@@ -26,6 +26,7 @@ export type ProductStockInput = FormsetAtomicData<ProductStockFormsetData, strin
 interface ProductStockFormData {
   sku: string;
   trackInventory: boolean;
+  isPreorder: boolean;
   globalThreshold: string;
   globalSoldUnits: number;
   hasPreorderEndDate: boolean;
@@ -42,6 +43,7 @@ interface ProductStocksProps {
   warehouses: WarehouseFragment[];
   onChange: FormsetChange;
   onFormDataChange: FormChange;
+  onPreorderEndDateChange?: FormChange;
   onWarehouseStockAdd: (warehouseId: string, warehouseName: string) => void;
   onWarehouseStockDelete: (warehouseId: string) => void;
   onWarehouseConfigure: () => void;
@@ -62,6 +64,7 @@ export const ProductStocks = ({
   hasMoreWarehouses,
   onChange,
   onFormDataChange,
+  onPreorderEndDateChange,
   onWarehouseStockAdd,
   onWarehouseStockDelete,
   onWarehouseConfigure,
@@ -90,6 +93,25 @@ export const ProductStocks = ({
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onFormDataChange(e);
+  };
+
+  // Auto-toggle preorder based on stock quantity changes
+  const handleStockChangeWithPreorderToggle = (stockId: string, value: string) => {
+    onChange(stockId, value);
+
+    const newQuantity = parseInt(value, 10) || 0;
+
+    if (newQuantity > 0 && data.isPreorder) {
+      // Stock restored → auto-disable preorder
+      onFormDataChange({ target: { name: "isPreorder", value: false } });
+    } else if (newQuantity === 0 && !data.isPreorder) {
+      // Check if ALL stocks are now 0
+      const allZero = stocks.every(s => (s.id === stockId ? true : parseInt(s.value, 10) === 0));
+
+      if (allZero) {
+        onFormDataChange({ target: { name: "isPreorder", value: true } });
+      }
+    }
   };
 
   return (
@@ -133,6 +155,105 @@ export const ProductStocks = ({
               <FormattedMessage {...messages.trackInventoryDescription} />
             </Text>
           </Box>
+
+          {/* Preorder / Backorder toggle */}
+          <Box marginTop={5}>
+            <Checkbox
+              checked={data.isPreorder}
+              name="isPreorder"
+              disabled={loading}
+              onCheckedChange={value => onFormDataChange({ target: { name: "isPreorder", value } })}
+            >
+              <Box display="flex" flexDirection="column">
+                <Text>
+                  <FormattedMessage {...messages.variantInPreorder} />
+                </Text>
+              </Box>
+            </Checkbox>
+
+            {data.isPreorder && (
+              <Box marginLeft={5} marginTop={3} display="grid" gap={3}>
+                <Text size={2} color="default2">
+                  <FormattedMessage {...messages.preorderProductsAvailability} />
+                </Text>
+
+                {/* Global threshold */}
+                <Box __width="50%">
+                  <Input
+                    disabled={loading}
+                    label={intl.formatMessage(messages.preorderTresholdLabel)}
+                    name="globalThreshold"
+                    type="number"
+                    min={0}
+                    onChange={handleChange}
+                    value={data.globalThreshold ?? ""}
+                    size="small"
+                    helperText={
+                      data.globalSoldUnits > 0
+                        ? intl.formatMessage(messages.preorderTresholdUnitsLeft, {
+                            unitsLeft: data.globalThreshold
+                              ? parseInt(data.globalThreshold, 10) - data.globalSoldUnits
+                              : "∞",
+                          })
+                        : intl.formatMessage(messages.preorderTresholdDescription)
+                    }
+                    endAdornment={
+                      data.globalSoldUnits > 0 ? (
+                        <Text size={2} color="default2" whiteSpace="nowrap">
+                          {intl.formatMessage(messages.soldUnits)}: {data.globalSoldUnits}
+                        </Text>
+                      ) : undefined
+                    }
+                  />
+                </Box>
+
+                {/* End date toggle */}
+                <Box display="flex" flexDirection="column" gap={2}>
+                  {data.hasPreorderEndDate ? (
+                    <>
+                      <Input
+                        disabled={loading}
+                        label={intl.formatMessage(messages.preorderEndDateSetup)}
+                        name="preorderEndDateTime"
+                        type="datetime-local"
+                        onChange={e => onPreorderEndDateChange?.(e) ?? onFormDataChange(e)}
+                        value={
+                          data.preorderEndDateTime ? data.preorderEndDateTime.slice(0, 16) : ""
+                        }
+                        size="small"
+                      />
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="small"
+                        onClick={() =>
+                          onFormDataChange({
+                            target: { name: "hasPreorderEndDate", value: false },
+                          })
+                        }
+                      >
+                        <FormattedMessage {...messages.endDateCancel} />
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="small"
+                      onClick={() =>
+                        onFormDataChange({
+                          target: { name: "hasPreorderEndDate", value: true },
+                        })
+                      }
+                    >
+                      <FormattedMessage {...messages.endDateSetup} />
+                    </Button>
+                  )}
+                </Box>
+              </Box>
+            )}
+          </Box>
+
           <Box display="grid" gap={2} marginTop={5}>
             <Box display="flex" flexDirection="column">
               <Text size={4} fontWeight="bold">
@@ -177,7 +298,7 @@ export const ProductStocks = ({
             <TableBody>
               {renderCollection(stocks, (stock, index) => {
                 const handleQuantityChange = createNonNegativeValueChangeHandler(event =>
-                  onChange(stock.id, event.target.value),
+                  handleStockChangeWithPreorderToggle(stock.id, event.target.value),
                 );
 
                 return (

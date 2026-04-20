@@ -1,0 +1,60 @@
+.editor {
+  min-height: 600px;
+}
+
+.editorGrid {
+  min-height: 400px;
+}
+
+.htmlEditor {
+  width: 100%;
+  min-height: 250px;
+  padding: 8px;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  border: 1px solid var(--mu-colors-border-default3);
+  border-radius: 4px;
+  background-color: var(--mu-colors-background-default2);
+  color: var(--mu-colors-text-default2);
+  resize: vertical;
+  overflow-y: auto;
+}
+
+.htmlEditor:focus {
+  outline: none;
+  border-color: var(--mu-colors-border-info2);
+  box-shadow: 0 0 0 2px var(--mu-colors-shadow-info1);
+}
+
+.templateContent {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.templateContent p {
+  margin: 8px 0;
+}
+
+.templateContent p:first-child {
+  margin-top: 0;
+}
+
+.templateContent p:last-child {
+  margin-bottom: 0;
+}
+
+.templateContent br {
+  display: block;
+  content: "";
+  height: 8px;
+}
+
+/* Responsive grid for smaller screens */
+@media (max-width: 1200px) {
+  .editorGrid {
+    grid-template-columns: 1fr;
+  }
+}

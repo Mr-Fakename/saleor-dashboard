@@ -1,7 +1,6 @@
 // @ts-strict-ignore
 import { StrikethroughIcon } from "@dashboard/icons/StrikethroughIcon";
 import Attaches from "@editorjs/attaches";
-import Checklist from "@editorjs/checklist";
 import Code from "@editorjs/code";
 import Delimiter from "@editorjs/delimiter";
 import { ToolConstructable, ToolSettings } from "@editorjs/editorjs";
@@ -70,11 +69,6 @@ export const tools: Record<string, ToolConstructable | ToolSettings> = {
       cols: 3,
     },
   },
-  checklist: {
-    // @ts-expect-error Type mismatch between editorjs libraries
-    class: Checklist,
-    inlineToolbar,
-  },
   code: {
     class: Code,
   },
@@ -82,10 +76,6 @@ export const tools: Record<string, ToolConstructable | ToolSettings> = {
   warning: {
     class: Warning,
     inlineToolbar,
-    config: {
-      titlePlaceholder: "Title",
-      messagePlaceholder: "Message",
-    },
   },
   raw: Raw,
   attaches: {

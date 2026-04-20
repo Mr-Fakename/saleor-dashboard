@@ -92,6 +92,7 @@ interface OrderDetailsPageProps {
   onInvoiceClick: (invoiceId: string) => any;
   onInvoiceGenerate: () => any;
   onInvoiceSend: (invoiceId: string) => any;
+  onSendEmail?: () => void;
   onTransactionAction: (transactionId: string, actionType: TransactionActionEnum) => any;
   onAddManualTransaction: () => any;
   onRefundAdd: () => void;
@@ -122,6 +123,7 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
     onInvoiceClick,
     onInvoiceGenerate,
     onInvoiceSend,
+    onSendEmail,
     onOrderReturn,
     onOrderLineAdd,
     onOrderLineChange,
@@ -165,6 +167,13 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
     return loading;
   };
   const selectCardMenuItems = filteredConditionalItems([
+    {
+      item: {
+        label: intl.formatMessage(messages.sendEmail),
+        onSelect: onSendEmail,
+      },
+      shouldExist: !!onSendEmail && !isOrderUnconfirmed,
+    },
     {
       item: {
         label: intl.formatMessage(messages.cancelOrder),

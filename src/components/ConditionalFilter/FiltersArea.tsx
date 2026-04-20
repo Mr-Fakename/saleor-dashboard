@@ -22,7 +22,7 @@ const MAX_VALUE_ITEMS = 12;
 export const FiltersArea: FC<FiltersAreaProps> = ({ onConfirm, onCancel, errors }) => {
   const { apiProvider, leftOperandsProvider } = useConditionalFilterContext();
   const translations = useFiltersAreaTranslations();
-  const { translateOperandOptions, translateSelectedOperands } = useTranslate();
+  const { translateOperandOptions, translateFilterContainer } = useTranslate();
   const {
     value,
     hasEmptyRows,
@@ -86,7 +86,7 @@ export const FiltersArea: FC<FiltersAreaProps> = ({ onConfirm, onCancel, errors 
   return (
     <Filters
       leftOptions={translateOperandOptions(filteredOperands)}
-      value={translateSelectedOperands(value) as Array<string | Row>}
+      value={translateFilterContainer(value) as Array<string | Row>}
       onChange={handleStateChange}
       error={errors}
       locale={translations.locale}

@@ -155,7 +155,9 @@ export class UrlEntry {
       return new UrlEntry(tokenSlug, slug);
     }
 
-    const conditionIndex = CONDITIONS.findIndex(el => el === conditionValue.label);
+    const conditionIndex = CONDITIONS.findIndex(
+      el => el === (conditionValue.originalLabel || conditionValue.label),
+    );
 
     return new UrlEntry(`${tokenSlug}${conditionIndex}.${paramName}`, slug);
   }

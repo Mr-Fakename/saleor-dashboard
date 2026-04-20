@@ -19,6 +19,7 @@ import {
   PageDetailsFragment,
   PageErrorFragment,
   PageInput,
+  ProductWhereInput,
   UploadErrorFragment,
   useAttributeValueDeleteMutation,
   useFileUploadMutation,
@@ -40,6 +41,7 @@ import useAttributeValueSearchHandler from "@dashboard/utils/handlers/attributeV
 import createMetadataUpdateHandler from "@dashboard/utils/handlers/metadataUpdateHandler";
 import { mapEdgesToItems } from "@dashboard/utils/maps";
 import { getParsedDataForJsonStringField } from "@dashboard/utils/richText/misc";
+import { useCallback } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { getStringOrPlaceholder, maybe } from "../../misc";
@@ -181,6 +183,17 @@ const PageDetails = ({ id, params }: PageDetailsProps) => {
     result: searchAttributeValuesOpts,
     reset: searchAttributeReset,
   } = useAttributeValueSearchHandler(DEFAULT_INITIAL_SEARCH_DATA);
+  const handleProductFilterChange = useCallback(
+    (filterVariables: ProductWhereInput, channel: string | undefined, query: string) => {
+      searchProductsOpts.refetch({
+        ...DEFAULT_INITIAL_SEARCH_DATA,
+        where: filterVariables,
+        channel,
+        query,
+      });
+    },
+    [searchProductsOpts.refetch],
+  );
   const attributeValues = mapEdgesToItems(searchAttributeValuesOpts?.data?.attribute.choices) || [];
   const fetchMoreReferencePages = {
     hasMore: searchPagesOpts.data?.search?.pageInfo?.hasNextPage,
@@ -240,6 +253,7 @@ const PageDetails = ({ id, params }: PageDetailsProps) => {
         fetchMoreReferencePages={fetchMoreReferencePages}
         fetchReferenceProducts={searchProducts}
         fetchMoreReferenceProducts={fetchMoreReferenceProducts}
+        onProductFilterChange={handleProductFilterChange}
         fetchReferenceCategories={searchCategories}
         fetchMoreReferenceCategories={fetchMoreReferenceCategories}
         fetchReferenceCollections={searchCollections}

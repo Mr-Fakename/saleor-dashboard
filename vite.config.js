@@ -60,6 +60,9 @@ export default defineConfig(({ command, mode }) => {
     ONBOARDING_USER_JOINED_DATE_THRESHOLD,
     // Multi-schema support
     FF_USE_STAGING_SCHEMA,
+    // Email bridge configuration
+    EMAIL_BRIDGE_URL,
+    EMAIL_BRIDGE_API_KEY,
 
     npm_package_version,
   } = env;
@@ -93,6 +96,8 @@ export default defineConfig(({ command, mode }) => {
           POSTHOG_HOST,
           ONBOARDING_USER_JOINED_DATE_THRESHOLD,
           ENABLED_SERVICE_NAME_HEADER,
+          EMAIL_BRIDGE_URL,
+          EMAIL_BRIDGE_API_KEY,
         },
       },
     }),

@@ -31,3 +31,38 @@ export const welcomePageNotifications = gql`
     }
   }
 `;
+
+export const homePageOrderCounts = gql`
+  query HomePageOrderCounts($channel: String!, $hasPermissionToManageOrders: Boolean!) {
+    ordersToday: ordersTotal(period: TODAY, channel: $channel)
+      @include(if: $hasPermissionToManageOrders) {
+      gross {
+        amount
+        currency
+      }
+    }
+    ordersThisMonth: ordersTotal(period: THIS_MONTH, channel: $channel)
+      @include(if: $hasPermissionToManageOrders) {
+      gross {
+        amount
+        currency
+      }
+    }
+    ordersUnfulfilled: orders(filter: { status: UNFULFILLED })
+      @include(if: $hasPermissionToManageOrders) {
+      totalCount
+    }
+    ordersUnconfirmed: orders(filter: { status: UNCONFIRMED })
+      @include(if: $hasPermissionToManageOrders) {
+      totalCount
+    }
+    ordersPartiallyFulfilled: orders(filter: { status: PARTIALLY_FULFILLED })
+      @include(if: $hasPermissionToManageOrders) {
+      totalCount
+    }
+    ordersReadyToCapture: orders(filter: { status: READY_TO_CAPTURE })
+      @include(if: $hasPermissionToManageOrders) {
+      totalCount
+    }
+  }
+`;

@@ -31,17 +31,19 @@ import { useLocation } from "react-router";
 
 import { getAttributeIdFromColumnValue, isAttributeColumnValue } from "../ProductListPage/utils";
 import {
+  createExpanderColumn,
   createGetCellContent,
+  EXPANDER_COLUMN_ID,
   getAttributesFetchMoreProps,
   getAvailableAttributesData,
   getCellAction,
   getColumnMetadata,
   getColumnSortIconName,
-  getProductRowsLength,
   productListDynamicColumnAdapter,
   productListStaticColumnAdapter,
 } from "./datagrid";
 import { messages } from "./messages";
+import { useExpandableProductRows } from "./useExpandableProductRows";
 import { usePriceClick } from "./usePriceClick";
 
 interface ProductListDatagridProps
@@ -89,8 +91,25 @@ export const ProductListDatagrid = ({
   const datagrid = useDatagridChangeState();
   const { locale } = useLocale();
   const location = useLocation();
-  const productsLength = getProductRowsLength(disabled, products, disabled);
   const onPriceClick = usePriceClick({ isChannelSelected });
+
+  const { expandedIds, toggle, virtualRows, totalRows } = useExpandableProductRows(products);
+
+  const productsLength = loading ? 1 : disabled ? 1 : totalRows || 0;
+
+  const handleExpanderClick = useCallback(
+    (productId: string) => {
+      toggle(productId);
+
+      return true; // Prevent row navigation
+    },
+    [toggle],
+  );
+
+  const expanderColumn = useMemo(
+    () => createExpanderColumn(handleExpanderClick),
+    [handleExpanderClick],
+  );
 
   const handleColumnChange = useCallback(
     (picked: ProductListColumns[]) => {
@@ -144,9 +163,13 @@ export const ProductListDatagrid = ({
     onSave: handleColumnChange,
   });
 
+  // Prepend expander column to visible columns (not part of column picker)
+  const columnsWithExpander = useMemo(
+    () => [expanderColumn, ...visibleColumns],
+    [expanderColumn, visibleColumns],
+  );
+
   // Logic for updating sort icon in dynamic columns
-  // This is workaround before sorting is abstracted into useColumns
-  // Tracked in https://github.com/saleor/saleor-dashboard/issues/3685
   useEffect(() => {
     handlers.onCustomUpdateVisible(prevColumns =>
       prevColumns?.map(column => {
@@ -171,78 +194,134 @@ export const ProductListDatagrid = ({
 
   const handleHeaderClicked = useCallback(
     (col: number) => {
-      const { columnName, columnId } = getColumnMetadata(visibleColumns[col].id);
+      const column = columnsWithExpander[col];
+
+      if (!column || column.id === EXPANDER_COLUMN_ID) {
+        return;
+      }
+
+      const { columnName, columnId } = getColumnMetadata(column.id);
 
       if (canBeSorted(columnName, !!selectedChannelId)) {
         onSort(columnName, columnId);
       }
     },
-    [visibleColumns, onSort, selectedChannelId],
+    [columnsWithExpander, onSort, selectedChannelId],
   );
+
   const handleRowClick = useCallback(
     ([col, row]: Item) => {
       if (!onRowClick) {
         return;
       }
 
-      const action = getCellAction(visibleColumns, col);
+      const virtualRow = virtualRows[row];
+
+      if (!virtualRow) {
+        return;
+      }
+
+      const clickedColumnId = columnsWithExpander[col]?.id;
+
+      // For variant rows, only allow the expander action — suppress others (e.g. onPriceClick)
+      if (virtualRow.type === "variant") {
+        if (clickedColumnId === EXPANDER_COLUMN_ID) {
+          const action = getCellAction(columnsWithExpander, col);
+
+          if (action) {
+            action(virtualRow.product.id);
+          }
+        }
+
+        return;
+      }
+
+      // Product rows: check column actions (expander, price click)
+      const action = getCellAction(columnsWithExpander, col);
 
       if (action) {
-        const result = action(products[row].id);
+        const result = action(virtualRow.product.id);
 
         if (result) return;
       }
 
-      const rowData = products[row];
-
-      onRowClick(rowData.id);
+      onRowClick(virtualRow.product.id);
     },
-    [onRowClick, products],
+    [onRowClick, virtualRows, columnsWithExpander],
   );
+
   const handleRowAnchor = useCallback(
     ([, row]: Item) => {
       if (!rowAnchor) {
         return;
       }
 
-      const rowData = products[row];
+      const virtualRow = virtualRows[row];
 
-      return rowAnchor(rowData.id);
-    },
-    [rowAnchor, products],
-  );
-  const handleGetColumnTooltipContent = useCallback(
-    (colIndex: number): string => {
-      const { columnName } = getColumnMetadata(visibleColumns[colIndex].id);
-
-      // Sortable column or empty
-      if (canBeSorted(columnName, !!selectedChannelId) || visibleColumns[colIndex].id === "empty") {
+      if (!virtualRow || virtualRow.type === "variant") {
         return "";
       }
 
-      // No sortable column
+      return rowAnchor(virtualRow.product.id);
+    },
+    [rowAnchor, virtualRows],
+  );
+
+  const handleGetColumnTooltipContent = useCallback(
+    (colIndex: number): string => {
+      const column = columnsWithExpander[colIndex];
+
+      if (!column || column.id === EXPANDER_COLUMN_ID) {
+        return "";
+      }
+
+      const { columnName } = getColumnMetadata(column.id);
+
+      if (canBeSorted(columnName, !!selectedChannelId) || column.id === "empty") {
+        return "";
+      }
+
       if (!Object.keys(ProductListUrlSortField).includes(columnName)) {
         return intl.formatMessage(commonTooltipMessages.noSortable);
       }
 
-      // Sortable but requrie selected channel
       return intl.formatMessage(commonTooltipMessages.noFilterSelected, {
         filterName: filterDependency.label,
       });
     },
-    [visibleColumns, filterDependency.label, intl, selectedChannelId],
+    [columnsWithExpander, filterDependency.label, intl, selectedChannelId],
   );
+
+  // Map row selection to product indices only (filter out variant rows)
+  const handleSelectProductIds = useCallback(
+    (rows: number[], clearSelection: () => void) => {
+      if (!products) {
+        return;
+      }
+
+      const productIndices = rows
+        .map(row => virtualRows[row])
+        .filter(vr => vr?.type === "product")
+        .map(vr => vr.productIndex);
+
+      onSelectProductIds(productIndices, clearSelection);
+    },
+    [virtualRows, products, onSelectProductIds],
+  );
+
   const getCellContent = useMemo(
     () =>
       createGetCellContent({
-        columns: visibleColumns,
+        columns: columnsWithExpander,
         products,
+        virtualRows,
+        expandedIds,
         intl,
         theme,
         locale,
         selectedChannelId,
       }),
-    [visibleColumns, products, intl, locale, selectedChannelId],
+    [columnsWithExpander, products, virtualRows, expandedIds, intl, locale, selectedChannelId],
   );
 
   return (
@@ -257,15 +336,16 @@ export const ProductListDatagrid = ({
           onColumnMoved={handlers.onMove}
           onColumnResize={handlers.onResize}
           verticalBorder={false}
+          freezeColumns={2}
           getColumnTooltipContent={handleGetColumnTooltipContent}
-          availableColumns={visibleColumns}
+          availableColumns={columnsWithExpander}
           onHeaderClicked={handleHeaderClicked}
           emptyText={intl.formatMessage(messages.emptyText)}
           getCellContent={getCellContent}
           getCellError={() => false}
           menuItems={() => []}
           rows={productsLength}
-          onRowSelectionChange={onSelectProductIds}
+          onRowSelectionChange={handleSelectProductIds}
           selectionActions={() => null}
           onRowClick={handleRowClick}
           rowAnchor={handleRowAnchor}

@@ -211,6 +211,7 @@ export type OrderUrlDialog =
   | "transaction-action"
   | "transaction-charge-action"
   | "invoice-send"
+  | "send-email"
   | "add-manual-transaction"
   | "view-order-line-metadata"
   | "view-order-metadata"

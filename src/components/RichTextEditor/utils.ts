@@ -1,7 +1,7 @@
 import { OutputBlockData, OutputData } from "@editorjs/editorjs";
 
 interface ListBlockDataNew {
-  style: "ordered" | "unordered";
+  style: "ordered" | "unordered" | "checklist";
   meta?: Record<string, unknown>;
   items: Array<{
     content: string;
@@ -11,7 +11,7 @@ interface ListBlockDataNew {
 }
 
 interface ListBlockDataOld {
-  style: "ordered" | "unordered";
+  style: "ordered" | "unordered" | "checklist";
   items: string[];
 }
 

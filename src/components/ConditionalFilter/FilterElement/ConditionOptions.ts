@@ -10,6 +10,7 @@ export interface ConditionItem {
   type: string;
   label: string;
   value: string;
+  originalLabel?: string;
 }
 
 export class ConditionOptions extends Array<ConditionItem> {

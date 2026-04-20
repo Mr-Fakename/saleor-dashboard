@@ -35,21 +35,51 @@ importers:
       "@dnd-kit/utilities":
         specifier: ^3.2.2
         version: 3.2.2(react@18.3.1)
+      "@editorjs/attaches":
+        specifier: ^1.3.0
+        version: 1.3.2
+      "@editorjs/code":
+        specifier: ^2.9.3
+        version: 2.9.4
+      "@editorjs/delimiter":
+        specifier: ^1.4.2
+        version: 1.4.2
       "@editorjs/editorjs":
-        specifier: 2.30.7
+        specifier: ^2.30.7
         version: 2.30.7
       "@editorjs/header":
         specifier: 2.8.8
         version: 2.8.8
+      "@editorjs/image":
+        specifier: ^2.10.3
+        version: 2.10.3
+      "@editorjs/inline-code":
+        specifier: ^1.5.2
+        version: 1.5.2
       "@editorjs/list":
         specifier: 2.0.8
         version: 2.0.8
+      "@editorjs/marker":
+        specifier: ^1.4.0
+        version: 1.4.0
       "@editorjs/paragraph":
         specifier: 2.11.7
         version: 2.11.7
       "@editorjs/quote":
         specifier: 2.7.6
         version: 2.7.6
+      "@editorjs/raw":
+        specifier: ^2.5.1
+        version: 2.5.1
+      "@editorjs/table":
+        specifier: ^2.4.5
+        version: 2.4.5
+      "@editorjs/underline":
+        specifier: ^1.2.1
+        version: 1.2.1
+      "@editorjs/warning":
+        specifier: ^1.4.1
+        version: 1.4.1
       "@glideapps/glide-data-grid":
         specifier: 5.3.0
         version: 5.3.0(lodash@4.17.23)(marked@4.3.0)(react-dom@18.3.1(react@18.3.1))(react-responsive-carousel@3.2.23)(react@18.3.1)
@@ -251,6 +281,9 @@ importers:
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      styled-components:
+        specifier: ^6.1.19
+        version: 6.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -1266,6 +1299,12 @@ packages:
         integrity: sha512-XcE9fcnkHCbWkjeKyi0lllwXmBLtyYb5dt89dJyx23I9+LSh5vZDIuk7OLG4VM1lgrXZQcY6cxyZyk5WVPRv/A==,
       }
 
+  "@codexteam/ajax@4.2.0":
+    resolution:
+      {
+        integrity: sha512-54r/HZirqBPEV8rM9gZh570RCwG6M/iDAXT9Q9eGuMo9KZU49tw1dEDHjYsResGckfCsaymDqg4GnhfrBtX9JQ==,
+      }
+
   "@codexteam/icons@0.0.4":
     resolution:
       {
@@ -1276,6 +1315,12 @@ packages:
     resolution:
       {
         integrity: sha512-s6H2KXhLz2rgbMZSkRm8dsMJvyUNZsEjxobBEg9ztdrb1B2H3pEzY6iTwI4XUPJWJ3c3qRKwV4TrO3J5jUdoQA==,
+      }
+
+  "@codexteam/icons@0.0.6":
+    resolution:
+      {
+        integrity: sha512-L7Q5PET8PjKcBT5wp7VR+FCjwCi5PUp7rd/XjsgQ0CI5FJz0DphyHGRILMuDUdCW2MQT9NHbVr4QP31vwAkS/A==,
       }
 
   "@codexteam/icons@0.3.3":
@@ -1348,6 +1393,25 @@ packages:
     peerDependencies:
       react: ">=16.8.0"
 
+  "@editorjs/attaches@1.3.2":
+    resolution:
+      {
+        integrity: sha512-hzwcOo/Lk1hTEzXXV0MSnwPsGIILaeM1R7SCMu4uUALftlQVugf+Vm4a9Rd66IT7TU3tfyiOwJPb/Ydp9zn36A==,
+      }
+    engines: { node: ">=20.0.0" }
+
+  "@editorjs/code@2.9.4":
+    resolution:
+      {
+        integrity: sha512-c0zyWodNqjL/0WI67sZvACIOFU9IAHG0UeeIpjss8pZGGNBum+UWkh7nKULK0SYvaOrdPdlWWqjuFU1TFA5jUA==,
+      }
+
+  "@editorjs/delimiter@1.4.2":
+    resolution:
+      {
+        integrity: sha512-S8q2LpeYdYkVShLp7K8c4HLthDHBevLw+sT+iO0+SH0oMvFmld9SUon3DFzMQ2gG07EOdZGRZ958+sVxyvFjZw==,
+      }
+
   "@editorjs/dom@0.0.5":
     resolution:
       {
@@ -1378,10 +1442,28 @@ packages:
         integrity: sha512-ieg3dzo2m1/ELze/RMNADiAiC5amXxIlVXoJ5vvXITOu/p/dPsrF+Oi3h5gBYvtGk9vg5LJUSG5YWU0tBUO1tw==,
       }
 
+  "@editorjs/image@2.10.3":
+    resolution:
+      {
+        integrity: sha512-ekCsGICZOIdghF/U2T34H7CItqaWAoJDXbkRD+x8l/LIo/7Ozf7KovYm21qz+CluArgV4RurVFHqwlz+O0vfJA==,
+      }
+
+  "@editorjs/inline-code@1.5.2":
+    resolution:
+      {
+        integrity: sha512-IpEvwMTP3q89T/6vTi3ACoSMOcTdywtMsci1w19+Z/lxQn/NVuVah++ro93wQ/1ZVTyCr+TPUCchxwzY1/xaMg==,
+      }
+
   "@editorjs/list@2.0.8":
     resolution:
       {
         integrity: sha512-/EJNvpeJYa1YDtYa85ug9R3sbDyI5ZlMHQ2bIh5S9iPa19qXe45jk6kgcew+jMNQq3j4NS4Q6YeeFbU1QkNMWw==,
+      }
+
+  "@editorjs/marker@1.4.0":
+    resolution:
+      {
+        integrity: sha512-5ipEXfL44jTTRzgNp/p/YjMO7jT08S5z4V8qA3FFJTfdhKgQyM3mvP1zpdYKw47ZZpVWMCncvk5Nto3BxihEtg==,
       }
 
   "@editorjs/paragraph@2.11.7":
@@ -1394,6 +1476,30 @@ packages:
     resolution:
       {
         integrity: sha512-D01KUMSDj2r+6Z+xjDkQqI+y6URpeHCvj0+P4pah+GtkG040lWjFb2H4pgHFXuol2cbfyAoraYSw85fuPheCvw==,
+      }
+
+  "@editorjs/raw@2.5.1":
+    resolution:
+      {
+        integrity: sha512-h7CjXtfSTe4Bj1CL84ch5NW0q0CdrlWsLzQ/kbaFTgx914CzKz4Ug+xgdvytVO1dd1QzB5/HCW0ic1VxtgkhMQ==,
+      }
+
+  "@editorjs/table@2.4.5":
+    resolution:
+      {
+        integrity: sha512-pF48R2wc5m0c+N+RjtCLXBGZd23Rl7EjfSFpmcSViwNsu5RwMgYGrEiQ8mzVh98mbvYQwXm/NYBi9DEUUs970A==,
+      }
+
+  "@editorjs/underline@1.2.1":
+    resolution:
+      {
+        integrity: sha512-LjJ01ia6Pj0Z/elifycp9+T1bQs0eXNnIcEYKOlk0sGHLy88DPcBOh9oz1i+uWarZ4AjGsvSMaptpWe+yQNsjQ==,
+      }
+
+  "@editorjs/warning@1.4.1":
+    resolution:
+      {
+        integrity: sha512-7A+irJ6gIh6li4DC7qw/NiWCThlBgtoPUeeIVdldVjoATAu+a1GjS+w/5L24ReacgQJNPVQPPCoMaS1nB83agw==,
       }
 
   "@emnapi/core@1.7.1":
@@ -1436,6 +1542,12 @@ packages:
     resolution:
       {
         integrity: sha512-MyqliTZGuOm3+5ZRSaaBGP3USLw6+EGykkwZns2EPC5g8jJ4z9OrdZY9apkl3+UP9+sdz76YYkwCKP5gh8iY3g==,
+      }
+
+  "@emotion/is-prop-valid@1.4.0":
+    resolution:
+      {
+        integrity: sha512-QgD4fyscGcbbKwJmqNvUMSE02OsHUa+lAWKdEUIJKgqe5IwRSKd7+KhibEWdaKwgjLj0DRSHA9biAIqGBk05lw==,
       }
 
   "@emotion/memoize@0.9.0":
@@ -5173,6 +5285,12 @@ packages:
         integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==,
       }
 
+  "@types/stylis@4.2.7":
+    resolution:
+      {
+        integrity: sha512-VgDNokpBoKF+wrdvhAAfS55OMQpL6QRglwTwNC3kIgBrzZxA4WsFj+2eLfEA/uMUDzBcEhYmjSbwQakn/i3ajA==,
+      }
+
   "@types/tern@0.23.9":
     resolution:
       {
@@ -6223,6 +6341,12 @@ packages:
       }
     engines: { node: ">=10" }
 
+  camelize@1.0.1:
+    resolution:
+      {
+        integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==,
+      }
+
   caniuse-lite@1.0.30001759:
     resolution:
       {
@@ -6680,10 +6804,23 @@ packages:
       }
     engines: { node: ">= 8" }
 
+  css-color-keywords@1.0.0:
+    resolution:
+      {
+        integrity: sha512-FyyrDHZKEjXDpNJYvVsV960FiqQyXc/LlYmsxl2BcdMb2WPx0OGRVgTg55rPSyLSNMqP52R9r8geSp7apN3Ofg==,
+      }
+    engines: { node: ">=4" }
+
   css-select@4.3.0:
     resolution:
       {
         integrity: sha512-wPpOYtnsVontu2mODhA19JrqWxNsfdatRKd64kmpRbQgh1KtItko5sTnEpPdpSaJszTOhEMlF/RPz28qj4HqhQ==,
+      }
+
+  css-to-react-native@3.2.0:
+    resolution:
+      {
+        integrity: sha512-e8RKaLXMOFii+02mOlqwjbD00KSEKqblnpO9e++1aXS1fPQOpS1YoqdVHBqPjHNoxeF2mimzVqawm2KCbEdtHQ==,
       }
 
   css-vendor@2.0.8:
@@ -10664,6 +10801,19 @@ packages:
       }
     engines: { node: ">= 0.4" }
 
+  postcss-value-parser@4.2.0:
+    resolution:
+      {
+        integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==,
+      }
+
+  postcss@8.4.49:
+    resolution:
+      {
+        integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==,
+      }
+    engines: { node: ^10 || ^12 || >=14 }
+
   postcss@8.5.6:
     resolution:
       {
@@ -11577,6 +11727,12 @@ packages:
     peerDependencies:
       "@pollyjs/core": "*"
 
+  shallowequal@1.1.0:
+    resolution:
+      {
+        integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==,
+      }
+
   shebang-command@2.0.0:
     resolution:
       {
@@ -11937,10 +12093,29 @@ packages:
         integrity: sha512-i/n8VsZydrugj3Iuzll8+x/00GH2vnYsk1eomD8QiRrSAeW6ItbCQDtfXCeJHd0iwiNagqjQkvpvREEPtW3IoQ==,
       }
 
+  styled-components@6.3.9:
+    resolution:
+      {
+        integrity: sha512-J72R4ltw0UBVUlEjTzI0gg2STOqlI9JBhQOL4Dxt7aJOnnSesy0qJDn4PYfMCafk9cWOaVg129Pesl5o+DIh0Q==,
+      }
+    engines: { node: ">= 16" }
+    peerDependencies:
+      react: ">= 16.8.0"
+      react-dom: ">= 16.8.0"
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+
   stylis@4.2.0:
     resolution:
       {
         integrity: sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw==,
+      }
+
+  stylis@4.3.6:
+    resolution:
+      {
+        integrity: sha512-yQ3rwFWRfwNUY7H5vpU0wfdkNSnvnJinhF9830Swlaxl03zsOjCfmX0ugac+3LtK0lYSgwL/KXc8oYL3mG4YFQ==,
       }
 
   supports-color@7.2.0:
@@ -13750,9 +13925,13 @@ snapshots:
       style-mod: 4.1.3
       w3c-keyname: 2.2.8
 
+  "@codexteam/ajax@4.2.0": {}
+
   "@codexteam/icons@0.0.4": {}
 
   "@codexteam/icons@0.0.5": {}
+
+  "@codexteam/icons@0.0.6": {}
 
   "@codexteam/icons@0.3.3": {}
 
@@ -13799,6 +13978,19 @@ snapshots:
       react: 18.3.1
       tslib: 2.8.1
 
+  "@editorjs/attaches@1.3.2":
+    dependencies:
+      "@codexteam/ajax": 4.2.0
+      "@codexteam/icons": 0.3.3
+
+  "@editorjs/code@2.9.4":
+    dependencies:
+      "@codexteam/icons": 0.3.3
+
+  "@editorjs/delimiter@1.4.2":
+    dependencies:
+      "@codexteam/icons": 0.3.3
+
   "@editorjs/dom@0.0.5":
     dependencies:
       "@editorjs/helpers": 0.0.4
@@ -13816,9 +14008,21 @@ snapshots:
 
   "@editorjs/helpers@0.0.4": {}
 
+  "@editorjs/image@2.10.3":
+    dependencies:
+      "@codexteam/icons": 0.3.3
+
+  "@editorjs/inline-code@1.5.2":
+    dependencies:
+      "@codexteam/icons": 0.3.3
+
   "@editorjs/list@2.0.8":
     dependencies:
       "@codexteam/icons": 0.3.3
+
+  "@editorjs/marker@1.4.0":
+    dependencies:
+      "@codexteam/icons": 0.0.5
 
   "@editorjs/paragraph@2.11.7":
     dependencies:
@@ -13828,6 +14032,23 @@ snapshots:
     dependencies:
       "@codexteam/icons": 0.3.3
       "@editorjs/dom": 0.0.5
+
+  "@editorjs/raw@2.5.1":
+    dependencies:
+      "@codexteam/icons": 0.0.4
+
+  "@editorjs/table@2.4.5":
+    dependencies:
+      "@codexteam/icons": 0.0.6
+
+  "@editorjs/underline@1.2.1":
+    dependencies:
+      "@codexteam/icons": 0.3.3
+
+  "@editorjs/warning@1.4.1":
+    dependencies:
+      "@codexteam/icons": 0.3.3
+      "@editorjs/editorjs": 2.30.7
 
   "@emnapi/core@1.7.1":
     dependencies:
@@ -13872,6 +14093,10 @@ snapshots:
   "@emotion/hash@0.8.0": {}
 
   "@emotion/hash@0.9.2": {}
+
+  "@emotion/is-prop-valid@1.4.0":
+    dependencies:
+      "@emotion/memoize": 0.9.0
 
   "@emotion/memoize@0.9.0": {}
 
@@ -16856,6 +17081,8 @@ snapshots:
   "@types/stack-utils@2.0.3":
     optional: true
 
+  "@types/stylis@4.2.7": {}
+
   "@types/tern@0.23.9":
     dependencies:
       "@types/estree": 1.0.8
@@ -17644,6 +17871,8 @@ snapshots:
   camelcase@6.3.0:
     optional: true
 
+  camelize@1.0.1: {}
+
   caniuse-lite@1.0.30001759: {}
 
   canvas-hypertxt@0.0.7: {}
@@ -17937,6 +18166,8 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
+  css-color-keywords@1.0.0: {}
+
   css-select@4.3.0:
     dependencies:
       boolbase: 1.0.0
@@ -17944,6 +18175,12 @@ snapshots:
       domhandler: 4.3.1
       domutils: 2.8.0
       nth-check: 2.1.1
+
+  css-to-react-native@3.2.0:
+    dependencies:
+      camelize: 1.0.1
+      css-color-keywords: 1.0.0
+      postcss-value-parser: 4.2.0
 
   css-vendor@2.0.8:
     dependencies:
@@ -20825,6 +21062,14 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
+  postcss-value-parser@4.2.0: {}
+
+  postcss@8.4.49:
+    dependencies:
+      nanoid: 3.3.11
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
   postcss@8.5.6:
     dependencies:
       nanoid: 3.3.11
@@ -21468,6 +21713,8 @@ snapshots:
       "@pollyjs/core": 6.0.6
     optional: true
 
+  shallowequal@1.1.0: {}
+
   shebang-command@2.0.0:
     dependencies:
       shebang-regex: 3.0.0
@@ -21707,7 +21954,24 @@ snapshots:
 
   style-mod@4.1.3: {}
 
+  styled-components@6.3.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      "@emotion/is-prop-valid": 1.4.0
+      "@emotion/unitless": 0.10.0
+      "@types/stylis": 4.2.7
+      css-to-react-native: 3.2.0
+      csstype: 3.2.3
+      postcss: 8.4.49
+      react: 18.3.1
+      shallowequal: 1.1.0
+      stylis: 4.3.6
+      tslib: 2.8.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
+
   stylis@4.2.0: {}
+
+  stylis@4.3.6: {}
 
   supports-color@7.2.0:
     dependencies:

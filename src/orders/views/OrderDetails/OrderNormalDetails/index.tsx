@@ -1,6 +1,7 @@
 // @ts-strict-ignore
 import { FetchResult } from "@apollo/client";
 import { WindowTitle } from "@dashboard/components/WindowTitle";
+import { getEmailBridgeConfig } from "@dashboard/config";
 import {
   CreateManualTransactionCaptureMutation,
   CreateManualTransactionCaptureMutationVariables,
@@ -20,6 +21,7 @@ import {
   useWarehouseListQuery,
 } from "@dashboard/graphql";
 import useNavigator from "@dashboard/hooks/useNavigator";
+import { useNotifier } from "@dashboard/hooks/useNotifier";
 import {
   extractMutationErrors,
   getById,
@@ -28,6 +30,7 @@ import {
 } from "@dashboard/misc";
 import OrderCannotCancelOrderDialog from "@dashboard/orders/components/OrderCannotCancelOrderDialog";
 import { OrderCustomerAddressesEditDialogOutput } from "@dashboard/orders/components/OrderCustomerAddressesEditDialog/types";
+import { OrderEmailNotificationDialog } from "@dashboard/orders/components/OrderEmailNotificationDialog/OrderEmailNotificationDialog";
 import OrderFulfillmentApproveDialog from "@dashboard/orders/components/OrderFulfillmentApproveDialog";
 import { OrderFulfillmentMetadataDialog } from "@dashboard/orders/components/OrderFulfillmentMetadataDialog/OrderFulfillmentMetadataDialog";
 import OrderFulfillStockExceededDialog from "@dashboard/orders/components/OrderFulfillStockExceededDialog";
@@ -162,10 +165,87 @@ export const OrderNormalDetails = ({
       input: data,
     });
   const intl = useIntl();
+  const notify = useNotifier();
   const [transactionReference, setTransactionReference] = useState("");
   const [currentApproval, setCurrentApproval] = useState<ApprovalState | null>(null);
   const [stockExceeded, setStockExceeded] = useState(false);
+  const [emailSendState, setEmailSendState] = useState<"default" | "loading" | "success" | "error">(
+    "default",
+  );
+  const [emailSendError, setEmailSendError] = useState<string | null>(null);
   const approvalErrors = orderFulfillmentApprove.opts.data?.orderFulfillmentApprove.errors || [];
+
+  // Handler for sending email via the email bridge
+  const handleSendEmail = async (data: { to: string; subject: string; html: string }) => {
+    const emailBridgeConfig = getEmailBridgeConfig();
+
+    if (!emailBridgeConfig.url) {
+      setEmailSendState("error");
+      setEmailSendError("Email bridge is not configured");
+      notify({
+        status: "error",
+        text: intl.formatMessage({
+          id: "2NvWpB",
+          defaultMessage: "Email bridge is not configured. Please contact your administrator.",
+        }),
+      });
+
+      return;
+    }
+
+    setEmailSendState("loading");
+    setEmailSendError(null);
+
+    try {
+      const response = await fetch(emailBridgeConfig.url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": emailBridgeConfig.apiKey,
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send email");
+      }
+
+      setEmailSendState("success");
+      notify({
+        status: "success",
+        text: intl.formatMessage({
+          id: "8/qhdz",
+          defaultMessage: "Email sent successfully",
+        }),
+      });
+      closeModal();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+
+      setEmailSendState("error");
+      setEmailSendError(errorMessage);
+      notify({
+        status: "error",
+        text: intl.formatMessage(
+          {
+            id: "kl56nk",
+            defaultMessage: "Failed to send email: {error}",
+          },
+          { error: errorMessage },
+        ),
+      });
+    }
+  };
+
+  // Reset email state when dialog closes
+  useEffect(() => {
+    if (params.action !== "send-email") {
+      setEmailSendState("default");
+      setEmailSendError(null);
+    }
+  }, [params.action]);
 
   useEffect(() => {
     if (approvalErrors.length && approvalErrors.every(err => err.code === "INSUFFICIENT_STOCK")) {
@@ -298,6 +378,7 @@ export const OrderNormalDetails = ({
           })
         }
         onInvoiceSend={id => openModal("invoice-send", { id })}
+        onSendEmail={() => openModal("send-email")}
         onRefundAdd={() => openModal("add-refund")}
         onSubmit={handleSubmit}
       />
@@ -484,6 +565,23 @@ export const OrderNormalDetails = ({
         invoice={order?.invoices?.find(invoice => invoice.id === params.id)}
         onClose={closeModal}
         onSend={() => orderInvoiceSend.mutate({ id: params.id })}
+      />
+      <OrderEmailNotificationDialog
+        confirmButtonState={emailSendState}
+        open={params.action === "send-email"}
+        customerEmail={order?.userEmail || order?.user?.email || null}
+        customerName={
+          order?.billingAddress
+            ? `${order.billingAddress.firstName || ""} ${order.billingAddress.lastName || ""}`.trim()
+            : order?.shippingAddress
+              ? `${order.shippingAddress.firstName || ""} ${order.shippingAddress.lastName || ""}`.trim()
+              : "Customer"
+        }
+        orderNumber={order?.number || ""}
+        languageCode={order?.channel?.defaultCountry?.code || "EN"}
+        onClose={closeModal}
+        onSend={handleSendEmail}
+        error={emailSendError}
       />
       <OrderManualTransactionDialog
         dialogProps={{

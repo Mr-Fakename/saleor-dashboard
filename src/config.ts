@@ -218,3 +218,9 @@ export const GTM_ID = process.env.GTM_ID;
 export const DEFAULT_NOTIFICATION_SHOW_TIME = 3000;
 export const ENABLED_SERVICE_NAME_HEADER =
   (process.env.ENABLED_SERVICE_NAME_HEADER as string) === "true";
+
+// Email Bridge configuration for custom order notifications
+export const getEmailBridgeConfig = () => ({
+  url: window.__SALEOR_CONFIG__?.EMAIL_BRIDGE_URL || "",
+  apiKey: window.__SALEOR_CONFIG__?.EMAIL_BRIDGE_API_KEY || "",
+});

@@ -1,10 +1,13 @@
+# docker build -f ./Dockerfile -t mrfakename/saleor-dashboard:latest .
+# docker push mrfakename/saleor-dashboard:latest
+
 FROM node:22-alpine as builder
 RUN apk --no-cache add bash
 RUN corepack enable && corepack prepare pnpm@10 --activate
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 ENV CI 1
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 COPY nginx/ nginx/
 COPY assets/ assets/
@@ -37,6 +40,8 @@ ENV APPS_TUNNEL_URL_KEYWORDS ${APPS_TUNNEL_URL_KEYWORDS}
 ENV STATIC_URL ${STATIC_URL:-/dashboard/}
 ENV SKIP_SOURCEMAPS ${SKIP_SOURCEMAPS:-true}
 ENV LOCALE_CODE ${LOCALE_CODE:-EN}
+ENV EMAIL_BRIDGE_URL ${EMAIL_BRIDGE_URL:-https://email-bridge.vps.daybreakdevelopment.eu/api/send}
+ENV EMAIL_BRIDGE_API_KEY ${EMAIL_BRIDGE_API_KEY:-super_secret_token_123}
 RUN pnpm run generate:main
 RUN pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build
 

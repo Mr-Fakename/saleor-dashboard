@@ -418,6 +418,7 @@ export const ProductVariantPage = ({
                       stocks={data.stocks}
                       onChange={handlers.changeStock}
                       onFormDataChange={change}
+                      onPreorderEndDateChange={handlers.changePreorderEndDate}
                       onWarehouseStockAdd={handlers.addStock}
                       onWarehouseStockDelete={handlers.deleteStock}
                       onWarehouseConfigure={onWarehouseConfigure}

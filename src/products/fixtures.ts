@@ -1313,6 +1313,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -1413,6 +1414,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -1513,6 +1515,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -1635,6 +1638,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -1757,6 +1761,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -1880,6 +1885,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2002,6 +2008,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2124,6 +2131,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2246,6 +2254,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2368,6 +2377,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2490,6 +2500,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2612,6 +2623,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2734,6 +2746,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2856,6 +2869,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -2978,6 +2992,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -3100,6 +3115,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -3222,6 +3238,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -3344,6 +3361,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -3466,6 +3484,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
   {
     __typename: "Product",
@@ -3588,6 +3607,7 @@ export const products = (placeholderImage: string): RelayToFlat<ProductListQuery
     },
     category: null,
     collections: [],
+    variants: [],
   },
 ];
 

@@ -8,6 +8,7 @@ import {
 import { ColumnCategory } from "@dashboard/components/Datagrid/ColumnPicker/useColumns";
 import {
   dateCell,
+  expanderCell,
   moneyCell,
   pillCell,
   readonlyTextCell,
@@ -33,7 +34,6 @@ import {
   SearchAvailableInGridAttributesQuery,
 } from "@dashboard/graphql";
 import { commonMessages } from "@dashboard/intl";
-import { getDatagridRowDataIndex } from "@dashboard/misc";
 import { ProductListUrlSortField } from "@dashboard/products/urls";
 import { RelayToFlat, Sort } from "@dashboard/types";
 import { getColumnSortDirectionIcon } from "@dashboard/utils/columns/getColumnSortDirectionIcon";
@@ -43,7 +43,19 @@ import { DefaultTheme } from "@saleor/macaw-ui-next";
 import { IntlShape } from "react-intl";
 
 import { getAttributeIdFromColumnValue } from "../ProductListPage/utils";
-import { categoryMetaGroups, columnsMessages } from "./messages";
+import { categoryMetaGroups, columnsMessages, variantMessages } from "./messages";
+import { VirtualRow } from "./useExpandableProductRows";
+
+export const EXPANDER_COLUMN_ID = "expander";
+
+export const createExpanderColumn = (
+  onExpanderClick: (productId: string) => boolean,
+): AvailableColumn => ({
+  id: EXPANDER_COLUMN_ID,
+  title: "",
+  width: 36,
+  action: onExpanderClick,
+});
 
 export const productListStaticColumnAdapter = ({
   intl,
@@ -178,6 +190,8 @@ export function getColumnSortIconName(
 interface GetCellContentProps {
   columns: AvailableColumn[];
   products: RelayToFlat<ProductListQuery["products"]>;
+  virtualRows: VirtualRow[];
+  expandedIds: Set<string>;
   intl: IntlShape;
   theme: DefaultTheme;
   locale: Locale;
@@ -189,19 +203,52 @@ export function createGetCellContent({
   intl,
   theme,
   products,
+  virtualRows,
+  expandedIds,
   selectedChannelId,
 }: GetCellContentProps) {
-  return ([column, row]: Item, { changes, getChangeIndex, added, removed }: GetCellContentOpts) => {
+  return ([column, row]: Item, { changes, getChangeIndex, added }: GetCellContentOpts) => {
     const columnId = columns[column]?.id;
 
     if (!columnId) {
       return readonlyTextCell("");
     }
 
+    const virtualRow = virtualRows[row];
+
+    if (!virtualRow) {
+      return readonlyTextCell("");
+    }
+
+    const variantCellProps = getVariantCellProps(theme);
+
+    // Expander column — works for both product and variant rows
+    if (columnId === EXPANDER_COLUMN_ID) {
+      if (virtualRow.type === "variant") {
+        return expanderCell(false, false, variantCellProps);
+      }
+
+      const product = virtualRow.product;
+      const hasVariants = (product.variants?.length ?? 0) > 0;
+
+      return expanderCell(expandedIds.has(product.id), hasVariants, COMMON_CELL_PROPS);
+    }
+
+    // Variant rows — render variant-specific content
+    if (virtualRow.type === "variant") {
+      return getVariantCellContent(
+        columnId,
+        virtualRow.variant,
+        intl,
+        selectedChannelId,
+        variantCellProps,
+      );
+    }
+
+    // Product rows — use productIndex from virtual row mapping
+    const productIndex = virtualRow.productIndex;
+    const rowData = added.includes(row) ? undefined : products[productIndex];
     const change = changes.current[getChangeIndex(columnId, row)]?.data;
-    const rowData = added.includes(row)
-      ? undefined
-      : products[getDatagridRowDataIndex(row, removed)];
     const channel = rowData?.channelListings?.find(
       listing => listing.channel.id === selectedChannelId,
     );
@@ -238,6 +285,125 @@ export function createGetCellContent({
 }
 
 const COMMON_CELL_PROPS: Partial<GridCell> = { cursor: "pointer" };
+
+function getVariantCellProps(currentTheme: DefaultTheme): Partial<GridCell> {
+  return {
+    cursor: "default",
+    themeOverride: {
+      bgCell:
+        currentTheme === "defaultDark" ? "hsla(211, 32%, 19%, 0.7)" : "hsla(220, 18%, 97%, 0.7)",
+    },
+  };
+}
+
+type ProductVariant = NonNullable<
+  RelayToFlat<ProductListQuery["products"]>[number]["variants"]
+>[number];
+
+/**
+ * Detect if a variant name is actually a base64-encoded GraphQL ID
+ * (e.g. "UHJvZHVjdFZhcmlhbnQ6NDEw" = "ProductVariant:410").
+ * These have no real name set.
+ */
+function isGraphQLId(name: string, id: string): boolean {
+  return name === id || /^[A-Za-z0-9+/=]{20,}$/.test(name);
+}
+
+/**
+ * Build a human-readable label for the variant name column.
+ * Handles: null names, base64 ID names, null SKUs, duplicate name/sku.
+ */
+function resolveVariantLabel(variant: ProductVariant): string {
+  const hasRealName = variant.name && !isGraphQLId(variant.name, variant.id);
+  const sku = variant.sku;
+
+  if (hasRealName && sku) {
+    return `${variant.name}  ·  SKU: ${sku}`;
+  }
+
+  if (hasRealName) {
+    return variant.name;
+  }
+
+  if (sku) {
+    return `SKU: ${sku}`;
+  }
+
+  return "—";
+}
+
+function getVariantCellContent(
+  columnId: string,
+  variant: ProductVariant,
+  intl: IntlShape,
+  selectedChannelId: string | undefined,
+  cellProps: Partial<GridCell>,
+): GridCell {
+  const bgOverride = cellProps.themeOverride;
+
+  switch (columnId) {
+    case "name": {
+      const label = resolveVariantLabel(variant);
+      const cell = readonlyTextCell(`    └  ${label}`, true, "faded");
+
+      return { ...cell, themeOverride: bgOverride };
+    }
+    case "price": {
+      // Use selected channel if available, otherwise fall back to first channel listing
+      const channelListing = selectedChannelId
+        ? variant.channelListings?.find(cl => cl.channel.id === selectedChannelId)
+        : variant.channelListings?.[0];
+      const price = channelListing?.price;
+
+      if (price) {
+        return {
+          ...moneyCell(price.amount, price.currency, cellProps),
+          themeOverride: bgOverride,
+        };
+      }
+
+      const cell = readonlyTextCell("—", true, "faded");
+
+      return { ...cell, themeOverride: bgOverride };
+    }
+    case "availability": {
+      if (!variant.stocks || variant.stocks.length === 0) {
+        const cell = readonlyTextCell(intl.formatMessage(variantMessages.noStock), true, "faded");
+
+        return { ...cell, themeOverride: bgOverride };
+      }
+
+      const totalStock = variant.stocks.reduce((sum, stock) => sum + stock.quantity, 0);
+      const cell = readonlyTextCell(
+        intl.formatMessage(variantMessages.stockQuantity, { quantity: totalStock }),
+        true,
+        "faded",
+      );
+
+      return { ...cell, themeOverride: bgOverride };
+    }
+    case "description": {
+      if (!variant.sku) {
+        const cell = readonlyTextCell("", true, "faded");
+
+        return { ...cell, themeOverride: bgOverride };
+      }
+
+      const cell = readonlyTextCell(
+        intl.formatMessage(variantMessages.sku, { sku: variant.sku }),
+        true,
+        "faded",
+      );
+
+      return { ...cell, themeOverride: bgOverride };
+    }
+    default: {
+      const cell = readonlyTextCell("", true, "faded");
+
+      return { ...cell, themeOverride: bgOverride };
+    }
+  }
+}
 
 function getDateCellContent(rowData: RelayToFlat<ProductListQuery["products"]>[number]) {
   return dateCell(rowData?.updatedAt, COMMON_CELL_PROPS);

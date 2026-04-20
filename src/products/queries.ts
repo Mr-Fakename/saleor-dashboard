@@ -35,6 +35,22 @@ export const productListQuery = gql`
           attributes {
             ...ProductListAttribute
           }
+          variants {
+            id
+            name
+            sku
+            stocks {
+              quantity
+            }
+            channelListings {
+              channel {
+                id
+              }
+              price {
+                ...Money
+              }
+            }
+          }
         }
       }
       pageInfo {

@@ -57,6 +57,24 @@ export const columnsMessages = defineMessages({
   },
 });
 
+export const variantMessages = defineMessages({
+  sku: {
+    id: "2e8NyK",
+    defaultMessage: "SKU: {sku}",
+    description: "variant SKU in product list",
+  },
+  stockQuantity: {
+    id: "aSr9Ye",
+    defaultMessage: "{quantity} in stock",
+    description: "variant stock quantity in product list",
+  },
+  noStock: {
+    id: "SrQzii",
+    defaultMessage: "Not tracked",
+    description: "variant with no stock records in product list",
+  },
+});
+
 export const categoryMetaGroups = defineMessages({
   attribute: {
     id: "GhY+pm",

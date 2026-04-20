@@ -22,6 +22,7 @@ import {
   PageDetailsFragment,
   PageErrorWithAttributesFragment,
   PermissionEnum,
+  ProductWhereInput,
   SearchAttributeValuesQuery,
   SearchCategoriesQuery,
   SearchCollectionsQuery,
@@ -70,6 +71,11 @@ interface PageDetailsPageProps {
   fetchMoreReferencePages?: FetchMoreProps;
   fetchReferenceProducts?: (data: string) => void;
   fetchMoreReferenceProducts?: FetchMoreProps;
+  onProductFilterChange?: (
+    filterVariables: ProductWhereInput,
+    channel: string | undefined,
+    query: string,
+  ) => void;
   fetchReferenceCategories?: (data: string) => void;
   fetchMoreReferenceCategories?: FetchMoreProps;
   fetchReferenceCollections?: (data: string) => void;
@@ -103,6 +109,7 @@ const PageDetailsPage = ({
   fetchMoreReferencePages,
   fetchReferenceProducts,
   fetchMoreReferenceProducts,
+  onProductFilterChange,
   fetchReferenceCategories,
   fetchMoreReferenceCategories,
   fetchReferenceCollections,
@@ -289,6 +296,7 @@ const PageDetailsPage = ({
                 hasMore={handlers.fetchMoreReferences?.hasMore}
                 open={canOpenAssignReferencesAttributeDialog}
                 onFetch={handlers.fetchReferences}
+                onFilterChange={onProductFilterChange}
                 onFetchMore={handlers.fetchMoreReferences?.onFetchMore}
                 loading={handlers.fetchMoreReferences?.loading}
                 onClose={onCloseDialog}

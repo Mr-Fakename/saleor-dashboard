@@ -21,4 +21,9 @@ export const messages = defineMessages({
     defaultMessage: "Open this order in GraphiQL",
     description: "open new window button",
   },
+  sendEmail: {
+    id: "3w5EGE",
+    defaultMessage: "Send email to customer",
+    description: "send email button",
+  },
 });

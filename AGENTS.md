@@ -1,8 +1,10 @@
 # Saleor Dashboard
 
+> Inherits from root [`CLAUDE.md`](../CLAUDE.md) — agent strategy, code principles, and continuous improvement apply here.
+
 ## Project Overview
 
-Saleor Dashboard is a GraphQL-powered, single-page React application built with TypeScript that serves as the admin interface for the Saleor e-commerce platform. It uses modern web technologies including React 17, @saleor/macaw-ui-next, Apollo Client, and Vite for bundling.
+GraphQL-powered React SPA for Saleor store management. React 18, @saleor/macaw-ui-next, Apollo Client, Vite.
 
 ## Development Commands
 

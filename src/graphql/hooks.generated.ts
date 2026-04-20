@@ -15579,6 +15579,22 @@ export const ProductListDocument = gql`
         attributes {
           ...ProductListAttribute
         }
+        variants {
+          id
+          name
+          sku
+          stocks {
+            quantity
+          }
+          channelListings {
+            channel {
+              id
+            }
+            price {
+              ...Money
+            }
+          }
+        }
       }
     }
     pageInfo {
@@ -15591,7 +15607,8 @@ export const ProductListDocument = gql`
   }
 }
     ${ProductWithChannelListingsFragmentDoc}
-${ProductListAttributeFragmentDoc}`;
+${ProductListAttributeFragmentDoc}
+${MoneyFragmentDoc}`;
 
 /**
  * __useProductListQuery__
@@ -21543,3 +21560,60 @@ export function useWelcomePageNotificationsLazyQuery(baseOptions?: ApolloReactHo
 export type WelcomePageNotificationsQueryHookResult = ReturnType<typeof useWelcomePageNotificationsQuery>;
 export type WelcomePageNotificationsLazyQueryHookResult = ReturnType<typeof useWelcomePageNotificationsLazyQuery>;
 export type WelcomePageNotificationsQueryResult = Apollo.QueryResult<Types.WelcomePageNotificationsQuery, Types.WelcomePageNotificationsQueryVariables>;
+export const HomePageOrderCountsDocument = gql`
+    query HomePageOrderCounts($channel: String!, $hasPermissionToManageOrders: Boolean!) {
+  ordersToday: ordersTotal(period: TODAY, channel: $channel) @include(if: $hasPermissionToManageOrders) {
+    gross {
+      amount
+      currency
+    }
+  }
+  ordersThisMonth: ordersTotal(period: THIS_MONTH, channel: $channel) @include(if: $hasPermissionToManageOrders) {
+    gross {
+      amount
+      currency
+    }
+  }
+  ordersUnfulfilled: orders(filter: {status: UNFULFILLED}) @include(if: $hasPermissionToManageOrders) {
+    totalCount
+  }
+  ordersUnconfirmed: orders(filter: {status: UNCONFIRMED}) @include(if: $hasPermissionToManageOrders) {
+    totalCount
+  }
+  ordersPartiallyFulfilled: orders(filter: {status: PARTIALLY_FULFILLED}) @include(if: $hasPermissionToManageOrders) {
+    totalCount
+  }
+  ordersReadyToCapture: orders(filter: {status: READY_TO_CAPTURE}) @include(if: $hasPermissionToManageOrders) {
+    totalCount
+  }
+}
+    `;
+
+/**
+ * __useHomePageOrderCountsQuery__
+ *
+ * To run a query within a React component, call `useHomePageOrderCountsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomePageOrderCountsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomePageOrderCountsQuery({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *      hasPermissionToManageOrders: // value for 'hasPermissionToManageOrders'
+ *   },
+ * });
+ */
+export function useHomePageOrderCountsQuery(baseOptions: ApolloReactHooks.QueryHookOptions<Types.HomePageOrderCountsQuery, Types.HomePageOrderCountsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<Types.HomePageOrderCountsQuery, Types.HomePageOrderCountsQueryVariables>(HomePageOrderCountsDocument, options);
+      }
+export function useHomePageOrderCountsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<Types.HomePageOrderCountsQuery, Types.HomePageOrderCountsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<Types.HomePageOrderCountsQuery, Types.HomePageOrderCountsQueryVariables>(HomePageOrderCountsDocument, options);
+        }
+export type HomePageOrderCountsQueryHookResult = ReturnType<typeof useHomePageOrderCountsQuery>;
+export type HomePageOrderCountsLazyQueryHookResult = ReturnType<typeof useHomePageOrderCountsLazyQuery>;
+export type HomePageOrderCountsQueryResult = Apollo.QueryResult<Types.HomePageOrderCountsQuery, Types.HomePageOrderCountsQueryVariables>;

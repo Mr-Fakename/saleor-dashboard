@@ -6,12 +6,14 @@ import { EditorCore, Props as ReactEditorJSProps } from "@react-editor-js/core";
 import { Box } from "@saleor/macaw-ui-next";
 import clsx from "clsx";
 import * as React from "react";
+import { useIntl } from "react-intl";
 
 import { tools } from "./consts";
 import { useHasRendered, useUpdateOnRerender } from "./hooks";
+import { editorJsMessages, getEditorJsI18nConfig } from "./messages";
 import { ReactEditorJS } from "./ReactEditorJS";
 import useStyles from "./styles";
-import { createFileUploader,createImageUploader } from "./uploaders";
+import { createFileUploader, createImageUploader } from "./uploaders";
 
 export type EditorJsProps = Omit<ReactEditorJSProps, "factory">;
 
@@ -48,6 +50,9 @@ const RichTextEditor = ({
   const [hasValue, setHasValue] = React.useState(false);
   const isTyped = Boolean(hasValue || isFocused);
   const client = useApolloClient();
+  const intl = useIntl();
+
+  const i18nConfig = React.useMemo(() => getEditorJsI18nConfig(intl), [intl]);
 
   // Create tools with GraphQL uploaders instead of direct HTTP endpoints
   const toolsWithUploaders = React.useMemo(() => {
@@ -70,8 +75,16 @@ const RichTextEditor = ({
           uploader: fileUploader,
         },
       },
+      warning: {
+        ...tools.warning,
+        config: {
+          ...(tools.warning as any).config,
+          titlePlaceholder: intl.formatMessage(editorJsMessages.warningTitle),
+          messagePlaceholder: intl.formatMessage(editorJsMessages.warningMessage),
+        },
+      },
     };
-  }, [client]);
+  }, [client, intl]);
 
   const handleInitialize = React.useCallback((editor: EditorCore) => {
     if (onInitialize) {
@@ -125,6 +138,7 @@ const RichTextEditor = ({
           // match with the id of holder div
           holder={id}
           tools={toolsWithUploaders}
+          i18n={i18nConfig}
           // Log level is undefined at runtime
           logLevel={"ERROR" as LogLevels.ERROR}
           onInitialize={handleInitialize}
