@@ -31,6 +31,8 @@ ARG APPS_TUNNEL_URL_KEYWORDS
 ARG STATIC_URL
 ARG SKIP_SOURCEMAPS
 ARG LOCALE_CODE
+ARG EMAIL_BRIDGE_URL
+ARG EMAIL_BRIDGE_API_KEY
 
 ENV API_URL ${API_URL:-http://localhost:8000/graphql/}
 ENV APP_MOUNT_URI ${APP_MOUNT_URI:-/dashboard/}
@@ -40,8 +42,11 @@ ENV APPS_TUNNEL_URL_KEYWORDS ${APPS_TUNNEL_URL_KEYWORDS}
 ENV STATIC_URL ${STATIC_URL:-/dashboard/}
 ENV SKIP_SOURCEMAPS ${SKIP_SOURCEMAPS:-true}
 ENV LOCALE_CODE ${LOCALE_CODE:-EN}
-ENV EMAIL_BRIDGE_URL ${EMAIL_BRIDGE_URL:-https://email-bridge.vps.daybreakdevelopment.eu/api/send}
-ENV EMAIL_BRIDGE_API_KEY ${EMAIL_BRIDGE_API_KEY:-super_secret_token_123}
+# No baked-in default: the send-email dialog shows a clear "not configured"
+# message when unset, instead of a NetworkError against a dead host. Provide at
+# runtime (compose env) — replace-env-vars.sh substitutes them at container start.
+ENV EMAIL_BRIDGE_URL ${EMAIL_BRIDGE_URL:-}
+ENV EMAIL_BRIDGE_API_KEY ${EMAIL_BRIDGE_API_KEY:-}
 RUN pnpm run generate:main
 RUN pnpm exec cross-env NODE_OPTIONS=--max-old-space-size=8192 vite build
 
