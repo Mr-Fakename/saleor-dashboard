@@ -1,6 +1,8 @@
 import useAppChannel from "@dashboard/components/AppLayout/AppChannelContext";
 import { useWelcomePageNotificationsQuery } from "@dashboard/graphql";
 
+import { LOW_STOCK_THRESHOLD } from "../../../HomeKpiCards/useHomeKpiData";
+
 export const useWelcomePageStocksAnalytics = () => {
   const { channel } = useAppChannel();
   const noChannel = !channel && typeof channel !== "undefined";
@@ -11,7 +13,7 @@ export const useWelcomePageStocksAnalytics = () => {
     error: welcomePageNotificationsError,
   } = useWelcomePageNotificationsQuery({
     skip: noChannel,
-    variables: { channel: channel?.slug },
+    variables: { channel: channel?.slug, lowStockThreshold: LOW_STOCK_THRESHOLD },
   });
 
   return {

@@ -2,7 +2,7 @@ import { ProductListQuery } from "@dashboard/graphql";
 import { RelayToFlat } from "@dashboard/types";
 import { useCallback, useMemo, useState } from "react";
 
-type Product = RelayToFlat<ProductListQuery["products"]>[number];
+type Product = RelayToFlat<NonNullable<ProductListQuery["products"]>>[number];
 type Variant = NonNullable<Product["variants"]>[number];
 
 export interface ProductVirtualRow {

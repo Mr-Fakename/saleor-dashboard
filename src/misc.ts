@@ -389,13 +389,23 @@ export function stopPropagation<T extends AnyEventWithPropagation>(cb: (event?: 
   };
 }
 
+// Single-region (France) store: promotion/voucher/filter start & end times are
+// entered and displayed as the shop's wall-clock time, independent of the
+// viewer's browser/OS timezone. Relying on the ambient timezone meant a viewer
+// whose device was on UTC would have their entered time saved verbatim as UTC
+// (e.g. 14:00 stored as 14:00Z = 16:00 Paris), forcing them to manually offset
+// the hours. Anchoring to SHOP_TIMEZONE makes the round-trip deterministic.
+export const SHOP_TIMEZONE = "Europe/Paris";
+
 export function joinDateTime(date: string, time?: string) {
   if (!date) {
     return null;
   }
 
   const setTime = time || "00:00";
-  const dateTime = moment(date + " " + setTime).format();
+  // Interpret the entered wall-clock value in the shop timezone, then emit an
+  // absolute (offset-bearing) ISO string the API stores as UTC.
+  const dateTime = moment.tz(date + " " + setTime, SHOP_TIMEZONE).format();
 
   return dateTime;
 }
@@ -408,8 +418,9 @@ export function splitDateTime(dateTime: string) {
     };
   }
 
+  // Render the stored UTC instant as wall-clock time in the shop timezone.
   // Default html input format YYYY-MM-DD HH:mm
-  const splitDateTime = moment(dateTime).format("YYYY-MM-DD HH:mm").split(" ");
+  const splitDateTime = moment(dateTime).tz(SHOP_TIMEZONE).format("YYYY-MM-DD HH:mm").split(" ");
 
   return {
     date: splitDateTime[0],

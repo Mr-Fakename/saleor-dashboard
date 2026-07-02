@@ -62,6 +62,7 @@ export const tools: Record<string, ToolConstructable | ToolSettings> = {
     inlineToolbar: ["link"],
   },
   table: {
+    // @ts-expect-error Type mismatch between editorjs libraries (@editorjs/table and @editorjs/editorjs)
     class: Table,
     inlineToolbar,
     config: {

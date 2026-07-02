@@ -24,6 +24,8 @@ declare interface Window {
     EXTENSIONS_API_URL?: string;
     APPS_TUNNEL_URL_KEYWORDS?: string;
     IS_CLOUD_INSTANCE?: string;
+    EMAIL_BRIDGE_URL?: string;
+    EMAIL_BRIDGE_API_KEY?: string;
   };
 }
 

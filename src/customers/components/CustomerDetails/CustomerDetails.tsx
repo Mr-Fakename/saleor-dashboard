@@ -7,7 +7,6 @@ import getAccountErrorMessage from "@dashboard/utils/errors/account";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@saleor/macaw-ui";
 import { Checkbox, Skeleton, Text } from "@saleor/macaw-ui-next";
-import moment from "moment-timezone";
 import * as React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -66,7 +65,18 @@ const CustomerDetails = (props: CustomerDetailsProps) => {
                   defaultMessage="Active member since {date}"
                   description="section subheader"
                   values={{
-                    date: moment(customer.dateJoined).format("MMM YYYY"),
+                    // Render dateJoined (a UTC timestamp from the API) with day +
+                    // time, localized to the active dashboard locale and the
+                    // viewer's local timezone. The previous moment().format("MMM
+                    // YYYY") dropped the day/time and ignored the locale (always
+                    // English month).
+                    date: intl.formatDate(customer.dateJoined, {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }),
                   }}
                 />
               </Text>

@@ -86,6 +86,46 @@ export const homePageMessages = defineMessages({
     defaultMessage: "Products out of stock",
     description: "section title for out of stock products",
   },
+  stockAlertsTitle: {
+    id: "zs9/8W",
+    defaultMessage: "Stock alerts",
+    description: "home section title for stock alerts card",
+  },
+  runningLowSection: {
+    id: "9qxi4m",
+    defaultMessage: "Running low",
+    description: "subsection title for products with low stock",
+  },
+  outOfStockSection: {
+    id: "QmJtZI",
+    defaultMessage: "Out of stock",
+    description: "subsection title for products with zero stock",
+  },
+  unitsRemaining: {
+    id: "6u66Mv",
+    defaultMessage: "{count, plural, one {Only # left} other {Only # left}}",
+    description: "low stock remaining quantity badge",
+  },
+  lowStockThresholdHint: {
+    id: "JgDjL0",
+    defaultMessage: "At or below {threshold} units",
+    description: "explains the low-stock threshold below the section title",
+  },
+  viewAllOutOfStock: {
+    id: "61jtzm",
+    defaultMessage: "View out-of-stock products",
+    description: "link to products list filtered by out of stock",
+  },
+  andMoreItems: {
+    id: "WPsX7n",
+    defaultMessage: "…and {count, plural, one {# more product} other {# more products}}",
+    description: "hint when more products exist beyond the shown list",
+  },
+  allStockHealthy: {
+    id: "XnPdvL",
+    defaultMessage: "All products are healthy in stock",
+    description: "empty state when no products are low or out of stock",
+  },
   noPermission: {
     id: "fij0GI",
     defaultMessage: "You don't have permission to view this data",

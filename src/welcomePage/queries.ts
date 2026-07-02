@@ -25,9 +25,38 @@ export const welcomePageAnalytics = gql`
 `;
 
 export const welcomePageNotifications = gql`
-  query welcomePageNotifications($channel: String!) {
-    productsOutOfStock: products(filter: { stockAvailability: OUT_OF_STOCK }, channel: $channel) {
+  query welcomePageNotifications($channel: String!, $lowStockThreshold: Int!) {
+    productsOutOfStock: products(
+      filter: { stockAvailability: OUT_OF_STOCK }
+      channel: $channel
+      first: 8
+    ) {
       totalCount
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    productsLowStock: products(
+      filter: { stocks: { quantity: { gte: 1, lte: $lowStockThreshold } } }
+      channel: $channel
+      first: 8
+    ) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+          variants {
+            id
+            stocks {
+              quantity
+            }
+          }
+        }
+      }
     }
   }
 `;
