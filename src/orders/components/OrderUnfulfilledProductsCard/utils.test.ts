@@ -23,6 +23,7 @@ const line = {
   productName: "Blue Hoodie 4",
   productSku: "21599567",
   isGift: false,
+  metadata: [],
   quantity: 5,
   quantityFulfilled: 4,
   quantityToFulfill: 1,

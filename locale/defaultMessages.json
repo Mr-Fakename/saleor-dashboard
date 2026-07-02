@@ -198,6 +198,10 @@
     "context": "status",
     "string": "Status"
   },
+  "+v3AE8": {
+    "context": "cable configuration total price row",
+    "string": "Total"
+  },
   "+vzDH4": {
     "context": "error message used when manifest URL is incorrect (before any further validation)",
     "string": "Invalid manifest URL"
@@ -665,6 +669,10 @@
     "context": "range input label",
     "string": "Postal codes (start)"
   },
+  "1TfYbU": {
+    "context": "cable configuration dialog title",
+    "string": "Cable configuration"
+  },
   "1UKx20": {
     "context": "header",
     "string": "Translation ShippingMethod \"{shippingMethodName}\" - {languageCode}"
@@ -849,6 +857,10 @@
   },
   "2dgbGR": {
     "string": "Those codes already exist"
+  },
+  "2dqT/3": {
+    "context": "cable configuration attribute",
+    "string": "Connector 2"
   },
   "2e8NyK": {
     "context": "variant SKU in product list",
@@ -1461,6 +1473,10 @@
     "context": "warning message when some variants failed to create",
     "string": "{success} variants created, {failed} failed"
   },
+  "61jtzm": {
+    "context": "link to products list filtered by out of stock",
+    "string": "View out-of-stock products"
+  },
   "6230rS": {
     "string": "Discount rules for carts and draft orders."
   },
@@ -1612,6 +1628,10 @@
   "6sjBvJ": {
     "context": "input placeholder",
     "string": "Search by name, email, etc..."
+  },
+  "6u66Mv": {
+    "context": "low stock remaining quantity badge",
+    "string": "{count, plural, one {Only # left} other {Only # left}}"
   },
   "6xC/Ls": {
     "context": "informations about product seo, header",
@@ -2160,6 +2180,10 @@
     "context": "Product category",
     "string": "Category"
   },
+  "9qxi4m": {
+    "context": "subsection title for products with low stock",
+    "string": "Running low"
+  },
   "9scTQ0": {
     "context": "section header",
     "string": "Product Attributes"
@@ -2262,6 +2286,10 @@
   "AgY5Mv": {
     "context": "attribute properties regarding storefront",
     "string": "Storefront Properties"
+  },
+  "Ah1jp+": {
+    "context": "cable configuration attribute",
+    "string": "Cable type"
   },
   "Ai4XSg": {
     "context": "shown when shipping address is required but not set",
@@ -2747,6 +2775,10 @@
   },
   "DDYrvn": {
     "string": "Rule reward value must be less than 100"
+  },
+  "DGEznb": {
+    "context": "per-meter price detail, e.g. €2.00/m × 3m",
+    "string": "{rate}/m × {meters}m"
   },
   "DGWVA9": {
     "context": "variant created error message",
@@ -3561,10 +3593,6 @@
     "context": "option description",
     "string": "Allocate order-line to a warehouse with the most stock. If not enough stock is available in a single warehouse, the remaining quantity is allocated in the next warehouse with the most stock and repeated if necessary."
   },
-  "HNh09O": {
-    "context": "link to products list",
-    "string": "View products"
-  },
   "HP6m+q": {
     "string": "Attributes and Product Types"
   },
@@ -4025,6 +4053,10 @@
   "JfwOIS": {
     "context": "French - Email body when item is being crafted",
     "string": "<p>Bonjour {{name}},</p><p>Nous tenions a vous informer que nos artisans ont commence a travailler sur votre commande. Elle sera bientot prete !</p><p>Merci pour votre patience.</p><p>Cordialement,<br/>L'equipe</p>"
+  },
+  "JgDjL0": {
+    "context": "explains the low-stock threshold below the section title",
+    "string": "At or below {threshold} units"
   },
   "JgNb8X": {
     "context": "notifier message",
@@ -4783,6 +4815,10 @@
     "context": "link",
     "string": "Get support"
   },
+  "Nsn/V5": {
+    "context": "cable configuration price row",
+    "string": "Assembly fee"
+  },
   "NtFVFS": {
     "context": "weight",
     "string": "{value} {unit}"
@@ -5166,6 +5202,10 @@
     "context": "Refund draft status",
     "string": "Draft"
   },
+  "PyePzm": {
+    "context": "cable configuration price section title",
+    "string": "Price breakdown"
+  },
   "Pyjarj": {
     "string": "This shipping rate has no postal codes assigned"
   },
@@ -5220,6 +5260,10 @@
   },
   "Q8Qw5B": {
     "string": "Description"
+  },
+  "Q8uVjV": {
+    "context": "row action button tooltip",
+    "string": "Show cable configuration"
   },
   "Q8wHwJ": {
     "string": "Deleted collection"
@@ -5349,6 +5393,10 @@
   },
   "Ql7OM1": {
     "string": "Performing a manual refund will immediately trigger a refund request and decrease the transaction’s charged amount, impacting the order balance."
+  },
+  "QmJtZI": {
+    "context": "subsection title for products with zero stock",
+    "string": "Out of stock"
   },
   "Qox+kb": {
     "string": "on field {fieldName}"
@@ -6340,6 +6388,10 @@
   "WMNtD2": {
     "string": "The extension will have access to new permissions. From now on it will be able to use them to perform operations these permissions allow. You should ensure you trust the extension before you approve."
   },
+  "WPsX7n": {
+    "context": "hint when more products exist beyond the shown list",
+    "string": "…and {count, plural, one {# more product} other {# more products}}"
+  },
   "WQMTKI": {
     "context": "list of warehouses",
     "string": "Warehouses A to Z"
@@ -6605,6 +6657,10 @@
   "Xm9qOu": {
     "context": "product pricing, section header",
     "string": "Pricing"
+  },
+  "XnPdvL": {
+    "context": "empty state when no products are low or out of stock",
+    "string": "All products are healthy in stock"
   },
   "XrliJg": {
     "context": "label for amount selection",
@@ -6889,6 +6945,10 @@
     "context": "Taxes section title",
     "string": "Countries"
   },
+  "ZAx2t3": {
+    "context": "cable configuration attribute",
+    "string": "Connector 1"
+  },
   "ZBs2Pb": {
     "string": "Gift"
   },
@@ -7046,10 +7106,6 @@
   "a0TDWs": {
     "context": "search section name",
     "string": "All Search Results"
-  },
-  "a0bTfE": {
-    "context": "message when no products are out of stock",
-    "string": "All products are in stock"
   },
   "a2o5uc": {
     "context": "custom extension page create, tooltip",
@@ -7515,6 +7571,10 @@
   "cBVHN5": {
     "context": "grant refund, reason input field placeholder",
     "string": "Reason for refund"
+  },
+  "cBstSs": {
+    "context": "cable configuration attribute",
+    "string": "Direction"
   },
   "cD0BQQ": {
     "context": "sku preview example showing resulting SKU",
@@ -8211,6 +8271,10 @@
     "context": "error message",
     "string": "Only pre-authorized payments can be captured"
   },
+  "gMpvf6": {
+    "context": "cable configuration attribute (gaine)",
+    "string": "Sleeve"
+  },
   "gMwpNC": {
     "context": "page content",
     "string": "Content"
@@ -8659,6 +8723,10 @@
     "context": "btn label",
     "string": "Mark all as done"
   },
+  "irP0/z": {
+    "context": "cable configuration attribute",
+    "string": "Connector 3"
+  },
   "isM94c": {
     "context": "create service token, button",
     "string": "Create"
@@ -8679,6 +8747,10 @@
   },
   "ixjvkM": {
     "string": "We’ve created your default token. Make sure to copy your new personal access token now. You won’t be able to see it again."
+  },
+  "iz5yG+": {
+    "context": "cable configuration attribute",
+    "string": "Length"
   },
   "j+lQWT": {
     "context": "error message when cut-off date is older than 30 days",
@@ -8734,6 +8806,10 @@
   "jDovoJ": {
     "context": "gift card history message",
     "string": "Gift card was issued"
+  },
+  "jFFzut": {
+    "context": "empty state when metadata is missing",
+    "string": "No cable configuration found on this line"
   },
   "jFrdB5": {
     "string": "Product Settings"
@@ -10205,6 +10281,10 @@
   "r7uSVR": {
     "context": "model seo options description",
     "string": "Add search engine title and description to make this model easier to find"
+  },
+  "rAGYqz": {
+    "context": "badge shown next to the dialog title",
+    "string": "Custom cable"
   },
   "rCy3Fe": {
     "context": "invalid date in expirydate field content",
@@ -11830,6 +11910,10 @@
   "zqarUF": {
     "context": "modal information under title",
     "string": "Select an address you want to use from the list below"
+  },
+  "zs9/8W": {
+    "context": "home section title for stock alerts card",
+    "string": "Stock alerts"
   },
   "zsz6LN": {
     "context": "onboarding step description",

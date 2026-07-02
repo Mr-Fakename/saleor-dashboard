@@ -1464,6 +1464,10 @@
     "context": "warning message when some variants failed to create",
     "string": "{success} variantes créées, {failed} échouées"
   },
+  "61jtzm": {
+    "context": "link to products list filtered by out of stock",
+    "string": "Voir les produits en rupture"
+  },
   "6230rS": {
     "string": "Règles de remise pour les paniers et les brouillons de commandes."
   },
@@ -1618,6 +1622,10 @@
   "6sjBvJ": {
     "context": "input placeholder",
     "string": "Recherche par nom, email, etc ..."
+  },
+  "6u66Mv": {
+    "context": "low stock remaining quantity badge",
+    "string": "{count, plural, one {Plus qu'# restant} other {Plus que # restants}}"
   },
   "6xC/Ls": {
     "context": "informations about product seo, header",
@@ -2167,6 +2175,10 @@
   "9qKFTA": {
     "context": "Product category",
     "string": "Catégorie"
+  },
+  "9qxi4m": {
+    "context": "subsection title for products with low stock",
+    "string": "Stock faible"
   },
   "9scTQ0": {
     "context": "section header",
@@ -4043,6 +4055,10 @@
     "context": "French - Email body when item is being crafted",
     "string": "<p>Bonjour {{name}},</p><p>Nous tenions a vous informer que nos artisans ont commence a travailler sur votre commande. Elle sera bientot prete !</p><p>Merci pour votre patience.</p><p>Cordialement,<br/>L'equipe</p>"
   },
+  "JgDjL0": {
+    "context": "explains the low-stock threshold below the section title",
+    "string": "À {threshold} unités ou moins"
+  },
   "JgNb8X": {
     "context": "notifier message",
     "string": "Une erreur est survenue lors de l'ajout d'une note"
@@ -5372,6 +5388,10 @@
   "Ql7OM1": {
     "string": "Effectuer un remboursement manuel déclenchera immédiatement une demande de remboursement et diminuera le montant capturé de la transaction, impactant le solde de la commande."
   },
+  "QmJtZI": {
+    "context": "subsection title for products with zero stock",
+    "string": "Rupture de stock"
+  },
   "Qox+kb": {
     "string": "sur le champ {fieldName}"
   },
@@ -6361,6 +6381,10 @@
   "WMNtD2": {
     "string": "L'extension aura accès à de nouvelles permissions. Elle pourra désormais les utiliser pour effectuer les opérations autorisées par ces permissions. Vous devez vous assurer de faire confiance à l'extension avant d'approuver."
   },
+  "WPsX7n": {
+    "context": "hint when more products exist beyond the shown list",
+    "string": "…et {count, plural, one {# autre produit} other {# autres produits}}"
+  },
   "WQMTKI": {
     "context": "list of warehouses",
     "string": "Entrepôts de A à Z"
@@ -6628,6 +6652,10 @@
   "Xm9qOu": {
     "context": "product pricing, section header",
     "string": "Prix"
+  },
+  "XnPdvL": {
+    "context": "empty state when no products are low or out of stock",
+    "string": "Tous les stocks sont à niveau"
   },
   "XrliJg": {
     "context": "label for amount selection",
@@ -9781,6 +9809,66 @@
     "context": "discount type",
     "string": "Commande"
   },
+  "+v3AE8": {
+    "context": "cable configuration total price row",
+    "string": "Total"
+  },
+  "1TfYbU": {
+    "context": "cable configuration dialog title",
+    "string": "Configuration du câble"
+  },
+  "2dqT/3": {
+    "context": "cable configuration attribute",
+    "string": "Connecteur 2"
+  },
+  "Ah1jp+": {
+    "context": "cable configuration attribute",
+    "string": "Type de câble"
+  },
+  "DGEznb": {
+    "context": "per-meter price detail, e.g. €2.00/m × 3m",
+    "string": "{rate}/m × {meters}m"
+  },
+  "Nsn/V5": {
+    "context": "cable configuration price row",
+    "string": "Frais d'assemblage"
+  },
+  "PyePzm": {
+    "context": "cable configuration price section title",
+    "string": "Détail du prix"
+  },
+  "Q8uVjV": {
+    "context": "row action button tooltip",
+    "string": "Voir la configuration du câble"
+  },
+  "ZAx2t3": {
+    "context": "cable configuration attribute",
+    "string": "Connecteur 1"
+  },
+  "cBstSs": {
+    "context": "cable configuration attribute",
+    "string": "Direction"
+  },
+  "gMpvf6": {
+    "context": "cable configuration attribute (gaine)",
+    "string": "Gaine"
+  },
+  "irP0/z": {
+    "context": "cable configuration attribute",
+    "string": "Connecteur 3"
+  },
+  "iz5yG+": {
+    "context": "cable configuration attribute",
+    "string": "Longueur"
+  },
+  "jFFzut": {
+    "context": "empty state when metadata is missing",
+    "string": "Aucune configuration de câble trouvée sur cette ligne"
+  },
+  "rAGYqz": {
+    "context": "badge shown next to the dialog title",
+    "string": "Câble personnalisé"
+  },
   "orvpWh": {
     "string": "Retour"
   },
@@ -11861,6 +11949,10 @@
   "zqarUF": {
     "context": "modal information under title",
     "string": "Sélectionnez une adresse que vous souhaitez utiliser dans la liste ci-dessous"
+  },
+  "zs9/8W": {
+    "context": "home section title for stock alerts card",
+    "string": "Alertes de stock"
   },
   "zsz6LN": {
     "context": "onboarding step description",

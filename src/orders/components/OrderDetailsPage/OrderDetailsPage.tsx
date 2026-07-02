@@ -73,6 +73,7 @@ interface OrderDetailsPageProps {
   onFulfillmentApprove: (id: string) => any;
   onFulfillmentCancel: (id: string) => any;
   onOrderLineShowMetadata: (id: string) => void;
+  onOrderLineShowCableConfiguration?: (id: string) => void;
   onOrderShowMetadata: () => void;
   onFulfillmentShowMetadata: (id: string) => void;
   onFulfillmentTrackingNumberUpdate: (id: string) => any;
@@ -132,6 +133,7 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
     onTransactionAction,
     onAddManualTransaction,
     onOrderLineShowMetadata,
+    onOrderLineShowCableConfiguration,
     onOrderShowMetadata,
     onFulfillmentShowMetadata,
     onMarkAsPaid,
@@ -250,6 +252,7 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
                   onFulfill={onOrderFulfill}
                   loading={loading}
                   onOrderLineShowMetadata={onOrderLineShowMetadata}
+                  onOrderLineShowCableConfiguration={onOrderLineShowCableConfiguration}
                 />
               ) : (
                 <>
@@ -273,6 +276,7 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
                   fulfillmentAllowUnpaid={shop?.fulfillmentAllowUnpaid}
                   order={order}
                   onOrderLineShowMetadata={onOrderLineShowMetadata}
+                  onOrderLineShowCableConfiguration={onOrderLineShowCableConfiguration}
                   onFulfillmentShowMetadata={() => onFulfillmentShowMetadata(fulfillment.id)}
                   onOrderFulfillmentCancel={() => onFulfillmentCancel(fulfillment.id)}
                   onTrackingCodeAdd={() => onFulfillmentTrackingNumberUpdate(fulfillment.id)}

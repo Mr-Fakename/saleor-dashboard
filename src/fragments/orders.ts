@@ -115,6 +115,10 @@ export const fragmentOrderLine = gql`
     quantity
     quantityFulfilled
     quantityToFulfill
+    metadata {
+      key
+      value
+    }
     totalPrice {
       ...TaxedMoney
     }
@@ -306,6 +310,7 @@ export const fragmentOrderDetails = gql`
     }
     number
     isPaid
+    languageCodeEnum
     paymentStatus
     shippingAddress {
       ...Address

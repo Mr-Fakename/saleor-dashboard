@@ -6,6 +6,7 @@ import {
   FulfillmentStatus,
   InvoiceFragment,
   JobStatusEnum,
+  LanguageCodeEnum,
   MarkAsPaidStrategyEnum,
   OrderAction,
   OrderAuthorizeStatusEnum,
@@ -1043,6 +1044,7 @@ export const order = (placeholder: string): OrderDetailsWithMetadataFragment => 
   __typename: "Order",
   giftCards: [],
   displayGrossPrices: true,
+  languageCodeEnum: LanguageCodeEnum.EN,
   actions: [OrderAction.CAPTURE, OrderAction.MARK_AS_PAID, OrderAction.REFUND, OrderAction.VOID],
   shippingMethods: [
     {
@@ -1626,6 +1628,7 @@ export const order = (placeholder: string): OrderDetailsWithMetadataFragment => 
       quantityFulfilled: 0,
       quantityToFulfill: 3,
       isGift: false,
+      metadata: [],
       allocations: [
         {
           id: "allocation_test_id",
@@ -1737,6 +1740,7 @@ export const order = (placeholder: string): OrderDetailsWithMetadataFragment => 
       quantityFulfilled: 2,
       quantityToFulfill: 0,
       isGift: false,
+      metadata: [],
       allocations: [
         {
           id: "allocation_test_id",
@@ -1954,6 +1958,7 @@ export const draftOrder = (placeholder: string): OrderDetailsWithMetadataFragmen
   __typename: "Order" as const,
   chargeStatus: OrderChargeStatusEnum.NONE,
   displayGrossPrices: true,
+  languageCodeEnum: LanguageCodeEnum.EN,
   authorizeStatus: OrderAuthorizeStatusEnum.NONE,
   giftCards: [],
   actions: [OrderAction.CAPTURE],
@@ -2017,6 +2022,7 @@ export const draftOrder = (placeholder: string): OrderDetailsWithMetadataFragmen
       quantityFulfilled: 0,
       quantityToFulfill: 2,
       isGift: false,
+      metadata: [],
       allocations: [
         {
           id: "allocation_test_id",
@@ -2128,6 +2134,7 @@ export const draftOrder = (placeholder: string): OrderDetailsWithMetadataFragmen
       quantityFulfilled: 0,
       quantityToFulfill: 2,
       isGift: false,
+      metadata: [],
       allocations: [
         {
           id: "allocation_test_id",

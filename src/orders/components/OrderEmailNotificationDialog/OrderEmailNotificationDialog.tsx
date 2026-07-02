@@ -8,7 +8,13 @@ import { Edit2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { EMAIL_REASONS, EmailTemplate, fillTemplate, getEmailTemplate } from "./emailTemplates";
+import {
+  EMAIL_REASONS,
+  EmailTemplate,
+  fillTemplate,
+  getEmailTemplate,
+  wrapBrandedEmail,
+} from "./emailTemplates";
 import { messages } from "./messages";
 import { TemplateEditor } from "./TemplateEditor";
 import { TemplatePreview } from "./TemplatePreview";
@@ -134,7 +140,9 @@ export const OrderEmailNotificationDialog = ({
     onSend({
       to: customerEmail,
       subject: finalSubject,
-      html: finalBody,
+      // Wrap the message in the branded shell so manual emails match the
+      // automatic SMTP App event emails (logo, colors, footer).
+      html: wrapBrandedEmail(finalBody),
     });
   }, [customerEmail, finalSubject, finalBody, onSend]);
 

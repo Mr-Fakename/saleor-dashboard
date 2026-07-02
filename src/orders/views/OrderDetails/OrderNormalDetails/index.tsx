@@ -28,6 +28,7 @@ import {
   getMutationState,
   getStringOrPlaceholder,
 } from "@dashboard/misc";
+import { OrderCableConfigurationDialog } from "@dashboard/orders/components/OrderCableConfigurationDialog/OrderCableConfigurationDialog";
 import OrderCannotCancelOrderDialog from "@dashboard/orders/components/OrderCannotCancelOrderDialog";
 import { OrderCustomerAddressesEditDialogOutput } from "@dashboard/orders/components/OrderCustomerAddressesEditDialog/types";
 import { OrderEmailNotificationDialog } from "@dashboard/orders/components/OrderEmailNotificationDialog/OrderEmailNotificationDialog";
@@ -314,6 +315,7 @@ export const OrderNormalDetails = ({
         shippingMethods={data?.order?.shippingMethods || []}
         onOrderCancel={() => openModal("cancel")}
         onOrderLineShowMetadata={id => openModal("view-order-line-metadata", { id })}
+        onOrderLineShowCableConfiguration={id => openModal("view-cable-configuration", { id })}
         onOrderShowMetadata={() => openModal("view-order-metadata")}
         onFulfillmentShowMetadata={id => openModal("view-fulfillment-metadata", { id })}
         onTransactionAction={(id, action) =>
@@ -440,6 +442,11 @@ export const OrderNormalDetails = ({
         onClose={closeModal}
         lineId={params.id}
         orderId={id}
+      />
+      <OrderCableConfigurationDialog
+        open={params.action === "view-cable-configuration"}
+        onClose={closeModal}
+        line={order?.lines?.find(line => line.id === params.id)}
       />
       <OrderMetadataDialog
         open={params.action === "view-order-metadata"}
@@ -578,7 +585,7 @@ export const OrderNormalDetails = ({
               : "Customer"
         }
         orderNumber={order?.number || ""}
-        languageCode={order?.channel?.defaultCountry?.code || "EN"}
+        languageCode={order?.languageCodeEnum || order?.channel?.defaultCountry?.code || "EN"}
         onClose={closeModal}
         onSend={handleSendEmail}
         error={emailSendError}

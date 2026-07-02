@@ -215,7 +215,8 @@ export type OrderUrlDialog =
   | "add-manual-transaction"
   | "view-order-line-metadata"
   | "view-order-metadata"
-  | "view-fulfillment-metadata";
+  | "view-fulfillment-metadata"
+  | "view-cable-configuration";
 
 interface TransactionAction {
   action: "transaction-action" | "transaction-charge-action";

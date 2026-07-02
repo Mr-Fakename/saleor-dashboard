@@ -1969,6 +1969,10 @@ export const OrderLineFragmentDoc = gql`
   quantity
   quantityFulfilled
   quantityToFulfill
+  metadata {
+    key
+    value
+  }
   totalPrice {
     ...TaxedMoney
   }
@@ -2075,6 +2079,7 @@ export const OrderDetailsFragmentDoc = gql`
   }
   number
   isPaid
+  languageCodeEnum
   paymentStatus
   shippingAddress {
     ...Address
@@ -21523,12 +21528,38 @@ export type WelcomePageAnalyticsQueryHookResult = ReturnType<typeof useWelcomePa
 export type WelcomePageAnalyticsLazyQueryHookResult = ReturnType<typeof useWelcomePageAnalyticsLazyQuery>;
 export type WelcomePageAnalyticsQueryResult = Apollo.QueryResult<Types.WelcomePageAnalyticsQuery, Types.WelcomePageAnalyticsQueryVariables>;
 export const WelcomePageNotificationsDocument = gql`
-    query welcomePageNotifications($channel: String!) {
+    query welcomePageNotifications($channel: String!, $lowStockThreshold: Int!) {
   productsOutOfStock: products(
     filter: {stockAvailability: OUT_OF_STOCK}
     channel: $channel
+    first: 8
   ) {
     totalCount
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+  productsLowStock: products(
+    filter: {stocks: {quantity: {gte: 1, lte: $lowStockThreshold}}}
+    channel: $channel
+    first: 8
+  ) {
+    totalCount
+    edges {
+      node {
+        id
+        name
+        variants {
+          id
+          stocks {
+            quantity
+          }
+        }
+      }
+    }
   }
 }
     `;
@@ -21546,6 +21577,7 @@ export const WelcomePageNotificationsDocument = gql`
  * const { data, loading, error } = useWelcomePageNotificationsQuery({
  *   variables: {
  *      channel: // value for 'channel'
+ *      lowStockThreshold: // value for 'lowStockThreshold'
  *   },
  * });
  */

@@ -19,15 +19,20 @@ import { useCallback, useMemo } from "react";
 import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
+import { isConfiguredCableLine } from "../OrderCableConfigurationDialog/cableConfiguration";
 import { messages as orderMessages } from "../OrderListDatagrid/messages";
 import { createGetCellContent, orderDetailsStaticColumnsAdapter } from "./datagrid";
 import { messages } from "./messages";
 import { OrderDetailsRowActions } from "./OrderDetailsRowActions";
 
+// Wide enough for the extra cable-configuration icon next to metadata + product link.
+const CABLE_ROW_ACTION_BAR_WIDTH = 120;
+
 interface OrderDetailsDatagridProps {
   lines: OrderLineFragment[];
   loading: boolean;
   onOrderLineShowMetadata: (id: string) => void;
+  onOrderLineShowCableConfiguration?: (id: string) => void;
   datagridCustomTheme?: Partial<Theme>;
 }
 
@@ -35,6 +40,7 @@ export const OrderDetailsDatagrid = ({
   lines,
   loading,
   onOrderLineShowMetadata,
+  onOrderLineShowCableConfiguration,
   datagridCustomTheme = {},
 }: OrderDetailsDatagridProps) => {
   const intl = useIntl();
@@ -89,6 +95,13 @@ export const OrderDetailsDatagrid = ({
     [intl, lines],
   );
 
+  const hasCableConfigurationActions = useMemo(
+    () =>
+      Boolean(onOrderLineShowCableConfiguration) &&
+      lines.some(line => isConfiguredCableLine(line?.metadata)),
+    [lines, onOrderLineShowCableConfiguration],
+  );
+
   const renderRowActions = useCallback(
     index => (
       <OrderDetailsRowActions
@@ -99,11 +112,23 @@ export const OrderDetailsDatagrid = ({
             onOrderLineShowMetadata(lines[index].id);
           }
         }}
+        onShowCableConfiguration={
+          onOrderLineShowCableConfiguration && isConfiguredCableLine(lines[index]?.metadata)
+            ? () => onOrderLineShowCableConfiguration(lines[index].id)
+            : undefined
+        }
         disabled={loading}
         intl={intl}
       />
     ),
-    [getMenuItems, lines, onOrderLineShowMetadata, loading, intl],
+    [
+      getMenuItems,
+      lines,
+      onOrderLineShowMetadata,
+      onOrderLineShowCableConfiguration,
+      loading,
+      intl,
+    ],
   );
 
   return (
@@ -135,7 +160,9 @@ export const OrderDetailsDatagrid = ({
           />
         )}
         renderRowActions={renderRowActions}
-        rowActionBarWidth={ROW_ACTION_BAR_WIDTH}
+        rowActionBarWidth={
+          hasCableConfigurationActions ? CABLE_ROW_ACTION_BAR_WIDTH : ROW_ACTION_BAR_WIDTH
+        }
       />
     </DatagridChangeStateContext.Provider>
   );
