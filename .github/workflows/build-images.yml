@@ -1,0 +1,52 @@
+# OURS (not upstream) — builds the dashboard to private GHCR with immutable sha
+# tags per the pipeline model (e-commerce-template/docs/adr/0007, runbook 05).
+# Per-client config (API_URL, LOCALE_CODE, …) is injected at RUNTIME via
+# __SALEOR_CONFIG__ substitution, so one build serves every environment — no
+# build-args needed here.
+# TODO(P0 hygiene): the Dockerfile still carries EMAIL_BRIDGE_* ARG defaults
+# with a leaked client URL + secret — strip them, they bake into every image.
+# CI only BUILDS; deploys stay operator-driven:
+#   .ops/pipeline/deploy.sh prod dashboard sha-<gitsha>
+# Auth: repo secret GHCR_TOKEN = classic PAT with write:packages.
+name: Build deployment images
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: build-images-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Short sha
+        id: sha
+        run: echo "short=$(git rev-parse --short=8 HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: mr-fakename
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Build + push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ghcr.io/mr-fakename/saleor-dashboard:sha-${{ steps.sha.outputs.short }}
+          cache-from: type=gha,scope=dashboard
+          cache-to: type=gha,scope=dashboard,mode=max
+      - name: Summary
+        run: |
+          echo "### \`saleor-dashboard:sha-${{ steps.sha.outputs.short }}\` pushed" >> "$GITHUB_STEP_SUMMARY"
+          echo "Deploy: \`.ops/pipeline/deploy.sh prod dashboard sha-${{ steps.sha.outputs.short }}\`" >> "$GITHUB_STEP_SUMMARY"
