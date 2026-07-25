@@ -22,10 +22,16 @@ import { Box, Text } from "@saleor/macaw-ui-next";
 import { Fragment, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { columnsMessages as quantityMessages } from "../OrderDraftDetailsDatagrid/messages";
 import OrderPriceLabel from "../OrderPriceLabel/OrderPriceLabel";
 import { messages } from "./messages";
 import { useStyles } from "./styles";
 import { hasAllVariantsSelected, isVariantSelected, onProductAdd, onVariantAdd } from "./utils";
+
+export interface OrderProductAddVariantWithQuantity {
+  variant: SearchOrderVariantQuery["search"]["edges"][0]["node"]["variants"][0];
+  quantity: number;
+}
 
 interface OrderProductAddDialogProps extends FetchMoreProps {
   confirmButtonState: ConfirmButtonTransitionState;
@@ -34,7 +40,7 @@ interface OrderProductAddDialogProps extends FetchMoreProps {
   products: RelayToFlat<SearchOrderVariantQuery["search"]>;
   onClose: () => void;
   onFetch: (query: string) => void;
-  onSubmit: (data: SearchOrderVariantQuery["search"]["edges"][0]["node"]["variants"]) => void;
+  onSubmit: (data: OrderProductAddVariantWithQuantity[]) => void;
   channelName?: string;
 }
 
@@ -59,11 +65,24 @@ const OrderProductAddDialog = (props: OrderProductAddDialogProps) => {
   const [variants, setVariants] = useState<
     SearchOrderVariantQuery["search"]["edges"][0]["node"]["variants"]
   >([]);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
   const errors = useModalDialogErrors(apiErrors, open);
 
   useModalDialogOpen(open, {
-    onClose: () => setVariants([]),
+    onClose: () => {
+      setVariants([]);
+      setQuantities({});
+    },
   });
+
+  const handleQuantityChange = (variantId: string, value: string) => {
+    const parsed = parseInt(value, 10);
+
+    setQuantities(prev => ({
+      ...prev,
+      [variantId]: Number.isNaN(parsed) || parsed < 1 ? 1 : parsed,
+    }));
+  };
 
   const isValidVariant = ({
     pricing,
@@ -83,7 +102,13 @@ const OrderProductAddDialog = (props: OrderProductAddDialogProps) => {
         hasAllVariantsSelected(getValidProductVariants(product), variants),
       )
     : [];
-  const handleSubmit = () => onSubmit(variants);
+  const handleSubmit = () =>
+    onSubmit(
+      variants.map(variant => ({
+        variant,
+        quantity: quantities[variant.id] ?? 1,
+      })),
+    );
   const productChoicesWithValidVariants = productChoices.filter(({ variants }) =>
     variants.some(isValidVariant),
   );
@@ -197,6 +222,20 @@ const OrderProductAddDialog = (props: OrderProductAddDialogProps) => {
                             )}
                           </TableCell>
                           <TableCell className={classes.textRight} data-test-id="variant-price">
+                            {selectedVariantsToProductsMap[productIndex][variantIndex] && (
+                              <TextField
+                                type="number"
+                                data-test-id="variant-quantity"
+                                label={intl.formatMessage(quantityMessages.quantity)}
+                                value={quantities[variant.id] ?? 1}
+                                onChange={event =>
+                                  handleQuantityChange(variant.id, event.target.value)
+                                }
+                                inputProps={{ min: 1, style: { width: 48 } }}
+                                style={{ marginRight: 16 }}
+                                size="small"
+                              />
+                            )}
                             <OrderPriceLabel pricing={variant.pricing} />
                           </TableCell>
                         </TableRowLink>

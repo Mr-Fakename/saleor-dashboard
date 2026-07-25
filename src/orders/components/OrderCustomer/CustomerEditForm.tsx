@@ -55,10 +55,14 @@ export const CustomerEditForm: React.FC<CustomerEditFormProps> = ({
           toggleEditMode();
         };
 
-        const userChoices = (allUsers || []).map(user => ({
-          label: user.email,
-          value: user.id,
-        }));
+        const userChoices = (allUsers || []).map(user => {
+          const fullName = [user.firstName, user.lastName].filter(Boolean).join(" ");
+
+          return {
+            label: fullName ? `${fullName} (${user.email})` : user.email,
+            value: user.id,
+          };
+        });
 
         const handleUserChange = createSingleAutocompleteSelectHandler(
           handleChange,

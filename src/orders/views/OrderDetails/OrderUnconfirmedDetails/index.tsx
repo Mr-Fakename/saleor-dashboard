@@ -359,11 +359,11 @@ export const OrderUnconfirmedDetails = ({
         onFetch={variantSearch}
         onFetchMore={loadMore}
         channelName={order.channel?.name}
-        onSubmit={variants =>
+        onSubmit={variantsWithQuantity =>
           orderLinesAdd.mutate({
             id,
-            input: variants.map(variant => ({
-              quantity: 1,
+            input: variantsWithQuantity.map(({ variant, quantity }) => ({
+              quantity,
               variantId: variant.id,
             })),
           })
