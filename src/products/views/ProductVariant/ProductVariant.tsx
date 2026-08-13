@@ -167,6 +167,7 @@ const ProductVariant = ({ variantId, params }: ProductUpdateProps) => {
     reorderProductVariantsOpts.loading ||
     deleteAttributeValueOpts.loading;
   const handleUpdate = async (data: ProductVariantUpdateSubmitData) => {
+    const isPreorderActive = !!variant?.preorder;
     const uploadFilesResult = await handleUploadMultipleFiles(
       data.attributesWithNewFileValue,
       variables => uploadFile({ variables }),
@@ -212,6 +213,15 @@ const ProductVariant = ({ variantId, params }: ProductUpdateProps) => {
       },
     });
     const channelErrors = await handleSubmitChannels(data, variant);
+    // `productVariantUpdate` silently ignores `preorder: null` - the API only ever turns
+    // preorder ON from that input. Ending a preorder requires the dedicated mutation,
+    // which also converts preorder allocations into regular ones. Run it last, so stocks
+    // and channel listings are already persisted when allocations are moved over.
+    const preorderErrors =
+      isPreorderActive && !data.isPreorder
+        ? ((await deactivatePreorder({ variables: { id: variantId } })).data
+            ?.productVariantPreorderDeactivate?.errors ?? [])
+        : [];
 
     return [
       ...mergeFileUploadErrors(uploadFilesResult),
@@ -222,6 +232,7 @@ const ProductVariant = ({ variantId, params }: ProductUpdateProps) => {
       ...(result.data?.productVariantUpdate.errors ?? []),
       ...assignMediaErrors,
       ...channelErrors,
+      ...preorderErrors,
     ];
   };
   const handleSubmit = createMetadataUpdateHandler(
