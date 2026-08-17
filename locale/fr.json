@@ -198,6 +198,10 @@
     "context": "status",
     "string": "État"
   },
+  "+v3AE8": {
+    "context": "cable configuration total price row",
+    "string": "Total"
+  },
   "+vzDH4": {
     "context": "error message used when manifest URL is incorrect (before any further validation)",
     "string": "URL de manifeste invalide"
@@ -667,6 +671,10 @@
     "context": "range input label",
     "string": "Codes postaux (début)"
   },
+  "1TfYbU": {
+    "context": "cable configuration dialog title",
+    "string": "Configuration du câble"
+  },
   "1UKx20": {
     "context": "header",
     "string": "Traduction Méthode de livraison \"{shippingMethodName}\" - {languageCode}"
@@ -854,6 +862,10 @@
   "2dgbGR": {
     "string": "Ces codes existent déjà"
   },
+  "2dqT/3": {
+    "context": "cable configuration attribute",
+    "string": "Connecteur 2"
+  },
   "2e8NyK": "UGS : {sku}",
   "2eHzVW": {
     "string": "Les remboursements manuels ne peuvent pas être modifiés"
@@ -974,6 +986,10 @@
   "3R7BmI": {
     "context": "Extension by Author",
     "string": "par"
+  },
+  "3SFo79": {
+    "context": "validation error, refund reason is required",
+    "string": "Sélectionnez un motif de remboursement pour continuer"
   },
   "3SVI5p": {
     "string": "Avertissement"
@@ -1299,6 +1315,9 @@
     "context": "section header",
     "string": "Disponibilité"
   },
+  "5BXvRB": {
+    "string": "Échec de la suppression de la référence de motif de remboursement"
+  },
   "5BajZK": {
     "string": "Visualiser et mettre à jour les paramètres de votre site "
   },
@@ -1581,6 +1600,9 @@
   "6cS4Rd": {
     "context": "card section description",
     "string": "Permissions disponibles"
+  },
+  "6ca7Pn": {
+    "string": "Échec de la mise à jour du type de motif de remboursement"
   },
   "6cq+c+": {
     "context": "header",
@@ -2283,6 +2305,10 @@
     "context": "attribute properties regarding storefront",
     "string": "Propriétés de la boutique"
   },
+  "Ah1jp+": {
+    "context": "cable configuration attribute",
+    "string": "Type de câble"
+  },
   "Ai4XSg": {
     "context": "shown when shipping address is required but not set",
     "string": "Aucune adresse de livraison"
@@ -2768,6 +2794,10 @@
   },
   "DDYrvn": {
     "string": "La valeur de récompense de la règle doit être inférieure à 100"
+  },
+  "DGEznb": {
+    "context": "per-meter price detail, e.g. €2.00/m × 3m",
+    "string": "{rate}/m × {meters}m"
   },
   "DGWVA9": {
     "context": "variant created error message",
@@ -4797,6 +4827,10 @@
     "context": "custom extension page create, callout message",
     "string": "Les permissions indisponibles sont celles qui dépassent vos propres droits d’accès. Les extensions ne peuvent pas avoir plus de permissions que leur créateur. Veuillez contacter un administrateur pour créer cette extension pour vous ou accorder les permissions nécessaires à votre compte"
   },
+  "NmxnfM": {
+    "context": "card title, refund reason section",
+    "string": "Motif de remboursement"
+  },
   "NnhrxZ": {
     "context": "amount of sent refund for transaction",
     "string": "Remboursement {transactionType}"
@@ -4819,6 +4853,10 @@
   "Nsk5WL": {
     "context": "link",
     "string": "Obtenir de l’aide"
+  },
+  "Nsn/V5": {
+    "context": "cable configuration price row",
+    "string": "Frais d'assemblage"
   },
   "NtFVFS": {
     "context": "weight",
@@ -5204,6 +5242,10 @@
     "context": "Refund draft status",
     "string": "Brouillon"
   },
+  "PyePzm": {
+    "context": "cable configuration price section title",
+    "string": "Détail du prix"
+  },
   "Pyjarj": {
     "string": "Ce tarif de livraison n'a pas de codes postaux assignés"
   },
@@ -5258,6 +5300,10 @@
   },
   "Q8Qw5B": {
     "string": "Description"
+  },
+  "Q8uVjV": {
+    "context": "row action button tooltip",
+    "string": "Voir la configuration du câble"
   },
   "Q8wHwJ": {
     "string": "Collection supprimée"
@@ -6941,6 +6987,10 @@
     "context": "Taxes section title",
     "string": "Pays"
   },
+  "ZAx2t3": {
+    "context": "cable configuration attribute",
+    "string": "Connecteur 1"
+  },
   "ZBs2Pb": {
     "string": "Cadeau"
   },
@@ -7265,6 +7315,9 @@
     "context": "voucher status",
     "string": "Activé"
   },
+  "amdfBq": {
+    "string": "La référence de motif de remboursement a été effacée"
+  },
   "anK7jD": {
     "string": "Type du produit"
   },
@@ -7565,6 +7618,10 @@
   "cBVHN5": {
     "context": "grant refund, reason input field placeholder",
     "string": "Motif du remboursement"
+  },
+  "cBstSs": {
+    "context": "cable configuration attribute",
+    "string": "Direction"
   },
   "cD0BQQ": {
     "context": "sku preview example showing resulting SKU",
@@ -8263,6 +8320,10 @@
     "context": "error message",
     "string": "Seuls les paiements pré-autorisés peuvent être saisis "
   },
+  "gMpvf6": {
+    "context": "cable configuration attribute (gaine)",
+    "string": "Gaine"
+  },
   "gMwpNC": {
     "context": "page content",
     "string": "Contenu"
@@ -8712,6 +8773,10 @@
     "context": "btn label",
     "string": "Tout marquer comme terminé"
   },
+  "irP0/z": {
+    "context": "cable configuration attribute",
+    "string": "Connecteur 3"
+  },
   "isM94c": {
     "context": "create service token, button",
     "string": "Créer"
@@ -8732,6 +8797,10 @@
   },
   "ixjvkM": {
     "string": "Nous avons créé votre clé d'accès par défaut. Assurez-vous de copier votre nouvelle clé d'accès personnelle maintenant. Vous ne pourrez plus la voir ensuite. "
+  },
+  "iz5yG+": {
+    "context": "cable configuration attribute",
+    "string": "Longueur"
   },
   "j+lQWT": {
     "context": "error message when cut-off date is older than 30 days",
@@ -8787,6 +8856,10 @@
   "jDovoJ": {
     "context": "gift card history message",
     "string": "La carte cadeau a été émise"
+  },
+  "jFFzut": {
+    "context": "empty state when metadata is missing",
+    "string": "Aucune configuration de câble trouvée sur cette ligne"
   },
   "jFrdB5": {
     "string": "Paramètres du produit"
@@ -9809,66 +9882,6 @@
     "context": "discount type",
     "string": "Commande"
   },
-  "+v3AE8": {
-    "context": "cable configuration total price row",
-    "string": "Total"
-  },
-  "1TfYbU": {
-    "context": "cable configuration dialog title",
-    "string": "Configuration du câble"
-  },
-  "2dqT/3": {
-    "context": "cable configuration attribute",
-    "string": "Connecteur 2"
-  },
-  "Ah1jp+": {
-    "context": "cable configuration attribute",
-    "string": "Type de câble"
-  },
-  "DGEznb": {
-    "context": "per-meter price detail, e.g. €2.00/m × 3m",
-    "string": "{rate}/m × {meters}m"
-  },
-  "Nsn/V5": {
-    "context": "cable configuration price row",
-    "string": "Frais d'assemblage"
-  },
-  "PyePzm": {
-    "context": "cable configuration price section title",
-    "string": "Détail du prix"
-  },
-  "Q8uVjV": {
-    "context": "row action button tooltip",
-    "string": "Voir la configuration du câble"
-  },
-  "ZAx2t3": {
-    "context": "cable configuration attribute",
-    "string": "Connecteur 1"
-  },
-  "cBstSs": {
-    "context": "cable configuration attribute",
-    "string": "Direction"
-  },
-  "gMpvf6": {
-    "context": "cable configuration attribute (gaine)",
-    "string": "Gaine"
-  },
-  "irP0/z": {
-    "context": "cable configuration attribute",
-    "string": "Connecteur 3"
-  },
-  "iz5yG+": {
-    "context": "cable configuration attribute",
-    "string": "Longueur"
-  },
-  "jFFzut": {
-    "context": "empty state when metadata is missing",
-    "string": "Aucune configuration de câble trouvée sur cette ligne"
-  },
-  "rAGYqz": {
-    "context": "badge shown next to the dialog title",
-    "string": "Câble personnalisé"
-  },
   "orvpWh": {
     "string": "Retour"
   },
@@ -10324,6 +10337,10 @@
     "context": "model seo options description",
     "string": "Ajoutez un titre et une description pour les moteurs de recherche afin de rendre ce modèle plus facile à trouver"
   },
+  "rAGYqz": {
+    "context": "badge shown next to the dialog title",
+    "string": "Câble personnalisé"
+  },
   "rCy3Fe": {
     "context": "invalid date in expirydate field content",
     "string": "Une carte cadeau avec une date d'expiration passée ne peut pas être créée"
@@ -10750,6 +10767,9 @@
   },
   "tiY7bx": {
     "string": "Ajouter un nouveau produit"
+  },
+  "tkxKAt": {
+    "string": "Type de motif de remboursement mis à jour"
   },
   "tl1/1E": {
     "string": "En savoir plus sur {orderManagement}"

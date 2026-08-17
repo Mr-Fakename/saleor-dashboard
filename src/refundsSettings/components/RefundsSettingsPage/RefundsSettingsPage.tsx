@@ -80,13 +80,13 @@ export const RefundsSettingsPage = () => {
     onCompleted() {
       notify({
         status: "success",
-        text: "Refund reason reference type updated successfully",
+        text: intl.formatMessage(refundsSettingsPageMessages.updateSuccess),
       });
     },
     onError(error) {
       notify({
         status: "error",
-        title: "Failed to update refund reason reference type",
+        title: intl.formatMessage(refundsSettingsPageMessages.updateError),
         text: error.message,
       });
     },
@@ -95,13 +95,13 @@ export const RefundsSettingsPage = () => {
     onCompleted() {
       notify({
         status: "success",
-        text: "Refund reason reference was cleared",
+        text: intl.formatMessage(refundsSettingsPageMessages.clearSuccess),
       });
     },
     onError(error) {
       notify({
         status: "error",
-        title: "Failed to clear refund reason reference",
+        title: intl.formatMessage(refundsSettingsPageMessages.clearError),
         text: error.message,
       });
     },

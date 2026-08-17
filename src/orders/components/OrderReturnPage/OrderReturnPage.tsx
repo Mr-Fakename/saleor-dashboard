@@ -38,6 +38,7 @@ interface OrderReturnPageProps {
   sendRefundErrors?: TransactionRequestRefundForGrantedRefundErrorFragment[];
   onSubmit: (data: OrderRefundSubmitData) => SubmitPromise;
   submitStatus: ConfirmButtonTransitionState;
+  modelForRefundReasonRefId?: string | null;
 }
 
 const OrderRefundPage = (props: OrderReturnPageProps) => {
@@ -49,6 +50,7 @@ const OrderRefundPage = (props: OrderReturnPageProps) => {
     sendRefundErrors = [],
     onSubmit,
     submitStatus,
+    modelForRefundReasonRefId = null,
   } = props;
   const canRefundShipping = calculateCanRefundShipping(null, order?.grantedRefunds);
   const intl = useIntl();
@@ -138,6 +140,8 @@ const OrderRefundPage = (props: OrderReturnPageProps) => {
                 submitStatus={submitStatus}
                 onAmountChange={handlers.handleAmountChange}
                 isAmountDirty={isAmountDirty}
+                modelForRefundReasonRefId={modelForRefundReasonRefId}
+                reasonReferenceId={data.reasonReferenceId}
               />
             ) : (
               <PaymentSubmitCard

@@ -4,16 +4,18 @@ import { DashboardCard } from "@dashboard/components/Card";
 import { DetailPageLayout } from "@dashboard/components/Layouts";
 import Link from "@dashboard/components/Link";
 import { hasPermissions } from "@dashboard/components/RequirePermissions";
-import { PermissionEnum, TransactionItemFragment, useModelsOfTypeQuery } from "@dashboard/graphql";
+import { PermissionEnum, TransactionItemFragment } from "@dashboard/graphql";
 import { pageListUrl } from "@dashboard/modeling/urls";
 import { ManualRefundForm } from "@dashboard/orders/components/OrderManualTransactionRefundPage/components/OrderManualTransactionRefundForm/manualRefundValidationSchema";
 import { OrderTransactionReasonUi } from "@dashboard/orders/components/OrderTransactionRefundPage/components/OrderTransactionReason/RefundWithLinesOrderTransactionReason";
+import { refundReasonPickerMessages } from "@dashboard/orders/components/RefundReasonPicker/messages";
+import { RefundReasonPicker } from "@dashboard/orders/components/RefundReasonPicker/RefundReasonPicker";
 import { refundReasonSelectHelperMessages } from "@dashboard/orders/messages";
 import { rippleNewRefundReasons } from "@dashboard/orders/ripples/newRefundReasons";
 import { orderUrl } from "@dashboard/orders/urls";
 import { refundsSettingsPath } from "@dashboard/refundsSettings/urls";
 import { Ripple } from "@dashboard/ripples/components/Ripple";
-import { Box, Select, Skeleton, Text } from "@saleor/macaw-ui-next";
+import { Box, Text } from "@saleor/macaw-ui-next";
 import { useController, useFormContext } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -51,38 +53,25 @@ const Reason = () => {
  *
  */
 const ModelsPicker = (props: { referenceModelTypeId: string; disabled: boolean }) => {
-  const { control } = useFormContext<ManualRefundForm>();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<ManualRefundForm>();
   const { field } = useController({ name: "reasonReferenceId", control });
-  const intl = useIntl();
+  const fieldError = errors.reasonReferenceId?.message;
 
-  const { data, loading } = useModelsOfTypeQuery({
-    variables: {
-      pageTypeId: props.referenceModelTypeId,
-    },
-  });
-
-  if (loading) {
-    return <Skeleton />;
-  }
-
-  const options =
-    data?.pages?.edges.map(model => ({
-      value: model.node.id,
-      label: model.node.title,
-    })) ?? [];
-
-  const optionsWithEmpty = [
-    {
-      value: "",
-      label: intl.formatMessage({
-        defaultMessage: "Select a reason type",
-        id: "vSLaZ7",
-      }),
-    },
-    ...options,
-  ];
-
-  return <Select {...field} disabled={props.disabled} options={optionsWithEmpty} />;
+  return (
+    <RefundReasonPicker
+      referenceModelTypeId={props.referenceModelTypeId}
+      value={field.value}
+      onChange={field.onChange}
+      onBlur={field.onBlur}
+      name={field.name}
+      disabled={props.disabled}
+      error={!!fieldError}
+      helperText={fieldError}
+    />
+  );
 };
 
 export const OrderManualTransactionRefundPage = ({
@@ -102,6 +91,7 @@ export const OrderManualTransactionRefundPage = ({
     <OrderManualTransactionRefundForm
       disabled={loading || !hasTransactionsToRefund}
       orderId={orderId}
+      isReasonReferenceRequired={!!modelForRefundReasonRefId}
       initialValues={{
         amount: 0,
         transationId: transactions?.[0]?.id ?? "",
@@ -145,7 +135,9 @@ export const OrderManualTransactionRefundPage = ({
             <Box marginBottom={12}>
               <DashboardCard>
                 <DashboardCard.Header>
-                  <DashboardCard.Title>Refund reason</DashboardCard.Title>
+                  <DashboardCard.Title>
+                    <FormattedMessage {...refundReasonPickerMessages.cardTitle} />
+                  </DashboardCard.Title>
                   <Box marginLeft={4}>
                     <Ripple model={rippleNewRefundReasons} />
                   </Box>

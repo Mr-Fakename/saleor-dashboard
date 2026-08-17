@@ -1,10 +1,20 @@
 import { TransactionItemFragment } from "@dashboard/graphql";
+import { refundReasonPickerMessages } from "@dashboard/orders/components/RefundReasonPicker/messages";
 import { IntlShape } from "react-intl";
 import { z } from "zod";
 
 import { validationMessages } from "../../messages";
 
-export const getValidationSchema = (intl: IntlShape, transactions: TransactionItemFragment[]) =>
+export const getValidationSchema = (
+  intl: IntlShape,
+  transactions: TransactionItemFragment[],
+  /**
+   * True when a refund-reason Model Type is configured. The API then rejects staff-issued
+   * refunds without a reason reference, so catch it in the form instead of showing a raw
+   * API error.
+   */
+  isReasonReferenceRequired = false,
+) =>
   z
     .object({
       transationId: z.string().min(1, {
@@ -14,7 +24,11 @@ export const getValidationSchema = (intl: IntlShape, transactions: TransactionIt
         message: intl.formatMessage(validationMessages.amountRequired),
       }),
       reason: z.string(),
-      reasonReferenceId: z.string(),
+      reasonReferenceId: isReasonReferenceRequired
+        ? z.string().min(1, {
+            message: intl.formatMessage(refundReasonPickerMessages.required),
+          })
+        : z.string(),
     })
     .refine(
       data => {

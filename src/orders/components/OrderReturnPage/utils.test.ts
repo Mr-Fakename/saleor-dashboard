@@ -2,7 +2,11 @@ import { TransactionActionEnum } from "@dashboard/graphql";
 import { orderTransactions } from "@dashboard/orders/fixtures";
 
 import { submitCardMessages } from "./components/TransactionSubmitCard/messages";
-import { canSendRefundDuringReturn, getReturnRefundValue } from "./utils";
+import {
+  canSendRefundDuringReturn,
+  getReturnRefundValue,
+  isRefundReasonReferenceMissing,
+} from "./utils";
 
 describe("getReturnRefundValue", () => {
   it("should return empty string if autoGrantRefund is false", () => {
@@ -173,5 +177,67 @@ describe("canSendRefundDuringReturn", () => {
       value: true,
       reason: null,
     });
+  });
+});
+
+describe("isRefundReasonReferenceMissing", () => {
+  it("should return false when refund reasons are not configured", () => {
+    // Arrange
+    const testData = {
+      autoGrantRefund: true,
+      modelForRefundReasonRefId: null,
+      reasonReferenceId: "",
+    };
+
+    // Act
+    const result = isRefundReasonReferenceMissing(testData);
+
+    // Assert
+    expect(result).toBe(false);
+  });
+
+  it("should return false when no refund is granted within the return", () => {
+    // Arrange
+    const testData = {
+      autoGrantRefund: false,
+      modelForRefundReasonRefId: "UGFnZVR5cGU6MTI=",
+      reasonReferenceId: "",
+    };
+
+    // Act
+    const result = isRefundReasonReferenceMissing(testData);
+
+    // Assert
+    expect(result).toBe(false);
+  });
+
+  it("should return true when reasons are configured and none was picked", () => {
+    // Arrange
+    const testData = {
+      autoGrantRefund: true,
+      modelForRefundReasonRefId: "UGFnZVR5cGU6MTI=",
+      reasonReferenceId: "",
+    };
+
+    // Act
+    const result = isRefundReasonReferenceMissing(testData);
+
+    // Assert
+    expect(result).toBe(true);
+  });
+
+  it("should return false when reasons are configured and one was picked", () => {
+    // Arrange
+    const testData = {
+      autoGrantRefund: true,
+      modelForRefundReasonRefId: "UGFnZVR5cGU6MTI=",
+      reasonReferenceId: "UGFnZTo0Mg==",
+    };
+
+    // Act
+    const result = isRefundReasonReferenceMissing(testData);
+
+    // Assert
+    expect(result).toBe(false);
   });
 });

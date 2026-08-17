@@ -9,12 +9,18 @@ import {
 } from "@dashboard/graphql";
 import { FormChange } from "@dashboard/hooks/useForm";
 import { PaymentSubmitCardValuesProps } from "@dashboard/orders/components/OrderReturnPage/components/PaymentSubmitCard/PaymentSubmitCardValues";
+import { refundReasonPickerMessages } from "@dashboard/orders/components/RefundReasonPicker/messages";
+import { RefundReasonPicker } from "@dashboard/orders/components/RefundReasonPicker/RefundReasonPicker";
 import { IMoney } from "@dashboard/utils/intl";
 import { Box, Text } from "@saleor/macaw-ui-next";
 import { Info } from "lucide-react";
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { canSendRefundDuringReturn, getReturnRefundValue } from "../../utils";
+import {
+  canSendRefundDuringReturn,
+  getReturnRefundValue,
+  isRefundReasonReferenceMissing,
+} from "../../utils";
 import { GrantRefundCheckbox } from "./GrantRefundCheckbox";
 import { submitCardMessages } from "./messages";
 import RefundShipmentCheckbox from "./RefundShipmentCheckbox";
@@ -39,6 +45,9 @@ interface TransactionSubmitCardProps {
   isAmountDirty: boolean;
   transactionId?: string;
   onAmountChange: (value: number) => void;
+  /** Refund-reason Model Type from Configuration -> Refunds settings, null when not configured */
+  modelForRefundReasonRefId: string | null;
+  reasonReferenceId: string;
 }
 
 export const TransactionSubmitCard = ({
@@ -58,6 +67,8 @@ export const TransactionSubmitCard = ({
   isAmountDirty,
   transactionId,
   onAmountChange,
+  modelForRefundReasonRefId,
+  reasonReferenceId,
 }: TransactionSubmitCardProps) => {
   const intl = useIntl();
   const canSendRefund = canSendRefundDuringReturn({
@@ -65,7 +76,16 @@ export const TransactionSubmitCard = ({
     transactions,
   });
 
-  const isSubmitDisabled = (!transactionId && autoGrantRefund) || disabled;
+  // The API rejects a staff-issued refund without a reason reference once a reason
+  // Model Type is configured, so require the pick before submitting.
+  const reasonReferenceMissing = isRefundReasonReferenceMissing({
+    autoGrantRefund,
+    modelForRefundReasonRefId,
+    reasonReferenceId,
+  });
+
+  const isSubmitDisabled =
+    (!transactionId && autoGrantRefund) || reasonReferenceMissing || disabled;
 
   return (
     <div>
@@ -93,6 +113,22 @@ export const TransactionSubmitCard = ({
               onChange={onChange}
               value={transactionId}
             />
+          )}
+          {autoGrantRefund && !!modelForRefundReasonRefId && (
+            <Box display="flex" flexDirection="column" gap={1} width="100%">
+              <Text fontWeight="medium">
+                <FormattedMessage {...refundReasonPickerMessages.cardTitle} />
+              </Text>
+              <RefundReasonPicker
+                referenceModelTypeId={modelForRefundReasonRefId}
+                value={reasonReferenceId}
+                onChange={value =>
+                  onChange({
+                    target: { name: "reasonReferenceId", value },
+                  })
+                }
+              />
+            </Box>
           )}
           <SendRefundCheckbox
             canSendRefund={canSendRefund}

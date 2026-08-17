@@ -38,4 +38,20 @@ export const refundsSettingsPageMessages = defineMessages({
     defaultMessage: "Create a Model",
     id: "6J1m2c",
   },
+  updateSuccess: {
+    defaultMessage: "Refund reason reference type updated successfully",
+    id: "tkxKAt",
+  },
+  updateError: {
+    defaultMessage: "Failed to update refund reason reference type",
+    id: "6ca7Pn",
+  },
+  clearSuccess: {
+    defaultMessage: "Refund reason reference was cleared",
+    id: "amdfBq",
+  },
+  clearError: {
+    defaultMessage: "Failed to clear refund reason reference",
+    id: "5BXvRB",
+  },
 });

@@ -39,6 +39,7 @@ export function useRefundWithinReturn({
             amount: formData.amount,
             transactionId: formData.transactionId,
             reason: "",
+            reasonReferenceId: formData.reasonReferenceId || undefined,
             lines: squashLines([
               ...formData.fulfilledItemsQuantities.map(line => ({
                 id: line.data.orderLineId,

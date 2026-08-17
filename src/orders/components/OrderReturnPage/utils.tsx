@@ -154,6 +154,21 @@ export type CanSendRefund =
   | { value: false; reason: MessageDescriptor }
   | { value: true; reason: null };
 
+/**
+ * Once a refund-reason Model Type is configured, `orderGrantRefundCreate` rejects
+ * staff-issued refunds that carry no reason reference. Granting a refund within a return
+ * therefore has to wait for the reason pick.
+ */
+export const isRefundReasonReferenceMissing = ({
+  autoGrantRefund,
+  modelForRefundReasonRefId,
+  reasonReferenceId,
+}: {
+  autoGrantRefund: boolean | undefined;
+  modelForRefundReasonRefId: string | null;
+  reasonReferenceId: string | undefined;
+}): boolean => !!autoGrantRefund && !!modelForRefundReasonRefId && !reasonReferenceId;
+
 export const canSendRefundDuringReturn = ({
   autoGrantRefund,
   transactions,

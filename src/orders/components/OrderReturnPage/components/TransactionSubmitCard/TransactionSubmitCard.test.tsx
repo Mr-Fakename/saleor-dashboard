@@ -53,6 +53,8 @@ const transactionSubmitCardProps = {
   onAmountChange: () => undefined,
   isAmountDirty: false,
   transactionId: "VHJhbnNhY3Rpb25JdGVtOmZjNzhhZDkwLWQ3NDgtNDdlNi04YWM4LWE0YjdiNjRlMmE1MQ==",
+  modelForRefundReasonRefId: null,
+  reasonReferenceId: "",
 };
 
 describe("TransactionSubmitCard", () => {

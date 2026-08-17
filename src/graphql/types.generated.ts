@@ -11162,6 +11162,7 @@ export type OrderGrantRefundAddWithOrderMutationVariables = Exact<{
   orderId: Scalars['ID'];
   amount?: InputMaybe<Scalars['Decimal']>;
   reason?: InputMaybe<Scalars['String']>;
+  reasonReferenceId?: InputMaybe<Scalars['ID']>;
   lines?: InputMaybe<Array<OrderGrantRefundCreateLineInput> | OrderGrantRefundCreateLineInput>;
   grantRefundForShipping?: InputMaybe<Scalars['Boolean']>;
   transactionId: Scalars['ID'];

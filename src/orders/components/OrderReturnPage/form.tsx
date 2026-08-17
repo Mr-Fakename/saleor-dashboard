@@ -40,6 +40,8 @@ export interface OrderReturnData {
   autoGrantRefund: boolean;
   autoSendRefund: boolean;
   amountCalculationMode: OrderRefundAmountCalculationMode;
+  /** Model (page) id used as the refund reason, empty when refund reasons are not configured */
+  reasonReferenceId: string;
 }
 
 interface OrderReturnHandlers {
@@ -79,6 +81,7 @@ const getOrderRefundPageFormData = (): OrderReturnData => ({
   autoGrantRefund: false,
   autoSendRefund: false,
   transactionId: "",
+  reasonReferenceId: "",
 });
 
 function useOrderReturnForm(

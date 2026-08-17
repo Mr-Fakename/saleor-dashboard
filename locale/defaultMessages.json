@@ -986,6 +986,10 @@
     "context": "Extension by Author",
     "string": "by"
   },
+  "3SFo79": {
+    "context": "validation error, refund reason is required",
+    "string": "Select a refund reason to continue"
+  },
   "3SVI5p": {
     "string": "Warning"
   },
@@ -1308,6 +1312,9 @@
     "context": "section header",
     "string": "Availability"
   },
+  "5BXvRB": {
+    "string": "Failed to clear refund reason reference"
+  },
   "5BajZK": {
     "string": "View and update your site settings"
   },
@@ -1588,6 +1595,9 @@
   "6cS4Rd": {
     "context": "card section description",
     "string": "Available permissions"
+  },
+  "6ca7Pn": {
+    "string": "Failed to update refund reason reference type"
   },
   "6cq+c+": {
     "context": "header",
@@ -4792,6 +4802,10 @@
     "context": "custom extension page create, callout message",
     "string": "Unavailable permissions are those exceeding your own access rights. Extensions cannot have more permissions than their creator. Please contact an administrator to either create this extension for you or grant your account the necessary permissions"
   },
+  "NmxnfM": {
+    "context": "card title, refund reason section",
+    "string": "Refund reason"
+  },
   "NnhrxZ": {
     "context": "amount of sent refund for transaction",
     "string": "{transactionType} refund"
@@ -7270,6 +7284,9 @@
   "amQg6f": {
     "context": "voucher status",
     "string": "Active"
+  },
+  "amdfBq": {
+    "string": "Refund reason reference was cleared"
   },
   "anK7jD": {
     "string": "Product Type"
@@ -10712,6 +10729,9 @@
   },
   "tiY7bx": {
     "string": "Add new product"
+  },
+  "tkxKAt": {
+    "string": "Refund reason reference type updated successfully"
   },
   "tl1/1E": {
     "string": "Learn more about {orderManagement}"

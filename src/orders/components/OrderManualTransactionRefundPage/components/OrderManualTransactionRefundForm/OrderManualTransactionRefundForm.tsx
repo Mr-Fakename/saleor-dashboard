@@ -26,6 +26,7 @@ interface OrderManualTransactionRefundFormProps {
   initialValues: ManualRefundForm;
   orderId: string;
   transactions: TransactionItemFragment[];
+  isReasonReferenceRequired?: boolean;
 }
 
 export const OrderManualTransactionRefundForm = ({
@@ -33,6 +34,7 @@ export const OrderManualTransactionRefundForm = ({
   orderId,
   initialValues,
   transactions,
+  isReasonReferenceRequired = false,
   children,
 }: OrderManualTransactionRefundFormProps) => {
   const intl = useIntl();
@@ -42,7 +44,7 @@ export const OrderManualTransactionRefundForm = ({
   const methods = useForm<ManualRefundForm>({
     mode: "onBlur",
     values: initialValues,
-    resolver: zodResolver(getValidationSchema(intl, transactions)),
+    resolver: zodResolver(getValidationSchema(intl, transactions, isReasonReferenceRequired)),
   });
 
   const [manualRefund, manualRefundOpts] = useOrderTransactionRequestActionMutation({
