@@ -3,8 +3,14 @@
 # Per-client config (API_URL, LOCALE_CODE, …) is injected at RUNTIME via
 # __SALEOR_CONFIG__ substitution, so one build serves every environment — no
 # build-args needed here.
-# TODO(P0 hygiene): the Dockerfile still carries EMAIL_BRIDGE_* ARG defaults
-# with a leaked client URL + secret — strip them, they bake into every image.
+# EMAIL_BRIDGE_* hygiene (was a TODO here): settled — the Dockerfile's ARG
+# defaults are empty and CI passes no build-args, so no client URL or secret is
+# baked into the image. Both are substituted into index.html at container start
+# by nginx/replace-env-vars.sh from the compose env. The API key is therefore
+# readable by anyone who can fetch index.html — acceptable only because the
+# dashboard host sits behind Cloudflare Access (verified 2026-08-17); if that
+# ever comes off, the send-email dialog must go through an authenticated proxy
+# instead. See e-commerce-template/docs/refunds-and-refund-reasons.md.
 # CI only BUILDS; deploys stay operator-driven:
 #   .ops/pipeline/deploy.sh prod dashboard sha-<gitsha>
 # Auth: repo secret GHCR_TOKEN = classic PAT with write:packages.
