@@ -13169,6 +13169,10 @@ export const OrderListDocument = gql`
         }
         userEmail
         chargeStatus
+        metadata {
+          key
+          value
+        }
       }
     }
     pageInfo {

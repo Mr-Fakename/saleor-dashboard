@@ -94,3 +94,17 @@ export const refundReasonSelectHelperMessages = defineMessages({
     id: "lLKEMH",
   }),
 });
+
+export const bankTransferMessages = defineMessages({
+  awaitingTransfer: defineMessage({
+    defaultMessage: "Awaiting bank transfer",
+    id: "00qzGC",
+    description: "payment status, order is unpaid on purpose and waits for a bank transfer",
+  }),
+  awaitingTransferHint: defineMessage({
+    defaultMessage:
+      "The customer chose to pay by bank transfer and received the bank details. Collect the transfer, then mark the order as paid before fulfilling it.",
+    id: "yYIdyZ",
+    description: "explanation shown on an order awaiting a bank transfer",
+  }),
+});

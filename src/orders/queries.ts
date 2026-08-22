@@ -44,6 +44,10 @@ export const orderListQuery = gql`
           }
           userEmail
           chargeStatus
+          metadata {
+            key
+            value
+          }
         }
       }
       pageInfo {

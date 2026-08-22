@@ -399,6 +399,10 @@
     "context": "info about variant metadata with link to edit",
     "string": "Les métadonnées en lecture seule de la variante réelle utilisée dans cette commande. {link}"
   },
+  "00qzGC": {
+    "context": "payment status, order is unpaid on purpose and waits for a bank transfer",
+    "string": "Virement en attente"
+  },
   "01+5kQ": {
     "context": "",
     "string": "Marquer payé"
@@ -11703,6 +11707,10 @@
   "yWaFGI": {
     "context": "preorder auto-toggle info message",
     "string": "La précommande a été automatiquement activée car toutes les quantités en stock sont à zéro. Définissez une quantité supérieure à zéro pour la désactiver."
+  },
+  "yYIdyZ": {
+    "context": "explanation shown on an order awaiting a bank transfer",
+    "string": "Le client a choisi de payer par virement bancaire et a reçu les coordonnées bancaires. Encaissez le virement, puis marquez la commande comme payée avant de l'expédier."
   },
   "yatGsm": {
     "context": "card title",

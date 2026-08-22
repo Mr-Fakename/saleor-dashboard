@@ -1,6 +1,8 @@
 // @ts-strict-ignore
 import { DashboardCard } from "@dashboard/components/Card";
 import { OrderAction, OrderDetailsFragment } from "@dashboard/graphql";
+import { bankTransferMessages } from "@dashboard/orders/messages";
+import { isAwaitingBankTransfer } from "@dashboard/orders/utils/awaitingBankTransfer";
 import { OrderDetailsViewModel } from "@dashboard/orders/utils/OrderDetailsViewModel";
 import { Button, Skeleton, Text } from "@saleor/macaw-ui-next";
 import { FormattedMessage } from "react-intl";
@@ -26,6 +28,7 @@ export const OrderPaymentSummaryCard = ({ order, onMarkAsPaid }: OrderPaymementP
   const hasGiftCards = giftCardAmount > 0;
   const canMarkAsPaid = order?.actions?.includes(OrderAction.MARK_AS_PAID);
   const shouldDisplay = OrderDetailsViewModel.getShouldDisplayAmounts(order);
+  const awaitingBankTransfer = isAwaitingBankTransfer(order ?? {});
 
   const showHasNoPayment =
     !canAnyRefund && !shouldDisplay.charged && !shouldDisplay.authorized && !hasGiftCards;
@@ -65,8 +68,17 @@ export const OrderPaymentSummaryCard = ({ order, onMarkAsPaid }: OrderPaymementP
       {showHasNoPayment ? (
         <DashboardCard.Content className={classes.noPaymentContent} data-test-id="payment-section">
           <Text size={3} fontWeight="bold" lineHeight={2} className={classes.noPaymentTitle}>
-            <FormattedMessage {...orderPaymentMessages.noPayments} />
+            <FormattedMessage
+              {...(awaitingBankTransfer
+                ? bankTransferMessages.awaitingTransfer
+                : orderPaymentMessages.noPayments)}
+            />
           </Text>
+          {awaitingBankTransfer && (
+            <Text size={2} color="default2" lineHeight={2}>
+              <FormattedMessage {...bankTransferMessages.awaitingTransferHint} />
+            </Text>
+          )}
           {canMarkAsPaid && (
             <Button
               variant="secondary"

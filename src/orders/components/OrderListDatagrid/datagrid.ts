@@ -15,8 +15,10 @@ import {
   transformOrderStatus,
   transformPaymentStatus,
 } from "@dashboard/misc";
+import { bankTransferMessages } from "@dashboard/orders/messages";
 import { OrderListUrlSortField } from "@dashboard/orders/urls";
-import { RelayToFlat, Sort } from "@dashboard/types";
+import { isAwaitingBankTransfer } from "@dashboard/orders/utils/awaitingBankTransfer";
+import { RelayToFlat, Sort, StatusType } from "@dashboard/types";
 import { getColumnSortDirectionIcon } from "@dashboard/utils/columns/getColumnSortDirectionIcon";
 import { GridCell, Item, TextCell } from "@glideapps/glide-data-grid";
 import { DefaultTheme, useTheme } from "@saleor/macaw-ui-next";
@@ -170,6 +172,20 @@ export function getPaymentCellContent(
     });
 
     return pillCell(localized, color, COMMON_CELL_PROPS);
+  }
+
+  // An unpaid order the customer chose to pay by transfer is expected, not a failed payment.
+  if (isAwaitingBankTransfer(rowData)) {
+    const color = getStatusColor({
+      status: StatusType.ATTENTION,
+      currentTheme,
+    });
+
+    return pillCell(
+      intl.formatMessage(bankTransferMessages.awaitingTransfer),
+      color,
+      COMMON_CELL_PROPS,
+    );
   }
 
   const paymentStatus = transformPaymentStatus(rowData.paymentStatus, intl);

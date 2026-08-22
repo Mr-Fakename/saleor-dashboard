@@ -1,9 +1,11 @@
 import { Pill } from "@dashboard/components/Pill";
 import { OrderChargeStatusEnum, OrderDetailsFragment } from "@dashboard/graphql";
 import { transformPaymentStatus } from "@dashboard/misc";
+import { bankTransferMessages } from "@dashboard/orders/messages";
+import { isAwaitingBankTransfer } from "@dashboard/orders/utils/awaitingBankTransfer";
 import { useIntl } from "react-intl";
 
-type Order = Pick<OrderDetailsFragment, "paymentStatus" | "chargeStatus">;
+type Order = Pick<OrderDetailsFragment, "paymentStatus" | "chargeStatus" | "metadata">;
 
 export interface OrderPaymentStatusPillProps {
   order: Order | undefined;
@@ -30,6 +32,19 @@ export const OrderPaymentStatusPill = ({ order, className }: OrderPaymentStatusP
         })}
         color="attention"
         style={{ alignSelf: "flex-end" }}
+        className={className}
+      />
+    );
+  }
+
+  if (isAwaitingBankTransfer(order)) {
+    return (
+      <Pill
+        key="awaiting-bank-transfer"
+        label={intl.formatMessage(bankTransferMessages.awaitingTransfer)}
+        color="attention"
+        style={{ alignSelf: "flex-end" }}
+        data-test-id="payment-status"
         className={className}
       />
     );
