@@ -8,12 +8,61 @@ import { Cable } from "lucide-react";
 import { ReactNode, useMemo } from "react";
 import { useIntl } from "react-intl";
 
-import { parseCableConfiguration } from "./cableConfiguration";
+import {
+  CableComponentSlot,
+  CableComponentView,
+  getCableComponentRefs,
+  getConfiguredCableVerificationCutoff,
+  isCableMarkerRequired,
+  parseCableConfiguration,
+  resolveCableComponents,
+} from "./cableConfiguration";
+import { CableVerificationNotice } from "./CableVerificationNotice";
 import { messages } from "./messages";
+import { useCableComponentNames } from "./useCableComponentNames";
+import { useCableLinePrivateMetadata } from "./useCableLinePrivateMetadata";
+
+export type OrderCableConfigurationDialogLine = Pick<
+  OrderLineFragment,
+  "id" | "productName" | "quantity" | "metadata" | "variant"
+>;
 
 interface OrderCableConfigurationDialogProps extends DialogProps {
-  line: OrderLineFragment | undefined;
+  orderId: string;
+  /** the order's channel slug: where the components are looked up */
+  channelSlug?: string;
+  /** the order's creation date: decides whether a missing marker is excusable (M1) */
+  orderCreatedAt: string | undefined;
+  line: OrderCableConfigurationDialogLine | undefined;
 }
+
+/** The catalogue's name for a component; the cart's label only as flagged secondary text (NR-35). */
+const ComponentValue = ({
+  view,
+  resolved,
+}: {
+  view: CableComponentView | undefined;
+  resolved: boolean;
+}) => {
+  const intl = useIntl();
+
+  if (!view) {
+    return <>-</>;
+  }
+
+  return (
+    <Box display="flex" flexDirection="column" alignItems="flex-end">
+      <span>
+        {view.name ?? (resolved ? intl.formatMessage(messages.unresolvedComponent) : "-")}
+      </span>
+      {view.labelDiffers && view.cartLabel && (
+        <Text size={1} color="critical1" fontWeight="regular">
+          {intl.formatMessage(messages.cartLabel)} {view.cartLabel}
+        </Text>
+      )}
+    </Box>
+  );
+};
 
 const ConfigurationRow = ({ label, value }: { label: string; value: ReactNode }) => (
   <Box display="flex" justifyContent="space-between" alignItems="center" gap={4} paddingY={1.5}>
@@ -27,6 +76,9 @@ const ConfigurationRow = ({ label, value }: { label: string; value: ReactNode })
 );
 
 export const OrderCableConfigurationDialog = ({
+  orderId,
+  channelSlug,
+  orderCreatedAt,
   line,
   open,
   onClose,
@@ -34,6 +86,34 @@ export const OrderCableConfigurationDialog = ({
   const intl = useIntl();
   const { locale } = useLocale();
   const configuration = useMemo(() => parseCableConfiguration(line?.metadata), [line?.metadata]);
+  // NR-33: the metadata above is public (any shopper can write it); its
+  // private record from checkout-prices says whether it can be trusted.
+  const marker = useCableLinePrivateMetadata({
+    orderId,
+    lineId: line?.id,
+    open: open && configuration !== null,
+  });
+  // NR-35: component names in the metadata are caller-supplied; resolve each id live.
+  const refs = useMemo(() => getCableComponentRefs(line?.metadata), [line?.metadata]);
+  const names = useCableComponentNames({
+    ids: refs.map(ref => ref.id),
+    channel: channelSlug,
+    open: open && configuration !== null,
+  });
+  const namesResolved = names.state === "ready";
+  const components = useMemo(
+    () => (names.state === "ready" ? resolveCableComponents(refs, names.variants) : []),
+    [names, refs],
+  );
+  const componentViews: CableComponentView[] = namesResolved
+    ? components
+    : resolveCableComponents(refs, []).map(view => ({ ...view, labelDiffers: false }));
+  const viewOf = (slot: CableComponentSlot): CableComponentView | undefined =>
+    componentViews.find(view => view.slot === slot);
+  const nameOf = (slot: CableComponentSlot): string | undefined => viewOf(slot)?.name ?? undefined;
+  // runtime setting; null (warned about once per mount) = no cutoff = soft wording
+  const cutoff = useMemo(() => getConfiguredCableVerificationCutoff(), []);
+  const markerRequired = isCableMarkerRequired(orderCreatedAt, cutoff);
 
   const formatPrice = (amount: number | undefined): string => {
     if (amount === undefined) {
@@ -59,28 +139,28 @@ export const OrderCableConfigurationDialog = ({
         },
         {
           key: "connector1",
-          label: configuration.connector1Name || intl.formatMessage(messages.connector1),
+          label: nameOf("connector1") || intl.formatMessage(messages.connector1),
           amount: configuration.connector1Price,
         },
         {
           key: "connector2",
-          label: configuration.connector2Name || intl.formatMessage(messages.connector2),
+          label: nameOf("connector2") || intl.formatMessage(messages.connector2),
           amount: configuration.connector2Price,
         },
         {
           key: "connector3",
-          label: configuration.connector3Name || intl.formatMessage(messages.connector3),
+          label: nameOf("connector3") || intl.formatMessage(messages.connector3),
           amount: configuration.connector3Price,
         },
         {
           key: "cable",
-          label: configuration.cableTypeName || intl.formatMessage(messages.cableType),
+          label: nameOf("cableType") || intl.formatMessage(messages.cableType),
           amount: configuration.cableCharge?.amount,
           perMeterRate: configuration.cableCharge?.perMeterRate,
         },
         {
           key: "gaine",
-          label: configuration.gaineName || intl.formatMessage(messages.sleeve),
+          label: nameOf("gaine") || intl.formatMessage(messages.sleeve),
           amount: configuration.gaineCharge?.amount,
           perMeterRate: configuration.gaineCharge?.perMeterRate,
         },
@@ -96,7 +176,7 @@ export const OrderCableConfigurationDialog = ({
             {intl.formatMessage(messages.dialogTitle)}
             <Box paddingX={2} paddingY={0.5} borderRadius={4} backgroundColor="default2">
               <Text size={1} fontWeight="medium">
-                {configuration?.variantName || intl.formatMessage(messages.customCableBadge)}
+                {line?.variant?.name || intl.formatMessage(messages.customCableBadge)}
               </Text>
             </Box>
           </Box>
@@ -106,6 +186,16 @@ export const OrderCableConfigurationDialog = ({
           <Text color="default2">{intl.formatMessage(messages.notAvailable)}</Text>
         ) : (
           <Box display="flex" flexDirection="column">
+            <Box marginBottom={3}>
+              <CableVerificationNotice
+                metadata={line?.metadata}
+                marker={marker}
+                names={names}
+                components={components}
+                markerRequired={markerRequired}
+              />
+            </Box>
+
             {line && (
               <Box marginBottom={3}>
                 <Text color="default2" size={2}>
@@ -125,21 +215,21 @@ export const OrderCableConfigurationDialog = ({
             >
               <ConfigurationRow
                 label={intl.formatMessage(messages.connector1)}
-                value={configuration.connector1Name || "-"}
+                value={<ComponentValue view={viewOf("connector1")} resolved={namesResolved} />}
               />
               <ConfigurationRow
                 label={intl.formatMessage(messages.connector2)}
-                value={configuration.connector2Name || "-"}
+                value={<ComponentValue view={viewOf("connector2")} resolved={namesResolved} />}
               />
-              {configuration.connector3Name && (
+              {viewOf("connector3") && (
                 <ConfigurationRow
                   label={intl.formatMessage(messages.connector3)}
-                  value={configuration.connector3Name}
+                  value={<ComponentValue view={viewOf("connector3")} resolved={namesResolved} />}
                 />
               )}
               <ConfigurationRow
                 label={intl.formatMessage(messages.cableType)}
-                value={configuration.cableTypeName || "-"}
+                value={<ComponentValue view={viewOf("cableType")} resolved={namesResolved} />}
               />
               <ConfigurationRow
                 label={intl.formatMessage(messages.cableLength)}
@@ -155,10 +245,10 @@ export const OrderCableConfigurationDialog = ({
                   value={configuration.directionName}
                 />
               )}
-              {configuration.gaineName && (
+              {viewOf("gaine") && (
                 <ConfigurationRow
                   label={intl.formatMessage(messages.sleeve)}
-                  value={configuration.gaineName}
+                  value={<ComponentValue view={viewOf("gaine")} resolved={namesResolved} />}
                 />
               )}
             </Box>

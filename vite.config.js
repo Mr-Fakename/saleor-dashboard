@@ -63,6 +63,8 @@ export default defineConfig(({ command, mode }) => {
     // Email bridge configuration
     EMAIL_BRIDGE_URL,
     EMAIL_BRIDGE_API_KEY,
+    // Cable verification: orders created from this date must carry a marker
+    CABLE_VERIFICATION_CUTOFF,
 
     npm_package_version,
   } = env;
@@ -98,6 +100,7 @@ export default defineConfig(({ command, mode }) => {
           ENABLED_SERVICE_NAME_HEADER,
           EMAIL_BRIDGE_URL,
           EMAIL_BRIDGE_API_KEY,
+          CABLE_VERIFICATION_CUTOFF,
         },
       },
     }),

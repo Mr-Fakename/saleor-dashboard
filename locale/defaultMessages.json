@@ -258,6 +258,10 @@
     "context": "button",
     "string": "Show"
   },
+  "/8jtbU": {
+    "context": "cable configuration verification: some component ids resolve to nothing",
+    "string": "Components not found"
+  },
   "/AbHy4": {
     "context": "creation label",
     "string": "Creation"
@@ -417,6 +421,10 @@
   "06bR4Z": {
     "context": "order history message",
     "string": "Order cancel information was sent to customer"
+  },
+  "07qtbz": {
+    "context": "cable configuration: name the shopper's cart carried, when it differs from the catalogue name",
+    "string": "Cart label (differs from the catalogue):"
   },
   "0AQH0Q": {
     "string": "Plugin is misconfigured and cannot be activated"
@@ -1561,6 +1569,10 @@
   "6QjMei": {
     "string": "Preorder end time needs to be set in the future"
   },
+  "6QuRh2": {
+    "context": "cable configuration verification: line has cable metadata but no private record",
+    "string": "This line has no configurator record: it was created before verification existed, or modified outside the configurator. Check the configuration and the price paid before building the cable."
+  },
   "6RQKxH": {
     "context": "order history message",
     "string": "Invoice no. {invoiceNumber} was updated"
@@ -2231,6 +2243,10 @@
     "context": "area units type",
     "string": "Area"
   },
+  "ACo6PV": {
+    "context": "cable configuration verification: a component id does not resolve to a product",
+    "string": "Some components of this line could not be found in the catalogue. Do not build the cable until the order has been checked."
+  },
   "AD1PlC": {
     "context": "channels availability text",
     "string": "In {selectedChannelsCount} out of {allChannelsCount, plural, one {# channel} other {# channels}}"
@@ -2755,6 +2771,10 @@
     "context": "status filter label",
     "string": "Status"
   },
+  "D4GK8e": {
+    "context": "cable configuration verification: unresolved component on a line that matches its record",
+    "string": "Some components of this line are no longer in the catalogue (deleted or unpublished since the order). The configuration itself matches what the configurator recorded. Check that the parts are still available before building the cable."
+  },
   "D4W/LE": {
     "context": "dialog header",
     "string": "Change customer billing address"
@@ -2891,6 +2911,10 @@
   },
   "DovGIa": {
     "string": "Permission Group Deleted"
+  },
+  "Dqi/84": {
+    "context": "cable configuration verification: line metadata matches the app's private record",
+    "string": "Verified configuration"
   },
   "Duik8x": {
     "context": "Link to publish the product immediately instead of scheduling",
@@ -3201,6 +3225,10 @@
   "FZTrzW": {
     "string": "Manual refund"
   },
+  "FaHfes": {
+    "context": "cable configuration verification: warning title",
+    "string": "Unverified configuration"
+  },
   "Fbr4Vp": {
     "context": "dialog header",
     "string": "Permissions"
@@ -3483,6 +3511,10 @@
     "context": "dialog content",
     "string": "{counter,plural,one{Are you sure you want to unassign this category?} other{Are you sure you want to unassign {displayQuantity} categories?}}"
   },
+  "Gj8pqh": {
+    "context": "cable configuration verification: component names still loading, shown under the verdict",
+    "string": "Checking the component names…"
+  },
   "Gkip05": {
     "context": "button",
     "string": "Unassign"
@@ -3512,6 +3544,10 @@
   "GuihaP": {
     "context": "order transaction refund summary label",
     "string": "Shipping"
+  },
+  "GvRnZo": {
+    "context": "cable configuration verification: name lookup failed, verdict unchanged",
+    "string": "The component names could not be loaded from the catalogue. The verdict above does not depend on them; reload the page to check the names."
   },
   "Gxo/XC": {
     "context": "header",
@@ -3654,6 +3690,10 @@
   },
   "HYK65C": {
     "string": "Order rule"
+  },
+  "HbT+U8": {
+    "context": "cable configuration verification: missing record on an order created after the cutoff, no harmless explanation",
+    "string": "This line has no configurator record, although the order was created after verification went live. Every genuine configured cable has one. Treat this configuration as forged: do not build the cable and check the order with the customer."
   },
   "Hc58JL": {
     "context": "card title",
@@ -3895,6 +3935,10 @@
   "Ihp4D3": {
     "context": "header",
     "string": "Edit Media"
+  },
+  "IkF4cu": {
+    "context": "cable configuration verification: label before the list of changed metadata keys",
+    "string": "Changed fields:"
   },
   "Ila7WO": {
     "context": "change warehouse dialog description",
@@ -4150,6 +4194,10 @@
   "K1ycaD": {
     "context": "input label",
     "string": "Refund value"
+  },
+  "K3JdVG": {
+    "context": "cable configuration verification: line metadata differs from the private record",
+    "string": "This line's details no longer match what the configurator recorded. Check the configuration and the price paid before building the cable."
   },
   "K58C4r": {
     "string": "We are working on replacing plugins with apps. Use apps unless no other option. {learnMore}"
@@ -5946,6 +5994,10 @@
   "Tp5T7U": {
     "string": "Join our OS community of industry experts and learn more about open source at Saleor."
   },
+  "TvT/VD": {
+    "context": "cable configuration verification: private record still loading",
+    "string": "Checking the configuration…"
+  },
   "TxMsgK": {
     "string": "Authorize status"
   },
@@ -7508,6 +7560,10 @@
   "bnMF4j": {
     "context": "notification",
     "string": "Selected models were unpublished."
+  },
+  "bnXPCl": {
+    "context": "cable configuration: component id that resolves to no product",
+    "string": "Not found in the catalogue"
   },
   "bp/i0x": {
     "context": "header",
@@ -10500,6 +10556,10 @@
     "context": "categories section name",
     "string": "Categories"
   },
+  "sK50F9": {
+    "context": "cable configuration verification: the private record could not be loaded",
+    "string": "Configuration not checked"
+  },
   "sMwohe": {
     "context": "email reason",
     "string": "Quality check in progress"
@@ -11436,6 +11496,10 @@
     "context": "product variant attribute entity type",
     "string": "Product variants"
   },
+  "wyb9HV": {
+    "context": "cable configuration verification: explanation of the verified state",
+    "string": "Matches the configuration the configurator recorded and priced when the cable was added to the cart."
+  },
   "x/ZVlU": {
     "string": "Product"
   },
@@ -11692,6 +11756,10 @@
     "context": "extensions page subheader",
     "string": "Learn more about {extensions}"
   },
+  "yfCx3N": {
+    "context": "cable configuration verification: load error explanation",
+    "string": "The verification data could not be loaded. Reload the page before building the cable."
+  },
   "ygxco/": {
     "context": "tooltip, submit form",
     "string": "Client has made more than one transaction. You have to send refund manually."
@@ -11756,6 +11824,10 @@
   "z1puMb": {
     "context": "export items as csv or spreadsheet file",
     "string": "Export as:"
+  },
+  "z1xXZo": {
+    "context": "cable configuration verification: the component name lookup failed",
+    "string": "Component names not checked"
   },
   "z1y9oL": {
     "context": "file attribute type",

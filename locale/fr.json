@@ -258,6 +258,10 @@
     "context": "button",
     "string": "Afficher"
   },
+  "/8jtbU": {
+    "context": "cable configuration verification: some component ids resolve to nothing",
+    "string": "Composants introuvables"
+  },
   "/AbHy4": {
     "context": "creation label",
     "string": "Création"
@@ -418,6 +422,10 @@
   "06bR4Z": {
     "context": "order history message",
     "string": "Les informations d'annulation de la commande ont été envoyées au client"
+  },
+  "07qtbz": {
+    "context": "cable configuration: name the shopper's cart carried, when it differs from the catalogue name",
+    "string": "Libellé du panier (différent du catalogue) :"
   },
   "0AQH0Q": {
     "string": "Le plugin est mal configuré et ne peut pas être activé"
@@ -1565,6 +1573,10 @@
   "6QjMei": {
     "string": "La date de fin de précommande doit être dans le futur"
   },
+  "6QuRh2": {
+    "context": "cable configuration verification: line has cable metadata but no private record",
+    "string": "Cette ligne ne porte pas l'enregistrement du configurateur : elle a été créée avant la vérification ou modifiée hors configurateur. Contrôlez la configuration et le prix payé avant de fabriquer le câble."
+  },
   "6RQKxH": {
     "context": "order history message",
     "string": "La facture n° {invoiceNumber} a été mise à jour"
@@ -2239,6 +2251,10 @@
     "context": "area units type",
     "string": "Localité"
   },
+  "ACo6PV": {
+    "context": "cable configuration verification: a component id does not resolve to a product",
+    "string": "Certains composants de cette ligne sont introuvables dans le catalogue. Ne fabriquez pas le câble avant d'avoir vérifié la commande."
+  },
   "AD1PlC": {
     "context": "channels availability text",
     "string": "Dans {selectedChannelsCount} sur {allChannelsCount, plural, one {# canal} other {# canaux}}"
@@ -2764,6 +2780,10 @@
     "context": "status filter label",
     "string": "État"
   },
+  "D4GK8e": {
+    "context": "cable configuration verification: unresolved component on a line that matches its record",
+    "string": "Certains composants de cette ligne ne sont plus au catalogue (supprimés ou dépubliés depuis la commande). La configuration elle-même correspond à ce que le configurateur a enregistré. Vérifiez que les pièces sont toujours disponibles avant de fabriquer le câble."
+  },
   "D4W/LE": {
     "context": "dialog header",
     "string": "Modifier l'adresse de facturation du client"
@@ -2900,6 +2920,10 @@
   },
   "DovGIa": {
     "string": "Groupe de permission supprimé"
+  },
+  "Dqi/84": {
+    "context": "cable configuration verification: line metadata matches the app's private record",
+    "string": "Configuration vérifiée"
   },
   "Duik8x": {
     "context": "Link to publish the product immediately instead of scheduling",
@@ -3213,6 +3237,10 @@
   "FZTrzW": {
     "string": "Remboursement manuel"
   },
+  "FaHfes": {
+    "context": "cable configuration verification: warning title",
+    "string": "Configuration non vérifiée"
+  },
   "Fbr4Vp": {
     "context": "dialog header",
     "string": "Droits"
@@ -3497,6 +3525,10 @@
     "context": "dialog content",
     "string": "{counter,plural,one {Are you sure you want to unassign this category?} other {Are you sure you want to unassign {displayQuantity} categories?}}"
   },
+  "Gj8pqh": {
+    "context": "cable configuration verification: component names still loading, shown under the verdict",
+    "string": "Vérification des noms des composants…"
+  },
   "Gkip05": {
     "context": "button",
     "string": "Désassigner"
@@ -3527,6 +3559,10 @@
   "GuihaP": {
     "context": "order transaction refund summary label",
     "string": "La livraison"
+  },
+  "GvRnZo": {
+    "context": "cable configuration verification: name lookup failed, verdict unchanged",
+    "string": "Les noms des composants n'ont pas pu être chargés depuis le catalogue. Le verdict ci-dessus n'en dépend pas ; rechargez la page pour vérifier les noms."
   },
   "Gxo/XC": {
     "context": "header",
@@ -3674,6 +3710,10 @@
   },
   "HYK65C": {
     "string": "Règle de commande"
+  },
+  "HbT+U8": {
+    "context": "cable configuration verification: missing record on an order created after the cutoff, no harmless explanation",
+    "string": "Cette ligne ne porte pas l'enregistrement du configurateur, alors que la commande a été créée après la mise en service de la vérification. Toute configuration légitime en possède un. Considérez cette configuration comme falsifiée : ne fabriquez pas le câble et vérifiez la commande auprès du client."
   },
   "Hc58JL": {
     "context": "card title",
@@ -3915,6 +3955,10 @@
   "Ihp4D3": {
     "context": "header",
     "string": "Modifier le média"
+  },
+  "IkF4cu": {
+    "context": "cable configuration verification: label before the list of changed metadata keys",
+    "string": "Champs modifiés :"
   },
   "Ila7WO": {
     "context": "change warehouse dialog description",
@@ -4171,6 +4215,10 @@
   "K1ycaD": {
     "context": "input label",
     "string": "Valeur du remboursement"
+  },
+  "K3JdVG": {
+    "context": "cable configuration verification: line metadata differs from the private record",
+    "string": "Les informations de cette ligne ne correspondent plus à celles enregistrées par le configurateur. Contrôlez la configuration et le prix payé avant de fabriquer le câble."
   },
   "K58C4r": {
     "string": "Nous travaillons au remplacement des plugins par des extensions. Utilisez les extensions sauf si aucune autre option n’est disponible. {learnMore}"
@@ -5969,6 +6017,10 @@
   "Tp5T7U": {
     "string": "Rejoignez notre communauté open source d’experts du secteur et apprenez-en plus sur l’open source chez Saleor."
   },
+  "TvT/VD": {
+    "context": "cable configuration verification: private record still loading",
+    "string": "Vérification de la configuration…"
+  },
   "TxMsgK": {
     "string": "Statut d'autorisation"
   },
@@ -7538,6 +7590,10 @@
   "bnMF4j": {
     "context": "notification",
     "string": "Les modèles sélectionnés ont été dépubliés."
+  },
+  "bnXPCl": {
+    "context": "cable configuration: component id that resolves to no product",
+    "string": "Introuvable dans le catalogue"
   },
   "bp/i0x": {
     "context": "header",
@@ -10538,6 +10594,10 @@
     "context": "categories section name",
     "string": "Catégories"
   },
+  "sK50F9": {
+    "context": "cable configuration verification: the private record could not be loaded",
+    "string": "Configuration non contrôlée"
+  },
   "sMwohe": {
     "context": "email reason",
     "string": "Contrôle qualité en cours"
@@ -11475,6 +11535,10 @@
     "context": "product variant attribute entity type",
     "string": "Variantes de produit"
   },
+  "wyb9HV": {
+    "context": "cable configuration verification: explanation of the verified state",
+    "string": "Identique à la configuration enregistrée et tarifée par le configurateur lors de l'ajout au panier."
+  },
   "x/ZVlU": {
     "string": "Produit"
   },
@@ -11731,6 +11795,10 @@
     "context": "extensions page subheader",
     "string": "En savoir plus sur {extensions}"
   },
+  "yfCx3N": {
+    "context": "cable configuration verification: load error explanation",
+    "string": "Les données de vérification n'ont pas pu être chargées. Rechargez la page avant de fabriquer le câble."
+  },
   "ygxco/": {
     "context": "tooltip, submit form",
     "string": "Le client a effectué plus d’une transaction. Vous devez envoyer le remboursement manuellement."
@@ -11795,6 +11863,10 @@
   "z1puMb": {
     "context": "export items as csv or spreadsheet file",
     "string": "Exporter en :"
+  },
+  "z1xXZo": {
+    "context": "cable configuration verification: the component name lookup failed",
+    "string": "Noms des composants non vérifiés"
   },
   "z1y9oL": {
     "context": "file attribute type",

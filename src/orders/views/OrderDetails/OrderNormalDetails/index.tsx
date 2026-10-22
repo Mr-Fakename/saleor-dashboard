@@ -446,6 +446,9 @@ export const OrderNormalDetails = ({
       <OrderCableConfigurationDialog
         open={params.action === "view-cable-configuration"}
         onClose={closeModal}
+        orderId={id}
+        channelSlug={order?.channel?.slug}
+        orderCreatedAt={order?.created}
         line={order?.lines?.find(line => line.id === params.id)}
       />
       <OrderMetadataDialog

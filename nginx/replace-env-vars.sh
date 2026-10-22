@@ -29,5 +29,7 @@ replace_env_var "IS_CLOUD_INSTANCE"
 replace_env_var "LOCALE_CODE"
 replace_env_var "EMAIL_BRIDGE_URL"
 replace_env_var "EMAIL_BRIDGE_API_KEY"
+# Cable verification cutoff (ISO date). Unset/empty = no cutoff: the dashboard then shows the soft wording.
+replace_env_var "CABLE_VERIFICATION_CUTOFF"
 
 echo "Environment variable replacement complete."

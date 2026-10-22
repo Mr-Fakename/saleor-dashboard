@@ -26,6 +26,7 @@ declare interface Window {
     IS_CLOUD_INSTANCE?: string;
     EMAIL_BRIDGE_URL?: string;
     EMAIL_BRIDGE_API_KEY?: string;
+    CABLE_VERIFICATION_CUTOFF?: string;
   };
 }
 
